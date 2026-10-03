@@ -3,219 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProPricing AI - Owner Verification</title>
+    <title>ProPricing AI - Inventory Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between pb-24 selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-24 selection:bg-indigo-500 selection:text-white">
 
-    <!-- OWNER VERIFICATION LOCK SCREEN -->
-    <div id="auth-screen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 text-center space-y-5 shadow-2xl">
-            <div class="w-14 h-14 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    <!-- VERIFICATION PAGE / SCREEN -->
+    <div id="verification-screen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-8 space-y-6 shadow-2xl text-center">
+            <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/25 mx-auto">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             </div>
             <div class="space-y-1">
-                <h2 class="text-base font-bold text-white">Owner Verification</h2>
-                <p class="text-xs text-slate-400">Enter your Google Email or Phone Number to access your inventory.</p>
+                <h2 class="text-lg font-bold text-white">Enter Verification Code</h2>
+                <p class="text-xs text-slate-400">Please enter your code to access ProPricing AI.</p>
             </div>
-            
-            <form onsubmit="verifyOwner(event)" class="space-y-3.5 text-left">
+            <form onsubmit="verifyCode(event)" class="space-y-4">
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email or Phone Number</label>
-                    <input type="text" id="auth-input" required placeholder="e.g. nasehmohammed97@gmail.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                    <input type="password" id="verification-input" required placeholder="Enter code" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-center text-white tracking-widest focus:outline-none focus:border-indigo-500 transition">
+                    <p id="error-message" class="text-[11px] text-rose-400 mt-2 hidden">The verification code is wrong, try again.</p>
                 </div>
-                <div id="auth-error" class="text-xs text-rose-400 font-medium text-center hidden">You are not the owner please try again</div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/25">Verify Owner</button>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/20">Verify & Access</button>
             </form>
         </div>
     </div>
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                </div>
-                <div>
-                    <h1 class="text-base font-bold tracking-tight text-white">ProPricing AI</h1>
-                    <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Catalog & Stock Manager</p>
-                </div>
-            </div>
-            
-            <div class="bg-slate-800 p-1 rounded-xl flex gap-1 border border-slate-700/50">
-                <button onclick="switchTab('inventory')" id="btn-inventory" class="px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm">Inventory</button>
-                <button onclick="switchTab('scanner')" id="btn-scanner" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition">AI Scanner</button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
-
-        <!-- INVENTORY SECTION -->
-        <div id="tab-inventory" class="space-y-6">
-            <div class="flex justify-between items-center bg-slate-800/60 backdrop-blur border border-slate-700/60 p-4 rounded-2xl shadow-xl">
-                <div>
-                    <h2 class="font-bold text-base text-white">Product Inventory</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Filter by folders & manage stock</p>
-                </div>
-                <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/20 transition flex items-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-                    Add Product
-                </button>
-            </div>
-
-            <!-- Folder Filter Chips Bar -->
-            <div id="folder-filters" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none"></div>
-
-            <!-- Product Grid Container -->
-            <div id="product-grid" class="grid grid-cols-3 gap-3"></div>
-        </div>
-
-        <!-- AI SCANNER SECTION -->
-        <div id="tab-scanner" class="hidden space-y-6">
-            <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
-                <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
-                <div class="space-y-1">
-                    <h2 class="text-lg font-bold text-white">Instant AI Price Checker</h2>
-                    <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload a product photo to look up its name, price, and available stock from your catalog.</p>
+    <!-- MAIN APP CONTENT (Hidden until verified) -->
+    <div id="main-app" class="hidden">
+        <!-- Top Navigation Bar -->
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold tracking-tight text-white">ProPricing AI</h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Catalog & Stock Manager</p>
+                    </div>
                 </div>
                 
-                <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-900/40 relative group">
-                    <input type="file" id="scan-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleScanImage(event)">
-                    <span class="bg-indigo-600/20 text-indigo-300 px-4 py-2 rounded-xl text-xs font-semibold mb-2 group-hover:bg-indigo-600 group-hover:text-white transition">Browse Photo / Camera</span>
+                <div class="bg-slate-800 p-1 rounded-xl flex gap-1 border border-slate-700/50">
+                    <button onclick="switchTab('inventory')" id="btn-inventory" class="px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm">Inventory</button>
+                    <button onclick="switchTab('scanner')" id="btn-scanner" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition">AI Scanner</button>
                 </div>
             </div>
-        </div>
+        </header>
 
-    </main>
+        <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
 
-    <!-- ADD PRODUCT MODAL -->
-    <div id="product-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 id="modal-title" class="font-bold text-base text-white">Add New Product</h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold transition">&times;</button>
-            </div>
-            <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4">
-                <input type="hidden" id="product-id">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Folder Category</label>
-                    <input type="text" id="product-folder" required placeholder="e.g. Electronics" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Name</label>
-                    <input type="text" id="product-name" required placeholder="e.g. Headphones" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
+            <!-- INVENTORY SECTION -->
+            <div id="tab-inventory" class="space-y-6">
+                <div class="flex justify-between items-center bg-slate-800/60 backdrop-blur border border-slate-700/60 p-4 rounded-2xl shadow-xl">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Price ($)</label>
-                        <input type="number" step="0.01" id="product-price" required placeholder="49.99" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                        <h2 class="font-bold text-base text-white">Product Inventory</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Filter by folders & manage stock</p>
+                    </div>
+                    <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/20 transition flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                        Add Product
+                    </button>
+                </div>
+
+                <!-- Folder Filter Chips Bar -->
+                <div id="folder-filters" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none"></div>
+
+                <!-- Product Grid Container -->
+                <div id="product-grid" class="grid grid-cols-3 gap-3"></div>
+            </div>
+
+            <!-- AI SCANNER SECTION -->
+            <div id="tab-scanner" class="hidden space-y-6">
+                <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
+                    <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <div class="space-y-1">
+                        <h2 class="text-lg font-bold text-white">Instant AI Price Checker</h2>
+                        <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload a product photo to look up its name, price, and available stock from your catalog.</p>
+                    </div>
+                    
+                    <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-900/40 relative group">
+                        <input type="file" id="scan-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleScanImage(event)">
+                        <span class="bg-indigo-600/20 text-indigo-300 px-4 py-2 rounded-xl text-xs font-semibold mb-2 group-hover:bg-indigo-600 group-hover:text-white transition">Browse Photo / Camera</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ADD PRODUCT MODAL -->
+        <div id="product-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <h3 id="modal-title" class="font-bold text-base text-white">Add New Product</h3>
+                    <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold transition">&times;</button>
+                </div>
+                <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4">
+                    <input type="hidden" id="product-id">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Folder Category</label>
+                        <input type="text" id="product-folder" required placeholder="e.g. Electronics" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Stock Qty</label>
-                        <input type="number" id="product-stock" required min="0" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Name</label>
+                        <input type="text" id="product-name" required placeholder="e.g. Headphones" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
                     </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Photo</label>
-                    <input type="file" id="product-image-input" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/20 file:text-indigo-400">
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition mt-2">Save Product Record</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ACTION MODAL (In-Stock Items) -->
-    <div id="action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-            <h3 id="action-modal-title" class="font-bold text-sm text-white">Product Options</h3>
-            <div class="space-y-2 pt-2">
-                <button onclick="promptRestock()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
-                <button onclick="promptSell()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Sell Items</button>
-                <button onclick="confirmDelete()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Item</button>
-                <button onclick="closeActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Price ($)</label>
+                            <input type="number" step="0.01" id="product-price" required placeholder="49.99" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Stock Qty</label>
+                            <input type="number" id="product-stock" required min="0" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Photo</label>
+                        <input type="file" id="product-image-input" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/20 file:text-indigo-400">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition mt-2">Save Product Record</button>
+                </form>
             </div>
         </div>
-    </div>
 
-    <!-- OUT-OF-STOCK ACTION MODAL -->
-    <div id="out-action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-            <div class="space-y-1">
-                <h3 id="out-action-title" class="font-bold text-sm text-white">Out of Stock</h3>
-                <p class="text-xs text-rose-400">Choose an action for this item.</p>
-            </div>
-            <div class="space-y-2 pt-2">
-                <button onclick="promptRestockFromOut()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
-                <button onclick="confirmDeleteFromOut()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Product</button>
-                <button onclick="closeOutActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
+        <!-- ACTION MODAL (In-Stock Items) -->
+        <div id="action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                <h3 id="action-modal-title" class="font-bold text-sm text-white">Product Options</h3>
+                <div class="space-y-2 pt-2">
+                    <button onclick="promptRestock()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
+                    <button onclick="promptSell()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Sell Items</button>
+                    <button onclick="confirmDelete()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Item</button>
+                    <button onclick="closeActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- RESTOCK MODAL -->
-    <div id="restock-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-            <h3 class="font-bold text-sm text-white">Add Items to Stock</h3>
-            <form onsubmit="processRestock(event)" class="space-y-3">
-                <input type="number" id="restock-quantity" required min="1" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
-                    <button type="button" onclick="closeRestockModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+        <!-- OUT-OF-STOCK ACTION MODAL -->
+        <div id="out-action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                <div class="space-y-1">
+                    <h3 id="out-action-title" class="font-bold text-sm text-white">Out of Stock</h3>
+                    <p class="text-xs text-rose-400">Choose an action for this item.</p>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- SELL MODAL -->
-    <div id="sell-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-            <h3 class="font-bold text-sm text-white">Record Sale</h3>
-            <form onsubmit="processSale(event)" class="space-y-3">
-                <input type="number" id="sell-quantity" required min="1" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
-                    <button type="button" onclick="closeSellModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+                <div class="space-y-2 pt-2">
+                    <button onclick="promptRestockFromOut()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
+                    <button onclick="confirmDeleteFromOut()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Product</button>
+                    <button onclick="closeOutActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <!-- POPUP NOTIFICATION MODAL -->
-    <div id="popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-            <h3 id="popup-title" class="font-bold text-sm text-white">Saved Successfully!</h3>
-            <p id="popup-message" class="text-xs text-slate-400">Item recorded.</p>
-            <div id="popup-extra" class="my-2"></div>
-            <button onclick="closePopup()" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Got it</button>
+        <!-- RESTOCK MODAL -->
+        <div id="restock-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                <h3 class="font-bold text-sm text-white">Add Items to Stock</h3>
+                <form onsubmit="processRestock(event)" class="space-y-3">
+                    <input type="number" id="restock-quantity" required min="1" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
+                        <button type="button" onclick="closeRestockModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SELL MODAL -->
+        <div id="sell-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                <h3 class="font-bold text-sm text-white">Record Sale</h3>
+                <form onsubmit="processSale(event)" class="space-y-3">
+                    <input type="number" id="sell-quantity" required min="1" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
+                        <button type="button" onclick="closeSellModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- POPUP NOTIFICATION MODAL -->
+        <div id="popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                <h3 id="popup-title" class="font-bold text-sm text-white">Saved Successfully!</h3>
+                <p id="popup-message" class="text-xs text-slate-400">Item recorded.</p>
+                <div id="popup-extra" class="my-2"></div>
+                <button onclick="closePopup()" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Got it</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Check if already authenticated in this session
-        if (localStorage.getItem('owner_verified') === 'true') {
-            document.getElementById('auth-screen').classList.add('hidden');
-        }
-
-        function verifyOwner(e) {
+        function verifyCode(e) {
             e.preventDefault();
-            const val = document.getElementById('auth-input').value.trim();
-            const allowedEmail = 'nasehmohammed97@gmail.com';
-            const allowedPhone = '+9647501651395';
+            const inputVal = document.getElementById('verification-input').value;
+            const errorMsg = document.getElementById('error-message');
 
-            if (val === allowedEmail || val === allowedPhone) {
-                localStorage.setItem('owner_verified', 'true');
-                document.getElementById('auth-screen').classList.add('hidden');
+            if (inputVal === '3214132naseh') {
+                document.getElementById('verification-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                renderInventory();
             } else {
-                const err = document.getElementById('auth-error');
-                err.classList.remove('hidden');
+                errorMsg.classList.remove('hidden');
             }
         }
 
@@ -447,8 +442,6 @@
                 reader.readAsDataURL(e.target.files[0]);
             }
         }
-
-        renderInventory();
     </script>
 </body>
 </html>

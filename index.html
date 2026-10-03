@@ -1,17 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProPricing AI - Inventory Assistant</title>
+    <title>ProPricing AI - Owner Verification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-24 selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between pb-24 selection:bg-indigo-500 selection:text-white">
+
+    <!-- OWNER VERIFICATION LOCK SCREEN -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 text-center space-y-5 shadow-2xl">
+            <div class="w-14 h-14 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <div class="space-y-1">
+                <h2 class="text-base font-bold text-white">Owner Verification</h2>
+                <p class="text-xs text-slate-400">Enter your Google Email or Phone Number to access your inventory.</p>
+            </div>
+            
+            <form onsubmit="verifyOwner(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email or Phone Number</label>
+                    <input type="text" id="auth-input" required placeholder="e.g. nasehmohammed97@gmail.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div id="auth-error" class="text-xs text-rose-400 font-medium text-center hidden">You are not the owner please try again</div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/25">Verify Owner</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Top Navigation Bar -->
     <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
@@ -178,6 +199,26 @@
     </div>
 
     <script>
+        // Check if already authenticated in this session
+        if (localStorage.getItem('owner_verified') === 'true') {
+            document.getElementById('auth-screen').classList.add('hidden');
+        }
+
+        function verifyOwner(e) {
+            e.preventDefault();
+            const val = document.getElementById('auth-input').value.trim();
+            const allowedEmail = 'nasehmohammed97@gmail.com';
+            const allowedPhone = '+9647501651395';
+
+            if (val === allowedEmail || val === allowedPhone) {
+                localStorage.setItem('owner_verified', 'true');
+                document.getElementById('auth-screen').classList.add('hidden');
+            } else {
+                const err = document.getElementById('auth-error');
+                err.classList.remove('hidden');
+            }
+        }
+
         let products = JSON.parse(localStorage.getItem('saved_products') || '[]');
         let activeFolder = 'All';
         let activeProductId = null;
@@ -411,4 +452,3 @@
     </script>
 </body>
 </html>
-

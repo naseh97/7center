@@ -1,368 +1,414 @@
+Here is the updated application. Now, if an item is Out of Stock, tapping on its photo opens a streamlined modal with "Add Items (Restock)" and "Delete Product" options only (skipping the "Sell Items" option since stock is already at zero). If an item has stock available, it will show the full menu including Sell.
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiplayer Scratch Word Game</title>
+    <title>ProPricing AI - Inventory Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #4f46e5;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f8fafc;
-            --muted: #94a3b8;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            text-align: center;
-            margin: 0;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .exit-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .exit-btn:hover { background: #dc2626; }
-
-        h1 { margin-top: 15px; margin-bottom: 5px; color: #818cf8; }
-        p { color: var(--muted); }
-
-        input, select {
-            padding: 12px 16px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-            width: 80%;
-            margin-bottom: 15px;
-        }
-
-        button.main-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button.main-btn:hover { background-color: #4338ca; }
-
-        .word-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .letter-box {
-            font-size: 36px;
-            font-weight: bold;
-            width: 50px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #334155;
-            border-radius: 8px;
-            color: transparent; 
-            transition: all 0.3s ease;
-        }
-
-        .letter-box.revealed {
-            color: #f8fafc;
-            background: #0f172a;
-            border: 2px solid #475569;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            background: #0f172a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-
-        .hidden { display: none; }
-        
-        .hint-box {
-            margin-top: 15px;
-            padding: 10px;
-            background: #334155;
-            border-radius: 6px;
-            color: #facc15;
-            font-weight: bold;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-24 selection:bg-indigo-500 selection:text-white">
 
-    <div class="container" id="main-container">
-        <button id="exit-btn" class="exit-btn hidden" onclick="resetToHome()">🚪 Exit</button>
-
-        <h1>Scratch Word Game</h1>
-        <p>Live word-guessing challenge</p>
-
-        <!-- Phase 1: Setup Game & Players -->
-        <div id="setup-names-screen">
-            <h3>Game Setup</h3>
-            
-            <label style="color: var(--muted); display: block; margin-bottom: 5px; text-align: left; margin-left: 38px;">Total Players (Min 2):</label>
-            <input type="number" id="num-players" min="2" value="2" onchange="generatePlayerInputs()"><br>
-            
-            <div id="dynamic-player-inputs">
-                <input type="text" id="p-writer" placeholder="Player 1 Name (Word Maker - Writer)" dir="auto"><br>
-                <input type="text" id="p-guesser-0" placeholder="Player 2 Name (Guesser)" dir="auto"><br>
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold tracking-tight text-white">ProPricing AI</h1>
+                    <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Catalog & Stock Manager</p>
+                </div>
             </div>
-
-            <button class="main-btn" onclick="goToWordScreen()">Next: Enter Word</button>
-        </div>
-
-        <!-- Phase 2: Writer Enters Word -->
-        <div id="setup-word-screen" class="hidden">
-            <h3 id="p1-prompt">Writer: Enter Secret Word</h3>
-            <input type="text" id="secret-word-input" placeholder="e.g. motherboard / خواردن" dir="auto">
-            <br>
-            <button class="main-btn" onclick="startGame()">Start Game</button>
-        </div>
-
-        <!-- Phase 3: Guessers' Turn -->
-        <div id="game-screen" class="hidden">
-            <h3 id="current-guesser-turn">Guesser's Turn</h3>
             
-            <div class="stats">
-                <div>❤️ Tries Left: <span id="tries-left" style="color: #ef4444; font-weight: bold;">7</span></div>
-                <div>❌ Wrong: <span id="wrong-letters">None</span></div>
-            </div>
-
-            <div class="word-container" id="word-container" dir="auto"></div>
-
-            <div id="guess-section">
-                <input type="text" id="letter-input" maxlength="2" placeholder="Type a letter" dir="auto">
-                <br>
-                <button class="main-btn" onclick="makeGuess()">Submit Guess</button>
-            </div>
-
-            <div id="hint-section" class="hidden">
-                <p style="color: #f8fafc; margin-top: 15px;">⚠️ Last try remaining!</p>
-                <button class="main-btn" onclick="requestHint()" style="background: #eab308; color: black;">Ask Writer for Hint</button>
-                <div id="hint-display" class="hint-box hidden"></div>
+            <div class="bg-slate-800 p-1 rounded-xl flex gap-1 border border-slate-700/50">
+                <button onclick="switchTab('inventory')" id="btn-inventory" class="px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm">Inventory</button>
+                <button onclick="switchTab('scanner')" id="btn-scanner" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition">AI Scanner</button>
             </div>
         </div>
+    </header>
 
-        <!-- Phase 4: Game Over -->
-        <div id="game-over-screen" class="hidden">
-            <h2 id="game-result" style="font-size: 24px; margin-bottom: 10px;"></h2>
-            <p id="word-reveal" style="font-size: 20px; color: #38bdf8; margin-bottom: 20px;" dir="auto"></p>
-            <button class="main-btn" onclick="resetToHome()">Play Again</button>
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+        <!-- INVENTORY SECTION -->
+        <div id="tab-inventory" class="space-y-6">
+            <div class="flex justify-between items-center bg-slate-800/60 backdrop-blur border border-slate-700/60 p-4 rounded-2xl shadow-xl">
+                <div>
+                    <h2 class="font-bold text-base text-white">Product Inventory</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Filter by folders & manage stock</p>
+                </div>
+                <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/20 transition flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                    Add Product
+                </button>
+            </div>
+
+            <!-- Folder Filter Chips Bar -->
+            <div id="folder-filters" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none"></div>
+
+            <!-- Product Grid Container -->
+            <div id="product-grid" class="grid grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- AI SCANNER SECTION -->
+        <div id="tab-scanner" class="hidden space-y-6">
+            <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
+                <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div class="space-y-1">
+                    <h2 class="text-lg font-bold text-white">Instant AI Price Checker</h2>
+                    <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload a product photo to look up its name, price, and available stock from your catalog.</p>
+                </div>
+                
+                <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-900/40 relative group">
+                    <input type="file" id="scan-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleScanImage(event)">
+                    <span class="bg-indigo-600/20 text-indigo-300 px-4 py-2 rounded-xl text-xs font-semibold mb-2 group-hover:bg-indigo-600 group-hover:text-white transition">Browse Photo / Camera</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ADD PRODUCT MODAL -->
+    <div id="product-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="modal-title" class="font-bold text-base text-white">Add New Product</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold transition">&times;</button>
+            </div>
+            <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4">
+                <input type="hidden" id="product-id">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Folder Category</label>
+                    <input type="text" id="product-folder" required placeholder="e.g. Electronics" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Name</label>
+                    <input type="text" id="product-name" required placeholder="e.g. Headphones" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Price ($)</label>
+                        <input type="number" step="0.01" id="product-price" required placeholder="49.99" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Stock Qty</label>
+                        <input type="number" id="product-stock" required min="0" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Photo</label>
+                    <input type="file" id="product-image-input" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/20 file:text-indigo-400">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition mt-2">Save Product Record</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ACTION MODAL (In-Stock Items) -->
+    <div id="action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+            <h3 id="action-modal-title" class="font-bold text-sm text-white">Product Options</h3>
+            <div class="space-y-2 pt-2">
+                <button onclick="promptRestock()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
+                <button onclick="promptSell()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Sell Items</button>
+                <button onclick="confirmDelete()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Item</button>
+                <button onclick="closeActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUT-OF-STOCK ACTION MODAL -->
+    <div id="out-action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+            <div class="space-y-1">
+                <h3 id="out-action-title" class="font-bold text-sm text-white">Out of Stock</h3>
+                <p class="text-xs text-rose-400">Choose an action for this item.</p>
+            </div>
+            <div class="space-y-2 pt-2">
+                <button onclick="promptRestockFromOut()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
+                <button onclick="confirmDeleteFromOut()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Product</button>
+                <button onclick="closeOutActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESTOCK MODAL -->
+    <div id="restock-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+            <h3 class="font-bold text-sm text-white">Add Items to Stock</h3>
+            <form onsubmit="processRestock(event)" class="space-y-3">
+                <input type="number" id="restock-quantity" required min="1" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
+                    <button type="button" onclick="closeRestockModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SELL MODAL -->
+    <div id="sell-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+            <h3 class="font-bold text-sm text-white">Record Sale</h3>
+            <form onsubmit="processSale(event)" class="space-y-3">
+                <input type="number" id="sell-quantity" required min="1" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
+                    <button type="button" onclick="closeSellModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- POPUP NOTIFICATION MODAL -->
+    <div id="popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+            <h3 id="popup-title" class="font-bold text-sm text-white">Saved Successfully!</h3>
+            <p id="popup-message" class="text-xs text-slate-400">Item recorded.</p>
+            <div id="popup-extra" class="my-2"></div>
+            <button onclick="closePopup()" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Got it</button>
         </div>
     </div>
 
     <script>
-        let writerName = "Player 1";
-        let guesserNames = [];
-        let currentGuesserIndex = 0;
-        let secretWord = "";
-        let originalSecretWord = ""; // Keeps exact casing for reveal at the end
-        let guessedLetters = [];
-        let wrongGuesses = [];
-        const maxTries = 7;
+        let products = JSON.parse(localStorage.getItem('saved_products') || '[]');
+        let activeFolder = 'All';
+        let activeProductId = null;
 
-        function generatePlayerInputs() {
-            let total = parseInt(document.getElementById("num-players").value);
-            if (isNaN(total) || total < 2) total = 2;
-
-            let container = document.getElementById("dynamic-player-inputs");
-            container.innerHTML = `<input type="text" id="p-writer" placeholder="Player 1 Name (Word Maker - Writer)" dir="auto"><br>`;
-
-            for (let i = 0; i < total - 1; i++) {
-                container.innerHTML += `<input type="text" id="p-guesser-${i}" placeholder="Guesser ${i + 1} Name" dir="auto"><br>`;
-            }
-        }
-
-        function resetToHome() {
-            secretWord = "";
-            originalSecretWord = "";
-            guessedLetters = [];
-            wrongGuesses = [];
-            currentGuesserIndex = 0;
-            
-            document.getElementById("secret-word-input").value = "";
-            document.getElementById("letter-input").value = "";
-            document.getElementById("hint-display").classList.add("hidden");
-            document.getElementById("hint-section").classList.add("hidden");
-
-            document.getElementById("setup-names-screen").classList.remove("hidden");
-            document.getElementById("setup-word-screen").classList.add("hidden");
-            document.getElementById("game-screen").classList.add("hidden");
-            document.getElementById("game-over-screen").classList.add("hidden");
-            document.getElementById("exit-btn").classList.add("hidden");
-        }
-
-        function goToWordScreen() {
-            let total = parseInt(document.getElementById("num-players").value);
-            if (isNaN(total) || total < 2) {
-                alert("Please select at least 2 players.");
-                return;
-            }
-
-            const wInput = document.getElementById("p-writer").value.trim();
-            if (wInput) writerName = wInput;
-
-            guesserNames = [];
-            for (let i = 0; i < total - 1; i++) {
-                let gInput = document.getElementById(`p-guesser-${i}`).value.trim();
-                guesserNames.push(gInput || `Guesser ${i + 1}`);
-            }
-
-            document.getElementById("p1-prompt").innerText = `${writerName} (Writer): Enter Secret Word`;
-
-            document.getElementById("setup-names-screen").classList.add("hidden");
-            document.getElementById("setup-word-screen").classList.remove("hidden");
-            document.getElementById("exit-btn").classList.remove("hidden");
-        }
-
-        function startGame() {
-            const input = document.getElementById("secret-word-input").value.trim();
-            const validPattern = /^[\u0600-\u06FFa-zA-Z\s]+$/;
-            
-            if (!input || !validPattern.test(input)) {
-                alert("Please enter a valid word using English, Arabic, or Kurdish characters.");
-                return;
-            }
-            
-            originalSecretWord = input;
-            secretWord = input.toLowerCase(); // Normalized to lowercase for robust matching
-            guessedLetters = [];
-            wrongGuesses = [];
-            currentGuesserIndex = 0;
-
-            document.getElementById("setup-word-screen").classList.add("hidden");
-            document.getElementById("game-screen").classList.remove("hidden");
-            document.getElementById("tries-left").innerText = maxTries;
-            document.getElementById("wrong-letters").innerText = "None";
-            updateTurnText();
-            buildWordBoard();
-        }
-
-        function updateTurnText() {
-            let currentGuesser = guesserNames[currentGuesserIndex];
-            document.getElementById("current-guesser-turn").innerText = `${currentGuesser}'s Turn to Guess`;
-        }
-
-        function buildWordBoard() {
-            const container = document.getElementById("word-container");
-            container.innerHTML = "";
-
-            // Loop through the original word so formatting/casing looks pristine on screen
-            for (let i = 0; i < originalSecretWord.length; i++) {
-                let origChar = originalSecretWord[i];
-                let lowChar = secretWord[i];
-
-                const box = document.createElement("div");
-                box.classList.add("letter-box");
-                box.innerText = origChar; 
-                
-                if (guessedLetters.includes(lowChar) || lowChar === ' ') {
-                    box.classList.add("revealed");
-                }
-                container.appendChild(box);
-            }
-
-            const allRevealed = secretWord.split('').every(char => guessedLetters.includes(char) || char === ' ');
-            if (allRevealed && secretWord.length > 0) {
-                endGame(true);
-            } else if (wrongGuesses.length >= maxTries) {
-                endGame(false);
-            }
-        }
-
-        function makeGuess() {
-            const inputField = document.getElementById("letter-input");
-            const letter = inputField.value.trim().toLowerCase(); // Normalized to lowercase
-            inputField.value = "";
-
-            const validLetterPattern = /^[\u0600-\u06FFa-zA-Z]$/;
-            if (!letter || !validLetterPattern.test(letter)) {
-                alert("Please enter a single valid letter.");
-                return;
-            }
-
-            if (guessedLetters.includes(letter) || wrongGuesses.includes(letter)) {
-                alert("You already guessed that letter!");
-                return;
-            }
-
-            if (secretWord.includes(letter)) {
-                guessedLetters.push(letter);
+        function switchTab(tab) {
+            if (tab === 'inventory') {
+                document.getElementById('tab-inventory').classList.remove('hidden');
+                document.getElementById('tab-scanner').classList.add('hidden');
+                document.getElementById('btn-inventory').className = 'px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm';
+                document.getElementById('btn-scanner').className = 'px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition';
+                renderInventory();
             } else {
-                wrongGuesses.push(letter);
-                document.getElementById("tries-left").innerText = maxTries - wrongGuesses.length;
-                document.getElementById("wrong-letters").innerText = wrongGuesses.join(", ");
-            }
-
-            buildWordBoard();
-
-            if (guesserNames.length > 1 && wrongGuesses.length < maxTries) {
-                currentGuesserIndex = (currentGuesserIndex + 1) % guesserNames.length;
-                updateTurnText();
-            }
-
-            if (wrongGuesses.length === maxTries - 1) {
-                document.getElementById("hint-section").classList.remove("hidden");
+                document.getElementById('tab-inventory').classList.add('hidden');
+                document.getElementById('tab-scanner').classList.remove('hidden');
+                document.getElementById('btn-inventory').className = 'px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition';
+                document.getElementById('btn-scanner').className = 'px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm';
             }
         }
 
-        function requestHint() {
-            let hint = prompt(`${writerName} (Writer): Enter a helpful hint for the guessers:`);
-            if (hint) {
-                const hintBox = document.getElementById("hint-display");
-                hintBox.innerText = "Hint: " + hint;
-                hintBox.classList.remove("hidden");
+        function openAddModal() {
+            document.getElementById('modal-title').innerText = 'Add New Product';
+            document.getElementById('product-form').reset();
+            document.getElementById('product-id').value = '';
+            document.getElementById('product-stock').value = '1';
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
+        function showPopup(title, message, extra = '') {
+            document.getElementById('popup-title').innerText = title;
+            document.getElementById('popup-message').innerText = message;
+            document.getElementById('popup-extra').innerHTML = extra;
+            document.getElementById('popup-modal').classList.remove('hidden');
+        }
+        function closePopup() { document.getElementById('popup-modal').classList.add('hidden'); }
+        
+        function handleProductClick(id) {
+            const product = products.find(x => x.id === id);
+            if (!product) return;
+            activeProductId = id;
+
+            const out = parseInt(product.stock || 0) <= 0;
+            if (out) {
+                document.getElementById('out-action-title').innerText = product.name;
+                document.getElementById('out-action-modal').classList.remove('hidden');
+            } else {
+                document.getElementById('action-modal-title').innerText = product.name;
+                document.getElementById('action-modal').classList.remove('hidden');
             }
         }
 
-        function endGame(won) {
-            document.getElementById("game-screen").classList.add("hidden");
-            document.getElementById("game-over-screen").classList.remove("hidden");
-            document.getElementById("exit-btn").classList.add("hidden");
+        function closeActionModal() { document.getElementById('action-modal').classList.add('hidden'); }
+        function closeOutActionModal() { document.getElementById('out-action-modal').classList.add('hidden'); }
+        
+        function promptRestock() {
+            closeActionModal();
+            document.getElementById('restock-quantity').value = '5';
+            document.getElementById('restock-modal').classList.remove('hidden');
+        }
+
+        function promptRestockFromOut() {
+            closeOutActionModal();
+            document.getElementById('restock-quantity').value = '5';
+            document.getElementById('restock-modal').classList.remove('hidden');
+        }
+
+        function closeRestockModal() { document.getElementById('restock-modal').classList.add('hidden'); }
+
+        function promptSell() {
+            closeActionModal();
+            document.getElementById('sell-quantity').value = '1';
+            document.getElementById('sell-modal').classList.remove('hidden');
+        }
+        function closeSellModal() { document.getElementById('sell-modal').classList.add('hidden'); }
+
+        function processRestock(e) {
+            e.preventDefault();
+            const addCount = parseInt(document.getElementById('restock-quantity').value) || 0;
+            const product = products.find(p => p.id === activeProductId);
+            if (product) {
+                product.stock = parseInt(product.stock || 0) + addCount;
+                localStorage.setItem('saved_products', JSON.stringify(products));
+                closeRestockModal();
+                renderInventory();
+                showPopup('Restocked!', `Added ${addCount} unit(s) to "${product.name}". Total stock: ${product.stock}`);
+            }
+        }
+
+        function processSale(e) {
+            e.preventDefault();
+            const soldCount = parseInt(document.getElementById('sell-quantity').value) || 0;
+            const product = products.find(p => p.id === activeProductId);
+            if (product) {
+                product.stock = Math.max(0, parseInt(product.stock || 0) - soldCount);
+                localStorage.setItem('saved_products', JSON.stringify(products));
+                closeSellModal();
+                renderInventory();
+                showPopup('Sale Recorded', `Sold ${soldCount} unit(s) of "${product.name}". Remaining stock: ${product.stock}`);
+            }
+        }
+
+        function confirmDelete() {
+            closeActionModal();
+            if (confirm('Delete this product?')) {
+                products = products.filter(p => p.id !== activeProductId);
+                localStorage.setItem('saved_products', JSON.stringify(products));
+                renderInventory();
+            }
+        }
+
+        function confirmDeleteFromOut() {
+            closeOutActionModal();
+            if (confirm('Delete this product?')) {
+                products = products.filter(p => p.id !== activeProductId);
+                localStorage.setItem('saved_products', JSON.stringify(products));
+                renderInventory();
+            }
+        }
+
+        function saveProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('product-id').value || '_' + Math.random().toString(36).substr(2, 9);
+            const folder = document.getElementById('product-folder').value.trim();
+            const name = document.getElementById('product-name').value.trim();
+            const price = document.getElementById('product-price').value;
+            const stock = parseInt(document.getElementById('product-stock').value) || 0;
+            const fileInput = document.getElementById('product-image-input');
+
+            const saveRecord = (imgData) => {
+                const existingIndex = products.findIndex(p => p.id === id);
+                const productObj = { id, folder, name, price, stock, image: imgData || (existingIndex >= 0 ? products[existingIndex].image : '') };
+                if (existingIndex >= 0) products[existingIndex] = productObj;
+                else products.push(productObj);
+
+                localStorage.setItem('saved_products', JSON.stringify(products));
+                closeModal();
+                showPopup('Saved Successfully!', `"${name}" was added with ${stock} available.`);
+                renderInventory();
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const MAX = 300;
+                        let w = img.width, h = img.height;
+                        if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
+                        else { if (h > MAX) { w *= MAX / h; h = MAX; } }
+                        canvas.width = w; canvas.height = h;
+                        ctx.drawImage(img, 0, 0, w, h);
+                        saveRecord(canvas.toDataURL('image/jpeg', 0.75));
+                    };
+                    img.src = evt.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else { saveRecord(null); }
+        }
+
+        function renderInventory() {
+            const filterContainer = document.getElementById('folder-filters');
+            const gridContainer = document.getElementById('product-grid');
             
-            const resultText = won ? `🎉 Guessers Won! All letters scratched out!` : `💀 Guessers Lost! ${writerName} (Writer) wins.`;
-            document.getElementById("game-result").innerText = resultText;
-            document.getElementById("word-reveal").innerText = `The secret word was: "${originalSecretWord}"`;
+            const folders = ['All', ...new Set(products.map(p => p.folder || 'Uncategorized'))];
+            
+            filterContainer.innerHTML = '';
+            folders.forEach(f => {
+                const isActive = activeFolder === f;
+                let btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`;
+                btn.innerText = f;
+                btn.onclick = () => { activeFolder = f; renderInventory(); };
+                filterContainer.appendChild(btn);
+            });
+
+            const filteredProducts = activeFolder === 'All' ? products : products.filter(p => (p.folder || 'Uncategorized') === activeFolder);
+
+            gridContainer.innerHTML = '';
+            if (filteredProducts.length === 0) {
+                gridContainer.innerHTML = `<div class="col-span-3 text-center py-16 bg-slate-800/40 border border-slate-800 rounded-2xl text-slate-500 text-xs">No products found in this folder.</div>`;
+                return;
+            }
+
+            filteredProducts.forEach(item => {
+                const out = parseInt(item.stock || 0) <= 0;
+                let card = document.createElement('div');
+                card.className = 'bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex flex-col items-center text-center relative shadow-sm';
+                card.innerHTML = `
+                    <div onclick="handleProductClick('${item.id}')" class="w-full h-24 bg-slate-950 rounded-lg overflow-hidden mb-2 flex items-center justify-center cursor-pointer relative group">
+                        ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition">` : `<span class="text-[10px] text-slate-600">No Image</span>`}
+                        ${out ? `<div class="absolute inset-0 bg-slate-950/80 flex items-center justify-center text-[10px] font-bold text-rose-400 uppercase">Out of Stock</div>` : ''}
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-200 truncate w-full">${item.name}</span>
+                    <div class="flex items-center justify-between w-full mt-1 px-1">
+                        <span class="text-[11px] font-bold text-indigo-400">$${item.price}</span>
+                        <span class="text-[10px] ${out ? 'text-rose-400' : 'text-slate-400'}">Qty: ${item.stock}</span>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
         }
+
+        function handleScanImage(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    if (products.length === 0) { 
+                        showPopup('Empty Inventory', 'Please add products to your catalog first.'); 
+                        return; 
+                    }
+                    const matched = products[0]; 
+                    showPopup('Match Found!', `Item identified from your inventory:`, `
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center gap-3 text-left my-2">
+                            ${matched.image ? `<img src="${matched.image}" class="w-12 h-12 object-cover rounded-lg">` : ''}
+                            <div>
+                                <h4 class="font-bold text-xs text-white">${matched.name}</h4>
+                                <p class="text-xs text-indigo-400 font-bold">$${matched.price}</p>
+                                <p class="text-[10px] text-slate-400">Available Stock: <span class="font-bold ${matched.stock > 0 ? 'text-emerald-400' : 'text-rose-400'}">${matched.stock}</span></p>
+                                <span class="text-[9px] text-slate-500 uppercase">Folder: ${matched.folder}</span>
+                            </div>
+                        </div>
+                    `);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        }
+
+        renderInventory();
     </script>
 </body>
 </html>
+

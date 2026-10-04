@@ -1,447 +1,3139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProPricing AI - Inventory Assistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Center Inventory</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --bg:#f4f6f8;
+  --card:#fff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --primary:#111827;
+  --danger:#b91c1c;
+  --green:#047857;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* LOGIN */
+
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:linear-gradient(145deg,#111827,#263244);
+}
+
+.login-card{
+  width:min(420px,100%);
+  background:white;
+  border-radius:24px;
+  padding:32px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+}
+
+.login-card h1{
+  margin:0 0 8px;
+  font-size:28px;
+}
+
+.login-card p{
+  margin:0 0 25px;
+  color:var(--muted);
+}
+
+.passcode{
+  width:100%;
+  height:54px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:0 16px;
+  text-align:center;
+  font-size:20px;
+  letter-spacing:3px;
+  outline:none;
+}
+
+.login-btn{
+  width:100%;
+  height:54px;
+  margin-top:14px;
+  border:0;
+  border-radius:14px;
+  background:#111827;
+  color:white;
+  font-weight:700;
+}
+
+.login-error{
+  height:24px;
+  margin-top:12px;
+  color:var(--danger);
+  font-size:14px;
+  font-weight:600;
+}
+
+/* HEADER */
+
+header{
+  background:#111827;
+  color:white;
+  padding:18px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+header h1{
+  font-size:20px;
+  margin:0;
+}
+
+.lock-btn{
+  border:1px solid rgba(255,255,255,.25);
+  background:transparent;
+  color:white;
+  border-radius:10px;
+  padding:8px 12px;
+}
+
+/* MAIN */
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:18px 16px 100px;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.stat{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+}
+
+.stat small{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat strong{
+  display:block;
+  margin-top:6px;
+  font-size:19px;
+}
+
+/* ACTION BUTTONS */
+
+.action-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.action-btn{
+  border:0;
+  border-radius:14px;
+  padding:15px;
+  font-weight:800;
+  text-align:left;
+}
+
+.action-btn small{
+  display:block;
+  font-weight:500;
+  margin-top:4px;
+  opacity:.75;
+}
+
+.action-add{
+  background:#111827;
+  color:white;
+}
+
+.action-info{
+  background:white;
+  border:1px solid var(--line);
+  color:#111827;
+}
+
+/* SEARCH */
+
+.search{
+  width:100%;
+  height:46px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:0 14px;
+  background:white;
+  margin-bottom:16px;
+  outline:none;
+}
+
+/* PRODUCT LIST */
+
+.product-list{
+  display:grid;
+  gap:12px;
+}
+
+.product-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+
+.product-card img{
+  width:78px;
+  height:78px;
+  border-radius:12px;
+  object-fit:cover;
+  background:#f0f0f0;
+  flex:none;
+}
+
+.product-info{
+  min-width:0;
+  flex:1;
+}
+
+.product-name{
+  font-weight:800;
+  font-size:16px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.product-model{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.colors{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  margin-top:7px;
+}
+
+.color-chip{
+  font-size:11px;
+  background:#f1f5f9;
+  border-radius:999px;
+  padding:4px 7px;
+}
+
+.product-meta{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.product-meta b{
+  color:var(--text);
+}
+
+.stock-badge{
+  display:inline-block;
+  margin-top:7px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.in-stock{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.out-stock{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.card-actions{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.edit-btn,
+.info-btn{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:9px;
+  padding:8px 10px;
+  font-size:12px;
+}
+
+.delete-btn{
+  border:0;
+  background:#fee2e2;
+  color:#991b1b;
+  border-radius:9px;
+  padding:8px 10px;
+  font-size:12px;
+}
+
+/* GALLERY */
+
+.gallery{
+  display:none;
+}
+
+.gallery.active{
+  display:block;
+}
+
+.dashboard.active{
+  display:block;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.gallery-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.gallery-card img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+  background:#f0f0f0;
+}
+
+.gallery-details{
+  padding:8px;
+}
+
+.gallery-name{
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.gallery-price{
+  font-size:13px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.gallery-qty{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.gallery-stock{
+  font-size:11px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+.gallery-stock.out{
+  color:#b91c1c;
+}
+
+.gallery-stock.in{
+  color:#047857;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  z-index:30;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+
+.nav-btn{
+  width:50%;
+  max-width:280px;
+  border:0;
+  background:white;
+  padding:14px 8px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+.nav-btn.active{
+  color:#111827;
+  border-top:2px solid #111827;
+}
+
+/* MODALS */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:50;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.modal-box{
+  background:white;
+  width:min(620px,100%);
+  max-height:94vh;
+  overflow:auto;
+  border-radius:22px 22px 0 0;
+  padding:20px 16px 30px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:20px;
+}
+
+.close{
+  border:0;
+  background:#f1f5f9;
+  border-radius:10px;
+  width:38px;
+  height:38px;
+}
+
+.photo-preview{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  border-radius:16px;
+  background:#111827;
+}
+
+.fields{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.field input{
+  width:100%;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:0 12px;
+  outline:none;
+}
+
+.save-row{
+  display:flex;
+  gap:9px;
+  margin-top:18px;
+}
+
+.save-row button{
+  flex:1;
+}
+
+.primary,
+.secondary,
+.danger{
+  border:0;
+  border-radius:12px;
+  padding:12px 15px;
+  font-weight:700;
+}
+
+.primary{
+  background:#111827;
+  color:white;
+}
+
+.secondary{
+  background:white;
+  border:1px solid var(--line);
+  color:var(--text);
+}
+
+.danger{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+/* STOCK */
+
+.stock-panel{
+  background:#f8fafc;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+  margin-top:15px;
+}
+
+.stock-status{
+  font-size:18px;
+  font-weight:800;
+}
+
+.stock-status.out{
+  color:#b91c1c;
+}
+
+.stock-status.in{
+  color:#047857;
+}
+
+.stock-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+
+.stock-controls button{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  font-weight:700;
+}
+
+.info-result{
+  background:#f8fafc;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+  margin-top:14px;
+}
+
+.info-result h3{
+  margin:0 0 6px;
+}
+
+.info-result p{
+  margin:5px 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.confirm-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:12px;
+}
+
+.note{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.4;
+  margin-top:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .product-card{
+    align-items:flex-start;
+  }
+
+  .action-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(min-width:700px){
+
+  .gallery-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+}
+</style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-24 selection:bg-indigo-500 selection:text-white">
 
-    <!-- VERIFICATION PAGE / SCREEN -->
-    <div id="verification-screen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-8 space-y-6 shadow-2xl text-center">
-            <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/25 mx-auto">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            </div>
-            <div class="space-y-1">
-                <h2 class="text-lg font-bold text-white">Enter Verification Code</h2>
-                <p class="text-xs text-slate-400">Please enter your code to access ProPricing AI.</p>
-            </div>
-            <form onsubmit="verifyCode(event)" class="space-y-4">
-                <div>
-                    <input type="password" id="verification-input" required placeholder="Enter code" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-center text-white tracking-widest focus:outline-none focus:border-indigo-500 transition">
-                    <p id="error-message" class="text-[11px] text-rose-400 mt-2 hidden">The verification code is wrong, try again.</p>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/20">Verify & Access</button>
-            </form>
-        </div>
+<body>
+
+<!-- LOGIN SCREEN -->
+
+<section id="loginScreen">
+
+  <div class="login-card">
+
+    <h1>Center Inventory</h1>
+
+    <p>Enter your passcode to continue</p>
+
+    <form id="loginForm">
+
+      <input
+        id="passcode"
+        class="passcode"
+        type="password"
+        inputmode="text"
+        autocomplete="off"
+        placeholder="Passcode"
+      >
+
+      <button class="login-btn" type="submit">
+        Enter
+      </button>
+
+    </form>
+
+    <div id="loginError" class="login-error"></div>
+
+  </div>
+
+</section>
+
+
+<!-- APPLICATION -->
+
+<div id="app" class="hidden">
+
+<header>
+
+  <div class="header-inner">
+
+    <h1>Center Inventory</h1>
+
+    <button class="lock-btn" onclick="lockApp()">
+      Lock
+    </button>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<!-- INVENTORY -->
+
+<section id="dashboard" class="dashboard active">
+
+  <div class="stats">
+
+    <div class="stat">
+      <small>Products</small>
+      <strong id="statProducts">0</strong>
     </div>
 
-    <!-- MAIN APP CONTENT (Hidden until verified) -->
-    <div id="main-app" class="hidden">
-        <!-- Top Navigation Bar -->
-        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
-            <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold tracking-tight text-white">ProPricing AI</h1>
-                        <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Catalog & Stock Manager</p>
-                    </div>
-                </div>
-                
-                <div class="bg-slate-800 p-1 rounded-xl flex gap-1 border border-slate-700/50">
-                    <button onclick="switchTab('inventory')" id="btn-inventory" class="px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm">Inventory</button>
-                    <button onclick="switchTab('scanner')" id="btn-scanner" class="px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition">AI Scanner</button>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
-
-            <!-- INVENTORY SECTION -->
-            <div id="tab-inventory" class="space-y-6">
-                <div class="flex justify-between items-center bg-slate-800/60 backdrop-blur border border-slate-700/60 p-4 rounded-2xl shadow-xl">
-                    <div>
-                        <h2 class="font-bold text-base text-white">Product Inventory</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Filter by folders & manage stock</p>
-                    </div>
-                    <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/20 transition flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-                        Add Product
-                    </button>
-                </div>
-
-                <!-- Folder Filter Chips Bar -->
-                <div id="folder-filters" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none"></div>
-
-                <!-- Product Grid Container -->
-                <div id="product-grid" class="grid grid-cols-3 gap-3"></div>
-            </div>
-
-            <!-- AI SCANNER SECTION -->
-            <div id="tab-scanner" class="hidden space-y-6">
-                <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
-                    <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    </div>
-                    <div class="space-y-1">
-                        <h2 class="text-lg font-bold text-white">Instant AI Price Checker</h2>
-                        <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload a product photo to look up its name, price, and available stock from your catalog.</p>
-                    </div>
-                    
-                    <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-900/40 relative group">
-                        <input type="file" id="scan-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleScanImage(event)">
-                        <span class="bg-indigo-600/20 text-indigo-300 px-4 py-2 rounded-xl text-xs font-semibold mb-2 group-hover:bg-indigo-600 group-hover:text-white transition">Browse Photo / Camera</span>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- ADD PRODUCT MODAL -->
-        <div id="product-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h3 id="modal-title" class="font-bold text-base text-white">Add New Product</h3>
-                    <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold transition">&times;</button>
-                </div>
-                <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4">
-                    <input type="hidden" id="product-id">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Folder Category</label>
-                        <input type="text" id="product-folder" required placeholder="e.g. Electronics" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Name</label>
-                        <input type="text" id="product-name" required placeholder="e.g. Headphones" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Price ($)</label>
-                            <input type="number" step="0.01" id="product-price" required placeholder="49.99" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Stock Qty</label>
-                            <input type="number" id="product-stock" required min="0" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Product Photo</label>
-                        <input type="file" id="product-image-input" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600/20 file:text-indigo-400">
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition mt-2">Save Product Record</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ACTION MODAL (In-Stock Items) -->
-        <div id="action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-                <h3 id="action-modal-title" class="font-bold text-sm text-white">Product Options</h3>
-                <div class="space-y-2 pt-2">
-                    <button onclick="promptRestock()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
-                    <button onclick="promptSell()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Sell Items</button>
-                    <button onclick="confirmDelete()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Item</button>
-                    <button onclick="closeActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- OUT-OF-STOCK ACTION MODAL -->
-        <div id="out-action-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-                <div class="space-y-1">
-                    <h3 id="out-action-title" class="font-bold text-sm text-white">Out of Stock</h3>
-                    <p class="text-xs text-rose-400">Choose an action for this item.</p>
-                </div>
-                <div class="space-y-2 pt-2">
-                    <button onclick="promptRestockFromOut()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-bold transition">Add Items (Restock)</button>
-                    <button onclick="confirmDeleteFromOut()" class="w-full bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white py-2.5 rounded-xl text-xs font-bold transition">Delete Product</button>
-                    <button onclick="closeOutActionModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-semibold transition">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- RESTOCK MODAL -->
-        <div id="restock-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-                <h3 class="font-bold text-sm text-white">Add Items to Stock</h3>
-                <form onsubmit="processRestock(event)" class="space-y-3">
-                    <input type="number" id="restock-quantity" required min="1" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
-                        <button type="button" onclick="closeRestockModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- SELL MODAL -->
-        <div id="sell-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-                <h3 class="font-bold text-sm text-white">Record Sale</h3>
-                <form onsubmit="processSale(event)" class="space-y-3">
-                    <input type="number" id="sell-quantity" required min="1" value="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-center text-white font-bold">
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Confirm</button>
-                        <button type="button" onclick="closeSellModal()" class="bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- POPUP NOTIFICATION MODAL -->
-        <div id="popup-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
-                <h3 id="popup-title" class="font-bold text-sm text-white">Saved Successfully!</h3>
-                <p id="popup-message" class="text-xs text-slate-400">Item recorded.</p>
-                <div id="popup-extra" class="my-2"></div>
-                <button onclick="closePopup()" class="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-bold">Got it</button>
-            </div>
-        </div>
+    <div class="stat">
+      <small>Total units</small>
+      <strong id="statUnits">0</strong>
     </div>
 
-    <script>
-        function verifyCode(e) {
-            e.preventDefault();
-            const inputVal = document.getElementById('verification-input').value;
-            const errorMsg = document.getElementById('error-message');
+    <div class="stat">
+      <small>Stock cost</small>
+      <strong id="statCost">0</strong>
+    </div>
 
-            if (inputVal === '3214132naseh') {
-                document.getElementById('verification-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                renderInventory();
-            } else {
-                errorMsg.classList.remove('hidden');
+    <div class="stat">
+      <small>Potential sales</small>
+      <strong id="statSales">0</strong>
+    </div>
+
+  </div>
+
+
+  <div class="action-grid">
+
+    <button
+      class="action-btn action-add"
+      onclick="scanForAdd()"
+    >
+
+      Add / Scan Product
+
+      <small>
+        Choose a product photo to add it to inventory
+      </small>
+
+    </button>
+
+
+    <button
+      class="action-btn action-info"
+      onclick="scanForInfo()"
+    >
+
+      Product Information
+
+      <small>
+        Check stock, price and product information
+      </small>
+
+    </button>
+
+  </div>
+
+
+  <input
+    id="searchInput"
+    class="search"
+    type="search"
+    placeholder="Search product, model or color..."
+    oninput="renderProducts()"
+  >
+
+
+  <div
+    id="productList"
+    class="product-list"
+  ></div>
+
+</section>
+
+
+<!-- PRODUCTS GALLERY -->
+
+<section id="gallery" class="gallery">
+
+  <input
+    id="gallerySearch"
+    class="search"
+    type="search"
+    placeholder="Search products..."
+    oninput="renderGallery()"
+  >
+
+  <div
+    id="galleryGrid"
+    class="gallery-grid"
+  ></div>
+
+</section>
+
+</main>
+
+
+<!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+
+  <button
+    id="navInventory"
+    class="nav-btn active"
+    onclick="showTab('inventory')"
+  >
+    Inventory
+  </button>
+
+  <button
+    id="navProducts"
+    class="nav-btn"
+    onclick="showTab('products')"
+  >
+    Products
+  </button>
+
+</nav>
+
+</div>
+
+
+<!--
+  Only one file input is needed.
+  On iPhone Safari this opens the native menu:
+  Photo Library
+  Take Photo
+  Choose File
+-->
+
+<input
+  id="scanInput"
+  type="file"
+  accept="image/*"
+  hidden
+>
+
+<input
+  id="infoScanInput"
+  type="file"
+  accept="image/*"
+  hidden
+>
+
+
+<!-- ADD / EDIT PRODUCT MODAL -->
+
+<div
+  id="productModal"
+  class="modal hidden"
+  onclick="if(event.target===this)closeModal()"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="modalTitle">
+        Add Product
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <img
+      id="productPhotoPreview"
+      class="photo-preview hidden"
+      alt="Product"
+    >
+
+
+    <div class="fields">
+
+      <div class="field">
+
+        <label>
+          Product name
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Example: iPhone 15 Pro Max Cover"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Model
+        </label>
+
+        <input
+          id="model"
+          type="text"
+          placeholder="Example: 15 Pro Max"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Colors
+        </label>
+
+        <input
+          id="colors"
+          type="text"
+          placeholder="Example: Black, Blue, Red"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Quantity
+        </label>
+
+        <input
+          id="quantity"
+          type="number"
+          min="0"
+          step="1"
+          value="1"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Purchase price per item
+        </label>
+
+        <input
+          id="buyPrice"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="0"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Selling price per item
+        </label>
+
+        <input
+          id="sellPrice"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="0"
+        >
+
+      </div>
+
+    </div>
+
+
+    <div class="save-row">
+
+      <button
+        class="secondary"
+        onclick="closeModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary"
+        onclick="saveProduct()"
+      >
+        Save Product
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- PRODUCT INFORMATION MODAL -->
+
+<div
+  id="infoModal"
+  class="modal hidden"
+  onclick="if(event.target===this)closeInfoModal()"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>
+        Product Information
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeInfoModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="infoContent"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+const PASSCODE = "165naseh";
+
+const DB_NAME = "CenterInventoryDatabase";
+
+const DB_VERSION = 1;
+
+const STORE_NAME = "products";
+
+
+let db = null;
+
+let products = [];
+
+let editingId = null;
+
+let scannedPhoto = null;
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+const loginForm =
+  document.getElementById("loginForm");
+
+
+loginForm.addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  const value =
+    document.getElementById("passcode").value;
+
+
+  if(value === PASSCODE){
+
+    sessionStorage.setItem(
+      "centerInventoryUnlocked",
+      "1"
+    );
+
+    document
+      .getElementById("loginScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("app")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("passcode")
+      .value = "";
+
+    document
+      .getElementById("loginError")
+      .textContent = "";
+
+    initDatabase();
+
+  }else{
+
+    document
+      .getElementById("loginError")
+      .textContent =
+      "Incorrect, try again.";
+
+    document
+      .getElementById("passcode")
+      .value = "";
+
+    document
+      .getElementById("passcode")
+      .focus();
+
+  }
+
+});
+
+
+/* =========================================================
+   LOCK
+========================================================= */
+
+function lockApp(){
+
+  sessionStorage.removeItem(
+    "centerInventoryUnlocked"
+  );
+
+  document
+    .getElementById("app")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginScreen")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("passcode")
+    .value = "";
+
+  closeModal();
+
+  closeInfoModal();
+
+}
+
+
+/* =========================================================
+   INDEXED DB
+========================================================= */
+
+function initDatabase(){
+
+  if(!window.indexedDB){
+
+    alert(
+      "This browser does not support IndexedDB."
+    );
+
+    return;
+
+  }
+
+
+  const request =
+    indexedDB.open(
+      DB_NAME,
+      DB_VERSION
+    );
+
+
+  request.onupgradeneeded = function(e){
+
+    const database =
+      e.target.result;
+
+
+    if(
+      !database.objectStoreNames.contains(
+        STORE_NAME
+      )
+    ){
+
+      const store =
+        database.createObjectStore(
+          STORE_NAME,
+          {
+            keyPath:"id"
+          }
+        );
+
+
+      store.createIndex(
+        "name",
+        "name",
+        {
+          unique:false
+        }
+      );
+
+
+      store.createIndex(
+        "model",
+        "model",
+        {
+          unique:false
+        }
+      );
+
+    }
+
+  };
+
+
+  request.onsuccess = function(e){
+
+    db = e.target.result;
+
+    loadProducts();
+
+  };
+
+
+  request.onerror = function(){
+
+    alert(
+      "Could not open the local database."
+    );
+
+  };
+
+}
+
+
+/* =========================================================
+   LOAD PRODUCTS
+========================================================= */
+
+function loadProducts(){
+
+  const request =
+    db
+      .transaction(
+        STORE_NAME,
+        "readonly"
+      )
+      .objectStore(
+        STORE_NAME
+      )
+      .getAll();
+
+
+  request.onsuccess = function(){
+
+    products =
+      request.result || [];
+
+
+    products.sort(
+      (a,b)=>
+        (b.createdAt || 0) -
+        (a.createdAt || 0)
+    );
+
+
+    renderProducts();
+
+    renderGallery();
+
+    updateStats();
+
+  };
+
+}
+
+
+/* =========================================================
+   SAVE DATABASE
+========================================================= */
+
+function putProduct(product){
+
+  return new Promise(
+    function(resolve,reject){
+
+      const tx =
+        db.transaction(
+          STORE_NAME,
+          "readwrite"
+        );
+
+
+      tx.objectStore(
+        STORE_NAME
+      ).put(product);
+
+
+      tx.oncomplete =
+        resolve;
+
+
+      tx.onerror =
+        function(){
+
+          reject(tx.error);
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DELETE DATABASE ITEM
+========================================================= */
+
+function deleteFromDB(id){
+
+  return new Promise(
+    function(resolve,reject){
+
+      const tx =
+        db.transaction(
+          STORE_NAME,
+          "readwrite"
+        );
+
+
+      tx.objectStore(
+        STORE_NAME
+      ).delete(id);
+
+
+      tx.oncomplete =
+        resolve;
+
+
+      tx.onerror =
+        function(){
+
+          reject(tx.error);
+
+        };
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   ID
+========================================================= */
+
+function makeId(){
+
+  if(
+    window.crypto &&
+    crypto.randomUUID
+  ){
+
+    try{
+
+      return crypto.randomUUID();
+
+    }catch(e){}
+
+  }
+
+
+  return (
+    Date.now().toString(36) +
+    "-" +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+
+}
+
+
+/* =========================================================
+   ADD PRODUCT SCANNER
+========================================================= */
+
+function scanForAdd(){
+
+  /*
+    This directly opens the iPhone native
+    image menu.
+  */
+
+  document
+    .getElementById("scanInput")
+    .click();
+
+}
+
+
+/* =========================================================
+   INFORMATION SCANNER
+========================================================= */
+
+function scanForInfo(){
+
+  /*
+    This directly opens the iPhone native
+    image menu.
+  */
+
+  document
+    .getElementById("infoScanInput")
+    .click();
+
+}
+
+
+/* =========================================================
+   ADD PHOTO RESULT
+========================================================= */
+
+document
+  .getElementById("scanInput")
+  .addEventListener(
+    "change",
+    async function(){
+
+      const file =
+        this.files &&
+        this.files[0];
+
+
+      if(!file)
+        return;
+
+
+      const data =
+        await readImage(file);
+
+
+      openAddProduct(data);
+
+
+      this.value = "";
+
+    }
+  );
+
+
+/* =========================================================
+   INFORMATION PHOTO RESULT
+========================================================= */
+
+document
+  .getElementById("infoScanInput")
+  .addEventListener(
+    "change",
+    async function(){
+
+      const file =
+        this.files &&
+        this.files[0];
+
+
+      if(!file)
+        return;
+
+
+      const data =
+        await readImage(file);
+
+
+      openInfoFromScan(data);
+
+
+      this.value = "";
+
+    }
+  );
+
+
+/* =========================================================
+   READ PHOTO
+========================================================= */
+
+function readImage(file){
+
+  return new Promise(
+    function(resolve){
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(){
+
+          resolve(
+            reader.result
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+function showTab(tab){
+
+  const dashboard =
+    document.getElementById(
+      "dashboard"
+    );
+
+
+  const gallery =
+    document.getElementById(
+      "gallery"
+    );
+
+
+  const inv =
+    document.getElementById(
+      "navInventory"
+    );
+
+
+  const prod =
+    document.getElementById(
+      "navProducts"
+    );
+
+
+  if(tab === "inventory"){
+
+    dashboard.classList.add(
+      "active"
+    );
+
+    gallery.classList.remove(
+      "active"
+    );
+
+    inv.classList.add(
+      "active"
+    );
+
+    prod.classList.remove(
+      "active"
+    );
+
+  }else{
+
+    dashboard.classList.remove(
+      "active"
+    );
+
+    gallery.classList.add(
+      "active"
+    );
+
+    inv.classList.remove(
+      "active"
+    );
+
+    prod.classList.add(
+      "active"
+    );
+
+
+    renderGallery();
+
+  }
+
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+function updateStats(){
+
+  const units =
+    products.reduce(
+      (s,p)=>
+        s +
+        (Number(p.quantity) || 0),
+      0
+    );
+
+
+  const cost =
+    products.reduce(
+      (s,p)=>
+        s +
+        (Number(p.quantity) || 0) *
+        (Number(p.buyPrice) || 0),
+      0
+    );
+
+
+  const sales =
+    products.reduce(
+      (s,p)=>
+        s +
+        (Number(p.quantity) || 0) *
+        (Number(p.sellPrice) || 0),
+      0
+    );
+
+
+  document
+    .getElementById("statProducts")
+    .textContent =
+    products.length;
+
+
+  document
+    .getElementById("statUnits")
+    .textContent =
+    units;
+
+
+  document
+    .getElementById("statCost")
+    .textContent =
+    formatMoney(cost);
+
+
+  document
+    .getElementById("statSales")
+    .textContent =
+    formatMoney(sales);
+
+}
+
+
+function formatMoney(v){
+
+  return Number(
+    v || 0
+  ).toLocaleString(
+    undefined,
+    {
+      maximumFractionDigits:2
+    }
+  );
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(v){
+
+  return String(
+    v ?? ""
+  ).replace(
+    /[&<>"']/g,
+    function(c){
+
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[c];
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   STOCK BADGE
+========================================================= */
+
+function stockText(p){
+
+  if(Number(p.quantity) > 0){
+
+    return `
+      <span class="stock-badge in-stock">
+        IN STOCK
+      </span>
+    `;
+
+  }
+
+
+  return `
+    <span class="stock-badge out-stock">
+      OUT OF STOCK
+    </span>
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER INVENTORY
+========================================================= */
+
+function renderProducts(){
+
+  const container =
+    document.getElementById(
+      "productList"
+    );
+
+
+  const q =
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const filtered =
+    products.filter(
+      function(p){
+
+        return [
+          p.name,
+          p.model,
+          p.colors
+        ]
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
+
+      }
+    );
+
+
+  if(!filtered.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        ${
+          products.length
+          ? "No products match your search."
+          : "No products yet. Tap Add / Scan Product to add one."
+        }
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    filtered
+      .map(function(p){
+
+        const profit =
+          (
+            (Number(p.sellPrice)||0) -
+            (Number(p.buyPrice)||0)
+          ) *
+          (Number(p.quantity)||0);
+
+
+        const colors =
+          String(
+            p.colors || ""
+          )
+          .split(",")
+          .map(x=>x.trim())
+          .filter(Boolean);
+
+
+        return `
+
+        <div class="product-card">
+
+          ${
+            p.photo
+            ?
+            `<img src="${p.photo}" alt="">`
+            :
+            `
+            <div
+              style="
+                width:78px;
+                height:78px;
+                border-radius:12px;
+                background:#f1f5f9;
+                flex:none
+              "
+            ></div>
+            `
+          }
+
+
+          <div class="product-info">
+
+            <div class="product-name">
+              ${escapeHTML(
+                p.name ||
+                "Unnamed product"
+              )}
+            </div>
+
+
+            <div class="product-model">
+              ${escapeHTML(
+                p.model || ""
+              )}
+            </div>
+
+
+            <div class="colors">
+
+              ${
+                colors
+                  .map(
+                    c=>
+                    `<span class="color-chip">
+                      ${escapeHTML(c)}
+                    </span>`
+                  )
+                  .join("")
+              }
+
+            </div>
+
+
+            ${stockText(p)}
+
+
+            <div class="product-meta">
+
+              <span>
+                Qty
+                <b>
+                  ${Number(p.quantity)||0}
+                </b>
+              </span>
+
+              <span>
+                Buy
+                <b>
+                  ${formatMoney(p.buyPrice)}
+                </b>
+              </span>
+
+              <span>
+                Sell
+                <b>
+                  ${formatMoney(p.sellPrice)}
+                </b>
+              </span>
+
+              <span>
+                Profit
+                <b>
+                  ${formatMoney(profit)}
+                </b>
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="card-actions">
+
+            <button
+              class="info-btn"
+              onclick="showProductInfo('${p.id}')"
+            >
+              Info
+            </button>
+
+
+            <button
+              class="edit-btn"
+              onclick="editProduct('${p.id}')"
+            >
+              Edit
+            </button>
+
+
+            <button
+              class="delete-btn"
+              onclick="deleteProduct('${p.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER GALLERY
+========================================================= */
+
+function renderGallery(){
+
+  const grid =
+    document.getElementById(
+      "galleryGrid"
+    );
+
+
+  const q =
+    document
+      .getElementById(
+        "gallerySearch"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const filtered =
+    products.filter(
+      function(p){
+
+        return [
+          p.name,
+          p.model,
+          p.colors
+        ]
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
+
+      }
+    );
+
+
+  if(!filtered.length){
+
+    grid.innerHTML = `
+      <div
+        class="empty"
+        style="grid-column:1/-1"
+      >
+        ${
+          products.length
+          ? "No products match your search."
+          : "No products yet."
+        }
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    filtered
+      .map(function(p){
+
+        return `
+
+        <div
+          class="gallery-card"
+          onclick="showProductInfo('${p.id}')"
+        >
+
+          ${
+            p.photo
+            ?
+            `<img src="${p.photo}" alt="">`
+            :
+            `
+            <div
+              style="
+                width:100%;
+                aspect-ratio:1/1;
+                background:#f1f5f9
+              "
+            ></div>
+            `
+          }
+
+
+          <div class="gallery-details">
+
+            <div class="gallery-name">
+              ${escapeHTML(
+                p.name ||
+                "Unnamed product"
+              )}
+            </div>
+
+
+            <div class="gallery-price">
+              ${formatMoney(
+                p.sellPrice
+              )}
+            </div>
+
+
+            <div class="gallery-qty">
+              Qty:
+              ${Number(p.quantity)||0}
+            </div>
+
+
+            <div
+              class="gallery-stock ${
+                Number(p.quantity)>0
+                ? "in"
+                : "out"
+              }"
+            >
+              ${
+                Number(p.quantity)>0
+                ? "IN STOCK"
+                : "OUT OF STOCK"
+              }
+            </div>
+
+          </div>
+
+        </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   OPEN ADD PRODUCT
+========================================================= */
+
+function openAddProduct(photo=null){
+
+  editingId = null;
+
+  scannedPhoto = photo;
+
+
+  document
+    .getElementById("modalTitle")
+    .textContent =
+    "Add Product";
+
+
+  document
+    .getElementById("name")
+    .value = "";
+
+
+  document
+    .getElementById("model")
+    .value = "";
+
+
+  document
+    .getElementById("colors")
+    .value = "";
+
+
+  document
+    .getElementById("quantity")
+    .value = 1;
+
+
+  document
+    .getElementById("buyPrice")
+    .value = "";
+
+
+  document
+    .getElementById("sellPrice")
+    .value = "";
+
+
+  const preview =
+    document.getElementById(
+      "productPhotoPreview"
+    );
+
+
+  if(photo){
+
+    preview.src = photo;
+
+    preview.classList.remove(
+      "hidden"
+    );
+
+  }else{
+
+    preview.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  document
+    .getElementById("productModal")
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   EDIT PRODUCT
+========================================================= */
+
+function editProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+
+  if(!p)
+    return;
+
+
+  editingId = id;
+
+  scannedPhoto =
+    p.photo || null;
+
+
+  document
+    .getElementById("modalTitle")
+    .textContent =
+    "Edit Product";
+
+
+  document
+    .getElementById("name")
+    .value =
+    p.name || "";
+
+
+  document
+    .getElementById("model")
+    .value =
+    p.model || "";
+
+
+  document
+    .getElementById("colors")
+    .value =
+    p.colors || "";
+
+
+  document
+    .getElementById("quantity")
+    .value =
+    p.quantity ?? 0;
+
+
+  document
+    .getElementById("buyPrice")
+    .value =
+    p.buyPrice ?? 0;
+
+
+  document
+    .getElementById("sellPrice")
+    .value =
+    p.sellPrice ?? 0;
+
+
+  const preview =
+    document.getElementById(
+      "productPhotoPreview"
+    );
+
+
+  if(p.photo){
+
+    preview.src =
+      p.photo;
+
+    preview.classList.remove(
+      "hidden"
+    );
+
+  }else{
+
+    preview.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  document
+    .getElementById("productModal")
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE PRODUCT MODAL
+========================================================= */
+
+function closeModal(){
+
+  document
+    .getElementById("productModal")
+    .classList.add(
+      "hidden"
+    );
+
+
+  editingId = null;
+
+  scannedPhoto = null;
+
+}
+
+
+/* =========================================================
+   SAVE PRODUCT
+========================================================= */
+
+async function saveProduct(){
+
+  if(!db){
+
+    alert(
+      "Database is not ready yet."
+    );
+
+    return;
+
+  }
+
+
+  const name =
+    document
+      .getElementById("name")
+      .value
+      .trim();
+
+
+  if(!name){
+
+    alert(
+      "Please enter a product name."
+    );
+
+    return;
+
+  }
+
+
+  const model =
+    document
+      .getElementById("model")
+      .value
+      .trim();
+
+
+  const colors =
+    document
+      .getElementById("colors")
+      .value
+      .trim();
+
+
+  const quantity =
+    Math.max(
+      0,
+      parseInt(
+        document
+          .getElementById("quantity")
+          .value,
+        10
+      ) || 0
+    );
+
+
+  const buyPrice =
+    Math.max(
+      0,
+      parseFloat(
+        document
+          .getElementById("buyPrice")
+          .value
+      ) || 0
+    );
+
+
+  const sellPrice =
+    Math.max(
+      0,
+      parseFloat(
+        document
+          .getElementById("sellPrice")
+          .value
+      ) || 0
+    );
+
+
+  const old =
+    editingId
+    ?
+    products.find(
+      p=>p.id===editingId
+    )
+    :
+    null;
+
+
+  const product = {
+
+    id:
+      editingId ||
+      makeId(),
+
+    name,
+    model,
+    colors,
+    quantity,
+    buyPrice,
+    sellPrice,
+
+    photo:
+      scannedPhoto ||
+      (
+        old
+        ?
+        old.photo || null
+        :
+        null
+      ),
+
+    createdAt:
+      old
+      ?
+      old.createdAt
+      :
+      Date.now(),
+
+    updatedAt:
+      Date.now()
+
+  };
+
+
+  try{
+
+    await putProduct(
+      product
+    );
+
+
+    const i =
+      products.findIndex(
+        p=>p.id===product.id
+      );
+
+
+    if(i>=0){
+
+      products[i] =
+        product;
+
+    }else{
+
+      products.unshift(
+        product
+      );
+
+    }
+
+
+    renderProducts();
+
+    renderGallery();
+
+    updateStats();
+
+    closeModal();
+
+  }catch(e){
+
+    console.error(e);
+
+    alert(
+      "Could not save this product."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INFORMATION SCANNER
+========================================================= */
+
+function openInfoFromScan(photo){
+
+  /*
+    HTML-only version:
+    If the exact saved photo is scanned,
+    it automatically finds the product.
+
+    A true AI scanner requires an AI/backend.
+  */
+
+  const exact =
+    products.find(
+      p=>p.photo===photo
+    );
+
+
+  if(exact){
+
+    showProductInfo(
+      exact.id,
+      photo
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById("infoContent")
+    .innerHTML = `
+
+      <div class="info-result">
+
+        <h3>
+          Product scanned
+        </h3>
+
+        <p>
+          This photo is not linked
+          to an existing product yet.
+        </p>
+
+        <p>
+          Select the product below
+          to check its stock and information.
+        </p>
+
+      </div>
+
+
+      <div class="fields">
+
+        <div class="field">
+
+          <label>
+            Find existing product
+          </label>
+
+          <input
+            id="infoSearchBox"
+            type="search"
+            placeholder="Search by name or model..."
+            oninput="renderInfoChoices()"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div id="infoChoices"></div>
+
+
+      <div class="note">
+
+        The HTML-only version does not use
+        an AI recognition service. It can identify
+        a product automatically when the same
+        saved product photo is scanned.
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById("infoModal")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  renderInfoChoices();
+
+}
+
+
+/* =========================================================
+   INFORMATION SEARCH
+========================================================= */
+
+function renderInfoChoices(){
+
+  const box =
+    document.getElementById(
+      "infoChoices"
+    );
+
+
+  if(!box)
+    return;
+
+
+  const q =
+    (
+      document
+        .getElementById(
+          "infoSearchBox"
+        )
+        ?.value ||
+      ""
+    )
+    .trim()
+    .toLowerCase();
+
+
+  const list =
+    products.filter(
+      function(p){
+
+        return [
+          p.name,
+          p.model,
+          p.colors
+        ]
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
+
+      }
+    );
+
+
+  box.innerHTML =
+    list
+      .map(function(p){
+
+        return `
+
+        <button
+          class="secondary"
+          style="
+            width:100%;
+            margin-top:8px;
+            text-align:left
+          "
+          onclick="showProductInfo('${p.id}')"
+        >
+
+          ${escapeHTML(
+            p.name
+          )}
+
+          —
+          
+          ${escapeHTML(
+            p.model || ""
+          )}
+
+          <br>
+
+          <small>
+
+            ${
+              Number(p.quantity)>0
+              ?
+              "In stock"
+              :
+              "Out of stock"
             }
+
+            · Qty
+
+            ${Number(p.quantity)||0}
+
+          </small>
+
+        </button>
+
+        `;
+
+      })
+      .join("");
+
+
+  if(!list.length){
+
+    box.innerHTML = `
+
+      <div class="empty" style="margin-top:12px">
+
+        No matching products.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   PRODUCT INFORMATION
+========================================================= */
+
+function showProductInfo(
+  id,
+  scannedPhoto=null
+){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+
+  if(!p)
+    return;
+
+
+  const out =
+    Number(p.quantity) <= 0;
+
+
+  document
+    .getElementById("infoContent")
+    .innerHTML = `
+
+      ${
+        p.photo
+        ?
+        `
+        <img
+          class="photo-preview"
+          src="${p.photo}"
+          alt=""
+        >
+        `
+        :
+        ""
+      }
+
+
+      <div class="info-result">
+
+        <h3>
+          ${escapeHTML(
+            p.name ||
+            "Unnamed product"
+          )}
+        </h3>
+
+
+        <p>
+
+          <b>Model:</b>
+
+          ${escapeHTML(
+            p.model ||
+            "Not set"
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>Colors:</b>
+
+          ${escapeHTML(
+            p.colors ||
+            "Not set"
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>Selling price:</b>
+
+          ${formatMoney(
+            p.sellPrice
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>Purchase price:</b>
+
+          ${formatMoney(
+            p.buyPrice
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>Quantity:</b>
+
+          ${Number(
+            p.quantity
+          ) || 0}
+
+        </p>
+
+
+        <p>
+
+          <b>Status:</b>
+
+          ${
+            out
+            ?
+            "Out of stock"
+            :
+            "In stock"
+          }
+
+        </p>
+
+      </div>
+
+
+      <div class="stock-panel">
+
+        <div
+          class="
+            stock-status
+            ${out ? "out" : "in"}
+          "
+        >
+
+          ${
+            out
+            ?
+            "OUT OF STOCK"
+            :
+            "IN STOCK"
+          }
+
+        </div>
+
+
+        <div class="stock-controls">
+
+          <button
+            onclick="changeStock('${p.id}',-1)"
+          >
+            − 1
+          </button>
+
+
+          <button
+            onclick="changeStock('${p.id}',1)"
+          >
+            + 1
+          </button>
+
+
+          <button
+            onclick="restockProduct('${p.id}')"
+          >
+            Restock
+          </button>
+
+        </div>
+
+
+        ${
+          out
+          ?
+          `
+
+          <div class="confirm-actions">
+
+            <button
+              class="primary"
+              onclick="restockProduct('${p.id}')"
+            >
+              Bring Back / Restock
+            </button>
+
+
+            <button
+              class="danger"
+              onclick="deleteProduct('${p.id}',true)"
+            >
+              Delete Item
+            </button>
+
+          </div>
+
+          `
+          :
+          ""
         }
 
-        let products = JSON.parse(localStorage.getItem('saved_products') || '[]');
-        let activeFolder = 'All';
-        let activeProductId = null;
+      </div>
 
-        function switchTab(tab) {
-            if (tab === 'inventory') {
-                document.getElementById('tab-inventory').classList.remove('hidden');
-                document.getElementById('tab-scanner').classList.add('hidden');
-                document.getElementById('btn-inventory').className = 'px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm';
-                document.getElementById('btn-scanner').className = 'px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition';
-                renderInventory();
-            } else {
-                document.getElementById('tab-inventory').classList.add('hidden');
-                document.getElementById('tab-scanner').classList.remove('hidden');
-                document.getElementById('btn-inventory').className = 'px-3.5 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg font-semibold transition';
-                document.getElementById('btn-scanner').className = 'px-3.5 py-1.5 text-xs bg-indigo-600 text-white rounded-lg font-semibold transition shadow-sm';
-            }
-        }
 
-        function openAddModal() {
-            document.getElementById('modal-title').innerText = 'Add New Product';
-            document.getElementById('product-form').reset();
-            document.getElementById('product-id').value = '';
-            document.getElementById('product-stock').value = '1';
-            document.getElementById('product-modal').classList.remove('hidden');
-        }
+      <div class="save-row">
 
-        function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
-        function showPopup(title, message, extra = '') {
-            document.getElementById('popup-title').innerText = title;
-            document.getElementById('popup-message').innerText = message;
-            document.getElementById('popup-extra').innerHTML = extra;
-            document.getElementById('popup-modal').classList.remove('hidden');
-        }
-        function closePopup() { document.getElementById('popup-modal').classList.add('hidden'); }
-        
-        function handleProductClick(id) {
-            const product = products.find(x => x.id === id);
-            if (!product) return;
-            activeProductId = id;
+        <button
+          class="secondary"
+          onclick="
+            editProduct('${p.id}');
+            closeInfoModal();
+          "
+        >
+          Edit Product
+        </button>
 
-            const out = parseInt(product.stock || 0) <= 0;
-            if (out) {
-                document.getElementById('out-action-title').innerText = product.name;
-                document.getElementById('out-action-modal').classList.remove('hidden');
-            } else {
-                document.getElementById('action-modal-title').innerText = product.name;
-                document.getElementById('action-modal').classList.remove('hidden');
-            }
-        }
 
-        function closeActionModal() { document.getElementById('action-modal').classList.add('hidden'); }
-        function closeOutActionModal() { document.getElementById('out-action-modal').classList.add('hidden'); }
-        
-        function promptRestock() {
-            closeActionModal();
-            document.getElementById('restock-quantity').value = '5';
-            document.getElementById('restock-modal').classList.remove('hidden');
-        }
+        <button
+          class="primary"
+          onclick="closeInfoModal()"
+        >
+          Done
+        </button>
 
-        function promptRestockFromOut() {
-            closeOutActionModal();
-            document.getElementById('restock-quantity').value = '5';
-            document.getElementById('restock-modal').classList.remove('hidden');
-        }
+      </div>
 
-        function closeRestockModal() { document.getElementById('restock-modal').classList.add('hidden'); }
+    `;
 
-        function promptSell() {
-            closeActionModal();
-            document.getElementById('sell-quantity').value = '1';
-            document.getElementById('sell-modal').classList.remove('hidden');
-        }
-        function closeSellModal() { document.getElementById('sell-modal').classList.add('hidden'); }
 
-        function processRestock(e) {
-            e.preventDefault();
-            const addCount = parseInt(document.getElementById('restock-quantity').value) || 0;
-            const product = products.find(p => p.id === activeProductId);
-            if (product) {
-                product.stock = parseInt(product.stock || 0) + addCount;
-                localStorage.setItem('saved_products', JSON.stringify(products));
-                closeRestockModal();
-                renderInventory();
-                showPopup('Restocked!', `Added ${addCount} unit(s) to "${product.name}". Total stock: ${product.stock}`);
-            }
-        }
+  document
+    .getElementById("infoModal")
+    .classList.remove(
+      "hidden"
+    );
 
-        function processSale(e) {
-            e.preventDefault();
-            const soldCount = parseInt(document.getElementById('sell-quantity').value) || 0;
-            const product = products.find(p => p.id === activeProductId);
-            if (product) {
-                product.stock = Math.max(0, parseInt(product.stock || 0) - soldCount);
-                localStorage.setItem('saved_products', JSON.stringify(products));
-                closeSellModal();
-                renderInventory();
-                showPopup('Sale Recorded', `Sold ${soldCount} unit(s) of "${product.name}". Remaining stock: ${product.stock}`);
-            }
-        }
+}
 
-        function confirmDelete() {
-            closeActionModal();
-            if (confirm('Delete this product?')) {
-                products = products.filter(p => p.id !== activeProductId);
-                localStorage.setItem('saved_products', JSON.stringify(products));
-                renderInventory();
-            }
-        }
 
-        function confirmDeleteFromOut() {
-            closeOutActionModal();
-            if (confirm('Delete this product?')) {
-                products = products.filter(p => p.id !== activeProductId);
-                localStorage.setItem('saved_products', JSON.stringify(products));
-                renderInventory();
-            }
-        }
+/* =========================================================
+   CLOSE INFORMATION
+========================================================= */
 
-        function saveProduct(e) {
-            e.preventDefault();
-            const id = document.getElementById('product-id').value || '_' + Math.random().toString(36).substr(2, 9);
-            const folder = document.getElementById('product-folder').value.trim();
-            const name = document.getElementById('product-name').value.trim();
-            const price = document.getElementById('product-price').value;
-            const stock = parseInt(document.getElementById('product-stock').value) || 0;
-            const fileInput = document.getElementById('product-image-input');
+function closeInfoModal(){
 
-            const saveRecord = (imgData) => {
-                const existingIndex = products.findIndex(p => p.id === id);
-                const productObj = { id, folder, name, price, stock, image: imgData || (existingIndex >= 0 ? products[existingIndex].image : '') };
-                if (existingIndex >= 0) products[existingIndex] = productObj;
-                else products.push(productObj);
+  document
+    .getElementById("infoModal")
+    .classList.add(
+      "hidden"
+    );
 
-                localStorage.setItem('saved_products', JSON.stringify(products));
-                closeModal();
-                showPopup('Saved Successfully!', `"${name}" was added with ${stock} available.`);
-                renderInventory();
-            };
+}
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const MAX = 300;
-                        let w = img.width, h = img.height;
-                        if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
-                        else { if (h > MAX) { w *= MAX / h; h = MAX; } }
-                        canvas.width = w; canvas.height = h;
-                        ctx.drawImage(img, 0, 0, w, h);
-                        saveRecord(canvas.toDataURL('image/jpeg', 0.75));
-                    };
-                    img.src = evt.target.result;
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else { saveRecord(null); }
-        }
 
-        function renderInventory() {
-            const filterContainer = document.getElementById('folder-filters');
-            const gridContainer = document.getElementById('product-grid');
-            
-            const folders = ['All', ...new Set(products.map(p => p.folder || 'Uncategorized'))];
-            
-            filterContainer.innerHTML = '';
-            folders.forEach(f => {
-                const isActive = activeFolder === f;
-                let btn = document.createElement('button');
-                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${isActive ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`;
-                btn.innerText = f;
-                btn.onclick = () => { activeFolder = f; renderInventory(); };
-                filterContainer.appendChild(btn);
-            });
+/* =========================================================
+   CHANGE STOCK
+========================================================= */
 
-            const filteredProducts = activeFolder === 'All' ? products : products.filter(p => (p.folder || 'Uncategorized') === activeFolder);
+async function changeStock(
+  id,
+  amount
+){
 
-            gridContainer.innerHTML = '';
-            if (filteredProducts.length === 0) {
-                gridContainer.innerHTML = `<div class="col-span-3 text-center py-16 bg-slate-800/40 border border-slate-800 rounded-2xl text-slate-500 text-xs">No products found in this folder.</div>`;
-                return;
-            }
+  const p =
+    products.find(
+      x=>x.id===id
+    );
 
-            filteredProducts.forEach(item => {
-                const out = parseInt(item.stock || 0) <= 0;
-                let card = document.createElement('div');
-                card.className = 'bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 flex flex-col items-center text-center relative shadow-sm';
-                card.innerHTML = `
-                    <div onclick="handleProductClick('${item.id}')" class="w-full h-24 bg-slate-950 rounded-lg overflow-hidden mb-2 flex items-center justify-center cursor-pointer relative group">
-                        ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition">` : `<span class="text-[10px] text-slate-600">No Image</span>`}
-                        ${out ? `<div class="absolute inset-0 bg-slate-950/80 flex items-center justify-center text-[10px] font-bold text-rose-400 uppercase">Out of Stock</div>` : ''}
-                    </div>
-                    <span class="text-[11px] font-semibold text-slate-200 truncate w-full">${item.name}</span>
-                    <div class="flex items-center justify-between w-full mt-1 px-1">
-                        <span class="text-[11px] font-bold text-indigo-400">$${item.price}</span>
-                        <span class="text-[10px] ${out ? 'text-rose-400' : 'text-slate-400'}">Qty: ${item.stock}</span>
-                    </div>
-                `;
-                gridContainer.appendChild(card);
-            });
-        }
 
-        function handleScanImage(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    if (products.length === 0) { 
-                        showPopup('Empty Inventory', 'Please add products to your catalog first.'); 
-                        return; 
-                    }
-                    const matched = products[0]; 
-                    showPopup('Match Found!', `Item identified from your inventory:`, `
-                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center gap-3 text-left my-2">
-                            ${matched.image ? `<img src="${matched.image}" class="w-12 h-12 object-cover rounded-lg">` : ''}
-                            <div>
-                                <h4 class="font-bold text-xs text-white">${matched.name}</h4>
-                                <p class="text-xs text-indigo-400 font-bold">$${matched.price}</p>
-                                <p class="text-[10px] text-slate-400">Available Stock: <span class="font-bold ${matched.stock > 0 ? 'text-emerald-400' : 'text-rose-400'}">${matched.stock}</span></p>
-                                <span class="text-[9px] text-slate-500 uppercase">Folder: ${matched.folder}</span>
-                            </div>
-                        </div>
-                    `);
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        }
-    </script>
+  if(!p)
+    return;
+
+
+  p.quantity =
+    Math.max(
+      0,
+      (
+        Number(p.quantity) ||
+        0
+      ) + amount
+    );
+
+
+  p.updatedAt =
+    Date.now();
+
+
+  await putProduct(
+    p
+  );
+
+
+  renderProducts();
+
+  renderGallery();
+
+  updateStats();
+
+  showProductInfo(
+    id
+  );
+
+}
+
+
+/* =========================================================
+   RESTOCK
+========================================================= */
+
+async function restockProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+
+  if(!p)
+    return;
+
+
+  const amount =
+    prompt(
+      "How many items do you want to bring back?",
+      "1"
+    );
+
+
+  if(amount === null)
+    return;
+
+
+  const n =
+    parseInt(
+      amount,
+      10
+    );
+
+
+  if(
+    !Number.isFinite(n) ||
+    n <= 0
+  ){
+
+    alert(
+      "Enter a valid quantity."
+    );
+
+    return;
+
+  }
+
+
+  p.quantity =
+    (
+      Number(p.quantity) ||
+      0
+    ) + n;
+
+
+  p.updatedAt =
+    Date.now();
+
+
+  await putProduct(
+    p
+  );
+
+
+  renderProducts();
+
+  renderGallery();
+
+  updateStats();
+
+  showProductInfo(
+    id
+  );
+
+}
+
+
+/* =========================================================
+   DELETE PRODUCT
+========================================================= */
+
+async function deleteProduct(
+  id,
+  fromInfo=false
+){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+
+  if(!p)
+    return;
+
+
+  const confirmed =
+    confirm(
+      `Delete "${p.name || "this product"}" permanently?`
+    );
+
+
+  if(!confirmed)
+    return;
+
+
+  await deleteFromDB(
+    id
+  );
+
+
+  products =
+    products.filter(
+      x=>x.id!==id
+    );
+
+
+  renderProducts();
+
+  renderGallery();
+
+  updateStats();
+
+
+  if(fromInfo){
+
+    closeInfoModal();
+
+  }
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    if(
+      sessionStorage.getItem(
+        "centerInventoryUnlocked"
+      ) === "1"
+    ){
+
+      document
+        .getElementById(
+          "loginScreen"
+        )
+        .classList.add(
+          "hidden"
+        );
+
+
+      document
+        .getElementById(
+          "app"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+
+      initDatabase();
+
+    }else{
+
+      document
+        .getElementById(
+          "passcode"
+        )
+        .focus();
+
+    }
+
+  }
+);
+
+</script>
+
 </body>
 </html>

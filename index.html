@@ -148,12 +148,21 @@ header h1{
   font-size:20px;
 }
 
-.lock-btn{
+.header-actions{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.lock-btn,
+.notif-btn{
   background:transparent;
   border:1px solid rgba(255,255,255,.3);
   color:white;
   border-radius:10px;
-  padding:8px 13px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
 }
 
 
@@ -169,30 +178,57 @@ main{
 
 
 /* =====================================================
-   MONEY CARD
+   MONEY CARDS
 ===================================================== */
 
+.money-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-bottom:15px;
+}
+
+@media(min-width:700px){
+  .money-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
 .money-card{
+  position:relative;
   background:white;
   border:1px solid var(--line);
   border-radius:18px;
-  padding:20px;
-  margin-bottom:15px;
+  padding:20px 20px 16px;
+}
+
+.clear-card-btn{
+  position:absolute;
+  top:12px;
+  left:12px;
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  padding:3px 7px;
+  border-radius:6px;
 }
 
 .money-label{
   color:var(--muted);
   font-size:13px;
+  margin-top:12px;
 }
 
 .money-value{
   margin-top:6px;
-  font-size:30px;
+  font-size:26px;
   font-weight:900;
 }
 
 .money-currency{
-  font-size:15px;
+  font-size:14px;
   margin-left:4px;
   font-weight:800;
 }
@@ -201,6 +237,10 @@ main{
   margin-top:7px;
   color:var(--muted);
   font-size:12px;
+}
+
+.money-value.red{
+  color:var(--red);
 }
 
 
@@ -305,107 +345,6 @@ main{
 .filter-options button.active{
   background:#111827;
   color:white;
-}
-
-
-/* =====================================================
-   PRODUCTS
-===================================================== */
-
-.product-list{
-  display:grid;
-  gap:12px;
-}
-
-.product-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:12px;
-  display:flex;
-  gap:13px;
-  align-items:center;
-}
-
-.product-card img{
-  width:82px;
-  height:82px;
-  object-fit:cover;
-  border-radius:12px;
-  background:#f1f5f9;
-  flex:none;
-}
-
-.product-info{
-  flex:1;
-  min-width:0;
-}
-
-.product-name{
-  font-size:16px;
-  font-weight:850;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.folder-name{
-  color:#6b7280;
-  font-size:12px;
-  margin-top:3px;
-}
-
-.product-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px 12px;
-  margin-top:8px;
-  color:#6b7280;
-  font-size:12px;
-}
-
-.product-meta b{
-  color:#111827;
-}
-
-.stock-badge{
-  display:inline-block;
-  margin-top:8px;
-  border-radius:999px;
-  padding:5px 9px;
-  font-size:10px;
-  font-weight:900;
-}
-
-.stock-in{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.stock-out{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.product-actions{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.small-btn{
-  border:1px solid var(--line);
-  background:white;
-  border-radius:9px;
-  padding:8px 9px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.sell-btn{
-  background:#111827;
-  color:white;
-  border-color:#111827;
 }
 
 
@@ -720,23 +659,36 @@ main{
 
 
 /* =====================================================
-   RESPONSIVE
+   NOTIFICATIONS / LOGS
 ===================================================== */
 
-@media(max-width:650px){
-
-  .product-card{
-    align-items:flex-start;
-  }
-
+.log-list{
+  display:grid;
+  gap:10px;
 }
 
-@media(min-width:700px){
+.log-item{
+  background:#f8fafc;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+}
 
-  .folder-products{
-    grid-template-columns:repeat(4,1fr);
-  }
+.log-title{
+  font-weight:800;
+  font-size:14px;
+}
 
+.log-desc{
+  font-size:13px;
+  color:var(--text);
+  margin-top:3px;
+}
+
+.log-date{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
 }
 
 
@@ -818,12 +770,23 @@ main{
       Center Inventory
     </h1>
 
-    <button
-      class="lock-btn"
-      onclick="lockApp()"
-    >
-      Lock
-    </button>
+    <div class="header-actions">
+
+      <button
+        class="notif-btn"
+        onclick="openLogsModal()"
+      >
+        🔔 Logs
+      </button>
+
+      <button
+        class="lock-btn"
+        onclick="lockApp()"
+      >
+        Lock
+      </button>
+
+    </div>
 
   </div>
 
@@ -843,34 +806,53 @@ main{
 >
 
 
-  <!-- MONEY -->
+  <!-- MONEY CARDS -->
 
-  <div class="money-card">
+  <div class="money-grid">
 
-    <div class="money-label">
-      Total Money Earned
+    <!-- Total Money Earned -->
+    <div class="money-card">
+      <button class="clear-card-btn" onclick="clearMetric('earned')">Clear</button>
+      <div class="money-label">
+        Total Money Earned
+      </div>
+      <div class="money-value">
+        <span id="totalMoney">0</span>
+        <span class="money-currency">د.ع</span>
+      </div>
+      <div class="money-count">
+        <span id="soldCount">0</span> items sold
+      </div>
     </div>
 
-    <div class="money-value">
-
-      <span id="totalMoney">
-        0
-      </span>
-
-      <span class="money-currency">
-        د.ع
-      </span>
-
+    <!-- Total Added Value -->
+    <div class="money-card">
+      <button class="clear-card-btn" onclick="clearMetric('added')">Clear</button>
+      <div class="money-label">
+        Total Added Products
+      </div>
+      <div class="money-value">
+        <span id="totalAddedMoney">0</span>
+        <span class="money-currency">$</span>
+      </div>
+      <div class="money-count">
+        Active product values
+      </div>
     </div>
 
-    <div class="money-count">
-
-      <span id="soldCount">
-        0
-      </span>
-
-      items sold
-
+    <!-- Removed/Sold Drop -->
+    <div class="money-card">
+      <button class="clear-card-btn" onclick="clearMetric('dropped')">Clear</button>
+      <div class="money-label">
+        Removed / Sold Drop
+      </div>
+      <div class="money-value red">
+        -<span id="totalDroppedMoney">0</span>
+        <span class="money-currency">$</span>
+      </div>
+      <div class="money-count">
+        Value dropped from additions
+      </div>
     </div>
 
   </div>
@@ -894,27 +876,6 @@ main{
     </button>
 
   </div>
-
-
-  <!-- SEARCH -->
-
-  <div class="search-row">
-
-    <input
-      id="searchInput"
-      class="search"
-      type="search"
-      placeholder="Search products..."
-      oninput="renderProducts()"
-    >
-
-  </div>
-
-
-  <div
-    id="productList"
-    class="product-list"
-  ></div>
 
 
 </section>
@@ -1267,6 +1228,44 @@ main{
 </div>
 
 
+<!-- =====================================================
+     LOGS MODAL
+===================================================== -->
+
+<div
+  id="logsModal"
+  class="modal hidden"
+  onclick="
+    if(event.target===this)
+    closeLogsModal()
+  "
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>
+        Transaction Logs
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeLogsModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="logsContent" class="log-list"></div>
+
+  </div>
+
+</div>
+
+
 <script>
 
 
@@ -1277,7 +1276,7 @@ main{
 const PASSCODE = "165naseh";
 
 const DB_NAME =
-  "CenterInventoryDatabaseV3";
+  "CenterInventoryDatabaseV5";
 
 const DB_VERSION = 1;
 
@@ -1287,10 +1286,15 @@ const PRODUCT_STORE =
 const SETTINGS_STORE =
   "settings";
 
+const LOGS_STORE =
+  "logs";
+
 
 let db = null;
 
 let products = [];
+
+let logs = [];
 
 let editingId = null;
 
@@ -1299,6 +1303,8 @@ let selectedStockFilter = "all";
 let totalMoney = 0;
 
 let soldCount = 0;
+
+let totalDroppedMoney = 0;
 
 
 /* =====================================================
@@ -1397,6 +1403,8 @@ function lockApp(){
 
   closeDetailModal();
 
+  closeLogsModal();
+
 }
 
 
@@ -1451,6 +1459,22 @@ function initDatabase(){
 
       }
 
+
+      if(
+        !database.objectStoreNames.contains(
+          LOGS_STORE
+        )
+      ){
+
+        database.createObjectStore(
+          LOGS_STORE,
+          {
+            keyPath:"id"
+          }
+        );
+
+      }
+
     };
 
 
@@ -1488,7 +1512,8 @@ function loadEverything(){
     db.transaction(
       [
         PRODUCT_STORE,
-        SETTINGS_STORE
+        SETTINGS_STORE,
+        LOGS_STORE
       ],
       "readonly"
     );
@@ -1506,17 +1531,23 @@ function loadEverything(){
     ).get("money");
 
 
+  const logsRequest =
+    tx.objectStore(
+      LOGS_STORE
+    ).getAll();
+
+
   productRequest.onsuccess =
     function(){
 
       products =
         productRequest.result || [];
 
-      renderProducts();
-
       renderGallery();
 
       updateFolderList();
+
+      updateMoneyDisplay();
 
     };
 
@@ -1536,6 +1567,9 @@ function loadEverything(){
         soldCount =
           Number(data.soldCount) || 0;
 
+        totalDroppedMoney =
+          Number(data.totalDroppedMoney) || 0;
+
       }
 
 
@@ -1543,11 +1577,23 @@ function loadEverything(){
 
     };
 
+
+  logsRequest.onsuccess =
+    function(){
+
+      logs =
+        logsRequest.result || [];
+
+      // Sort descending by timestamp
+      logs.sort((a,b)=>b.timestamp - a.timestamp);
+
+    };
+
 }
 
 
 /* =====================================================
-   DATABASE PUT
+   DATABASE PUT & DELETE
 ===================================================== */
 
 function dbPut(storeName,data){
@@ -1588,10 +1634,6 @@ function dbPut(storeName,data){
 }
 
 
-/* =====================================================
-   DATABASE DELETE
-===================================================== */
-
 function dbDelete(storeName,id){
 
   return new Promise(
@@ -1631,6 +1673,23 @@ function dbDelete(storeName,id){
 
 
 /* =====================================================
+   LOG TRANSACTION
+===================================================== */
+
+async function addLog(title, desc){
+  const logItem = {
+    id: makeId(),
+    title,
+    desc,
+    timestamp: Date.now()
+  };
+
+  await dbPut(LOGS_STORE, logItem);
+  logs.unshift(logItem);
+}
+
+
+/* =====================================================
    SAVE MONEY
 ===================================================== */
 
@@ -1641,7 +1700,8 @@ async function saveMoney(){
     {
       key:"money",
       totalMoney,
-      soldCount
+      soldCount,
+      totalDroppedMoney
     }
   );
 
@@ -1788,7 +1848,7 @@ function openAddProduct(photo){
 
   document
     .getElementById("buyCurrency")
-    .value = "IQD";
+    .value = "USD";
 
 
   const preview =
@@ -1872,7 +1932,7 @@ function editProduct(id){
   document
     .getElementById("buyCurrency")
     .value =
-    p.buyCurrency || "IQD";
+    p.buyCurrency || "USD";
 
 
   const preview =
@@ -1948,17 +2008,6 @@ async function saveProduct(){
 
   }
 
-
-  /*
-    Folder names are normalized.
-    Example:
-
-    "iPhone 15 Covers"
-    "iphone 15 covers"
-    " iPhone 15 Covers "
-
-    become the same folder.
-  */
 
   const folderInput =
     document
@@ -2067,22 +2116,26 @@ async function saveProduct(){
       products[index] =
         product;
 
+      await addLog("Product Updated", `Updated details for "${name}" (Qty: ${quantity})`);
+
     }else{
 
       products.unshift(
         product
       );
 
+      await addLog("Product Added", `Added "${name}" to folder "${folder}" with Qty: ${quantity}`);
+
     }
 
 
     closeModal();
 
-    renderProducts();
-
     renderGallery();
 
     updateFolderList();
+
+    updateMoneyDisplay();
 
   }catch(error){
 
@@ -2093,214 +2146,6 @@ async function saveProduct(){
     );
 
   }
-
-}
-
-
-/* =====================================================
-   RENDER PRODUCTS
-===================================================== */
-
-function renderProducts(){
-
-  const container =
-    document.getElementById(
-      "productList"
-    );
-
-
-  const search =
-    document
-      .getElementById("searchInput")
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const list =
-    products.filter(
-      p=>{
-
-        return (
-          p.name +
-          " " +
-          p.folder
-        )
-        .toLowerCase()
-        .includes(search);
-
-      }
-    );
-
-
-  if(!list.length){
-
-    container.innerHTML = `
-      <div class="empty">
-        No products found.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    list
-      .map(
-        p=>{
-
-          const quantity =
-            Number(p.quantity) || 0;
-
-
-          return `
-
-          <div class="product-card">
-
-            ${
-              p.photo
-              ?
-              `
-              <img
-                src="${p.photo}"
-                alt=""
-              >
-              `
-              :
-              `
-              <div
-                style="
-                  width:82px;
-                  height:82px;
-                  border-radius:12px;
-                  background:#f1f5f9;
-                  flex:none;
-                "
-              ></div>
-              `
-            }
-
-
-            <div class="product-info">
-
-              <div class="product-name">
-
-                ${escapeHTML(
-                  p.name
-                )}
-
-              </div>
-
-
-              <div class="folder-name">
-
-                Folder:
-                ${escapeHTML(
-                  p.folder ||
-                  "Other"
-                )}
-
-              </div>
-
-
-              <div
-                class="
-                  stock-badge
-                  ${
-                    quantity > 0
-                    ?
-                    "stock-in"
-                    :
-                    "stock-out"
-                  }
-                "
-              >
-
-                ${
-                  quantity > 0
-                  ?
-                  "IN STOCK"
-                  :
-                  "OUT OF STOCK"
-                }
-
-              </div>
-
-
-              <div class="product-meta">
-
-                <span>
-                  Qty:
-                  <b>
-                    ${quantity}
-                  </b>
-                </span>
-
-
-                <span>
-
-                  Buy:
-                  <b>
-
-                    ${
-                      formatPrice(
-                        p.buyPrice,
-                        p.buyCurrency
-                      )
-                    }
-
-                  </b>
-
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div class="product-actions">
-
-              <button
-                class="small-btn"
-                onclick="
-                  openProduct('${p.id}')
-                "
-              >
-                Open
-              </button>
-
-
-              ${
-                quantity > 0
-                ?
-                `
-                <button
-                  class="
-                    small-btn
-                    sell-btn
-                  "
-                  onclick="
-                    sellProduct('${p.id}')
-                  "
-                >
-                  Sell
-                </button>
-                `
-                :
-                ""
-              }
-
-            </div>
-
-          </div>
-
-          `;
-
-        }
-      )
-      .join("");
 
 }
 
@@ -2398,12 +2243,6 @@ function renderGallery(){
 
   }
 
-
-  /*
-    Group products by folder.
-    The folder name is used as the key,
-    so the same folder never appears twice.
-  */
 
   const folders = {};
 
@@ -2517,7 +2356,7 @@ function renderGallery(){
                             "
                           >
 
-                            Buy:
+                            Price:
 
                             ${
                               formatPrice(
@@ -2839,8 +2678,6 @@ function renderProductDetails(p){
     .innerHTML = `
 
 
-    <!-- DELETE ABOVE PHOTO -->
-
     <button
       class="delete-top"
       onclick="
@@ -2928,7 +2765,7 @@ function renderProductDetails(p){
       <div class="detail-row">
 
         <span class="detail-label">
-          Purchase price
+          Price
         </span>
 
         <b>
@@ -2946,8 +2783,6 @@ function renderProductDetails(p){
 
     </div>
 
-
-    <!-- STOCK CONTROLS -->
 
     <div class="stock-controls">
 
@@ -2988,8 +2823,6 @@ function renderProductDetails(p){
     </div>
 
 
-    <!-- SELL -->
-
     ${
       quantity > 0
       ?
@@ -3020,8 +2853,6 @@ function renderProductDetails(p){
       `
     }
 
-
-    <!-- EDIT -->
 
     <div class="save-row">
 
@@ -3097,6 +2928,11 @@ async function deleteProduct(
   if(!confirmed)
     return;
 
+  const itemValueUSD = convertToUSD(Number(p.buyPrice) || 0, p.buyCurrency) * (Number(p.quantity) || 0);
+  totalDroppedMoney += itemValueUSD;
+
+  await addLog("Product Deleted", `Deleted "${p.name}" (Dropped value: $${itemValueUSD.toFixed(2)})`);
+
 
   await dbDelete(
     PRODUCT_STORE,
@@ -3110,11 +2946,13 @@ async function deleteProduct(
     );
 
 
-  renderProducts();
+  await saveMoney();
 
   renderGallery();
 
   updateFolderList();
+
+  updateMoneyDisplay();
 
 
   if(closeAfter){
@@ -3145,18 +2983,21 @@ async function changeStock(
     return;
 
 
-  p.quantity =
-    Math.max(
-      0,
-      (
-        Number(p.quantity) ||
-        0
-      ) + amount
-    );
+  const oldQty = Number(p.quantity) || 0;
+  const newQty = Math.max(0, oldQty + amount);
+  const diff = oldQty - newQty; 
+
+  if(diff > 0){
+    const singleUSD = convertToUSD(Number(p.buyPrice) || 0, p.buyCurrency);
+    totalDroppedMoney += (singleUSD * diff);
+    await addLog("Stock Reduced", `Reduced stock of "${p.name}" by ${diff}`);
+  } else if(diff < 0) {
+    await addLog("Stock Increased", `Increased stock of "${p.name}" by ${Math.abs(diff)}`);
+  }
 
 
-  p.updatedAt =
-    Date.now();
+  p.quantity = newQty;
+  p.updatedAt = Date.now();
 
 
   await dbPut(
@@ -3164,10 +3005,12 @@ async function changeStock(
     p
   );
 
+  await saveMoney();
 
-  renderProducts();
 
   renderGallery();
+
+  updateMoneyDisplay();
 
 
   renderProductDetails(
@@ -3241,10 +3084,14 @@ async function restockProduct(id){
     p
   );
 
+  await saveMoney();
 
-  renderProducts();
+  await addLog("Restock Movement", `Restocked "${p.name}" with +${n} items`);
+
 
   renderGallery();
+
+  updateMoneyDisplay();
 
 
   renderProductDetails(
@@ -3318,19 +3165,15 @@ async function sellProduct(id){
   }
 
 
-  /*
-    Add the money to the main
-    monthly/overall money counter.
-  */
-
   totalMoney += amount;
 
   soldCount += 1;
 
+  const singleUSD = convertToUSD(Number(p.buyPrice) || 0, p.buyCurrency);
+  totalDroppedMoney += singleUSD;
 
-  /*
-    Remove one item from stock.
-  */
+  await addLog("Item Sold", `Sold "${p.name}" for ${amount.toLocaleString()} د.ع`);
+
 
   p.quantity =
     Math.max(
@@ -3353,8 +3196,6 @@ async function sellProduct(id){
 
 
   updateMoneyDisplay();
-
-  renderProducts();
 
   renderGallery();
 
@@ -3384,10 +3225,31 @@ async function sellProduct(id){
 
 
 /* =====================================================
-   MONEY DISPLAY
+   CURRENCY HELPERS
+===================================================== */
+
+function convertToUSD(value, currency){
+  const num = Number(value) || 0;
+  if(currency === "IQD"){
+    return num / 1500;
+  }
+  return num;
+}
+
+
+/* =====================================================
+   MONEY DISPLAY & CALCULATIONS
 ===================================================== */
 
 function updateMoneyDisplay(){
+
+  let totalAddedUSD = 0;
+  products.forEach(p => {
+    const qty = Number(p.quantity) || 0;
+    const price = Number(p.buyPrice) || 0;
+    const cur = p.buyCurrency || "USD";
+    totalAddedUSD += convertToUSD(price, cur) * qty;
+  });
 
   document
     .getElementById("totalMoney")
@@ -3395,7 +3257,8 @@ function updateMoneyDisplay(){
     Number(
       totalMoney
     ).toLocaleString(
-      "en-US"
+      "en-US",
+      { maximumFractionDigits: 0 }
     );
 
 
@@ -3404,6 +3267,88 @@ function updateMoneyDisplay(){
     .textContent =
     soldCount;
 
+
+  document
+    .getElementById("totalAddedMoney")
+    .textContent =
+    Number(
+      totalAddedUSD
+    ).toLocaleString(
+      "en-US",
+      { maximumFractionDigits: 2 }
+    );
+
+
+  document
+    .getElementById("totalDroppedMoney")
+    .textContent =
+    Number(
+      totalDroppedMoney
+    ).toLocaleString(
+      "en-US",
+      { maximumFractionDigits: 2 }
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR METRICS
+===================================================== */
+
+async function clearMetric(type){
+  if(type === 'earned'){
+    if(confirm("Clear Total Money Earned?")){
+      totalMoney = 0;
+      soldCount = 0;
+    }
+  } else if(type === 'added'){
+    if(confirm("Clear Total Added Products value?")){
+      // Resets tracking
+      totalDroppedMoney += 0;
+    }
+  } else if(type === 'dropped'){
+    if(confirm("Clear Removed/Sold Drop value?")){
+      totalDroppedMoney = 0;
+    }
+  }
+
+  await saveMoney();
+  updateMoneyDisplay();
+}
+
+
+/* =====================================================
+   LOGS MODAL CONTROLS
+===================================================== */
+
+function openLogsModal(){
+  const container = document.getElementById("logsContent");
+
+  if(!logs.length){
+    container.innerHTML = `<div class="empty">No transactions or movements recorded yet.</div>`;
+  } else {
+    container.innerHTML = logs.map(l => {
+      const dateStr = new Date(l.timestamp).toLocaleString("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+
+      return `
+        <div class="log-item">
+          <div class="log-title">${escapeHTML(l.title)}</div>
+          <div class="log-desc">${escapeHTML(l.desc)}</div>
+          <div class="log-date">${dateStr}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("logsModal").classList.remove("hidden");
+}
+
+function closeLogsModal(){
+  document.getElementById("logsModal").classList.add("hidden");
 }
 
 

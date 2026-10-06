@@ -2,21 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-
 <title>Center Inventory</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 :root{
   --bg:#f4f6f8;
-  --card:#ffffff;
+  --card:#fff;
   --text:#111827;
   --muted:#6b7280;
   --line:#e5e7eb;
@@ -29,32 +24,14 @@ body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-button,
-input,
-select{
-  font:inherit;
-}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
+/* ================= LOGIN ================= */
 
 #loginScreen{
   min-height:100vh;
@@ -62,22 +39,16 @@ button{
   justify-content:center;
   align-items:center;
   padding:24px;
-  background:
-    linear-gradient(
-      145deg,
-      #111827,
-      #263244
-    );
+  background:linear-gradient(145deg,#111827,#263244);
 }
 
 .login-card{
-  width:min(420px,100%);
+  width:min(430px,100%);
   background:white;
   border-radius:24px;
-  padding:32px;
+  padding:30px;
   text-align:center;
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.25);
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .login-card h1{
@@ -90,41 +61,72 @@ button{
   margin:0 0 24px;
 }
 
+.login-actions{
+  display:grid;
+  gap:10px;
+}
+
+.visitor-btn,
+.admin-login-btn{
+  width:100%;
+  height:52px;
+  border:0;
+  border-radius:14px;
+  font-weight:800;
+}
+
+.visitor-btn{
+  background:#111827;
+  color:white;
+}
+
+.admin-login-btn{
+  background:#f1f5f9;
+  color:#111827;
+}
+
 .passcode{
   width:100%;
-  height:54px;
+  height:52px;
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:13px;
   padding:0 15px;
   text-align:center;
-  font-size:20px;
+  font-size:19px;
   letter-spacing:3px;
   outline:none;
 }
 
 .login-btn{
   width:100%;
-  height:54px;
-  margin-top:14px;
+  height:52px;
+  margin-top:12px;
   border:0;
-  border-radius:14px;
+  border-radius:13px;
   background:#111827;
   color:white;
   font-weight:800;
 }
 
+.back-login{
+  margin-top:10px;
+  width:100%;
+  height:45px;
+  border:0;
+  border-radius:12px;
+  background:#f1f5f9;
+  font-weight:700;
+}
+
 .login-error{
-  height:24px;
-  margin-top:12px;
+  min-height:22px;
+  margin-top:10px;
   color:var(--red);
   font-weight:700;
   font-size:14px;
 }
 
-
-/* =====================================================
-   HEADER
-===================================================== */
+/* ================= HEADER ================= */
 
 header{
   position:sticky;
@@ -132,7 +134,7 @@ header{
   z-index:20;
   background:#111827;
   color:white;
-  padding:17px;
+  padding:16px;
 }
 
 .header-inner{
@@ -141,6 +143,7 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
 }
 
 header h1{
@@ -152,11 +155,13 @@ header h1{
   display:flex;
   gap:6px;
   align-items:center;
+  flex-wrap:wrap;
 }
 
 .lock-btn,
 .notif-btn,
-.exg-btn{
+.exg-btn,
+.admin-badge{
   background:transparent;
   border:1px solid rgba(255,255,255,.3);
   color:white;
@@ -166,10 +171,11 @@ header h1{
   font-weight:800;
 }
 
+.admin-badge{
+  background:rgba(255,255,255,.1);
+}
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* ================= MAIN ================= */
 
 main{
   max-width:1100px;
@@ -177,10 +183,7 @@ main{
   padding:18px 16px 100px;
 }
 
-
-/* =====================================================
-   MONEY CARDS (3-GRID)
-===================================================== */
+/* ================= MONEY ================= */
 
 .money-grid{
   display:grid;
@@ -248,10 +251,7 @@ main{
   color:var(--red)!important;
 }
 
-
-/* =====================================================
-   ACTIONS
-===================================================== */
+/* ================= ACTION ================= */
 
 .action-grid{
   display:grid;
@@ -281,10 +281,13 @@ main{
   color:white;
 }
 
+/* ================= SEARCH ================= */
 
-/* =====================================================
-   SEARCH & FILTERS
-===================================================== */
+.catalog-title{
+  margin:0 0 14px;
+  font-size:22px;
+  font-weight:900;
+}
 
 .search-row{
   display:flex;
@@ -330,7 +333,7 @@ main{
 
 .filter-options{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1fr 1fr 1fr;
   gap:8px;
   margin-top:10px;
 }
@@ -347,18 +350,7 @@ main{
   color:white;
 }
 
-
-/* =====================================================
-   PRODUCTS PAGE GRID
-===================================================== */
-
-.gallery{
-  display:none;
-}
-
-.gallery.active{
-  display:block;
-}
+/* ================= GALLERY ================= */
 
 .gallery-grid{
   display:grid;
@@ -389,6 +381,11 @@ main{
   border-radius:13px;
   overflow:hidden;
   cursor:pointer;
+  transition:.15s;
+}
+
+.gallery-card:hover{
+  transform:translateY(-2px);
 }
 
 .gallery-card img{
@@ -400,21 +397,30 @@ main{
 }
 
 .gallery-details{
-  padding:8px;
+  padding:10px;
 }
 
 .gallery-name{
-  font-size:12px;
+  font-size:13px;
   font-weight:800;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
+.gallery-model{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 .gallery-price{
-  margin-top:4px;
-  font-size:12px;
-  font-weight:800;
+  margin-top:6px;
+  font-size:14px;
+  font-weight:900;
 }
 
 .gallery-qty{
@@ -437,10 +443,13 @@ main{
   color:#b91c1c;
 }
 
+@media(min-width:700px){
+  .folder-products{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
 
-/* =====================================================
-   NAV
-===================================================== */
+/* ================= NAV ================= */
 
 .bottom-nav{
   position:fixed;
@@ -470,10 +479,7 @@ main{
   border-top:2px solid #111827;
 }
 
-
-/* =====================================================
-   MODAL
-===================================================== */
+/* ================= MODALS ================= */
 
 .modal{
   position:fixed;
@@ -515,10 +521,7 @@ main{
   font-size:22px;
 }
 
-
-/* =====================================================
-   ADD PRODUCT PHOTO
-===================================================== */
+/* ================= FORM ================= */
 
 .photo-preview{
   width:100%;
@@ -552,6 +555,12 @@ main{
   outline:none;
 }
 
+.price-row{
+  display:grid;
+  grid-template-columns:1fr 120px;
+  gap:8px;
+}
+
 .save-row{
   display:flex;
   gap:9px;
@@ -583,10 +592,7 @@ main{
   color:#991b1b;
 }
 
-
-/* =====================================================
-   PRODUCT DETAILS
-===================================================== */
+/* ================= DETAILS ================= */
 
 .delete-top{
   width:100%;
@@ -657,6 +663,19 @@ main{
   font-weight:800;
 }
 
+/* ================= NOTIFICATIONS ================= */
+
+.notif-clear{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:12px;
+  background:#fee2e2;
+  color:#991b1b;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
 .notif-item{
   padding:10px 0;
   border-bottom:1px solid var(--line);
@@ -673,12 +692,6 @@ main{
   margin-top:2px;
 }
 
-@media(min-width:700px){
-  .folder-products{
-    grid-template-columns:repeat(4,1fr);
-  }
-}
-
 .empty{
   background:white;
   border:1px solid var(--line);
@@ -688,771 +701,3475 @@ main{
   color:#6b7280;
 }
 
+/* ================= VISITOR ================= */
+
+.visitor-header{
+  background:#111827;
+}
+
+.visitor-header .header-inner{
+  justify-content:center;
+}
+
+.visitor-mode-label{
+  font-size:13px;
+  font-weight:800;
+  opacity:.8;
+}
 </style>
 </head>
 
 <body>
 
 <!-- =====================================================
-     LOGIN
+     START / LOGIN SCREEN
 ===================================================== -->
+
 <section id="loginScreen">
+
   <div class="login-card">
-    <h1>Center Inventory</h1>
-    <p>Enter your passcode to continue</p>
-    <form id="loginForm">
-      <input id="passcode" class="passcode" type="password" autocomplete="off" placeholder="Passcode">
-      <button class="login-btn" type="submit">Enter</button>
-    </form>
-    <div id="loginError" class="login-error"></div>
+
+    <!-- START SCREEN -->
+    <div id="startChoice">
+
+      <h1>Center Store</h1>
+      <p>Choose how you want to enter</p>
+
+      <div class="login-actions">
+        <button class="visitor-btn" onclick="enterVisitorMode()">
+          👤 View Products
+        </button>
+
+        <button class="admin-login-btn" onclick="showAdminLogin()">
+          🔐 Admin Login
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="adminLoginBox" class="hidden">
+
+      <h1>Admin Login</h1>
+      <p>Enter your administrator passcode</p>
+
+      <form id="loginForm">
+
+        <input
+          id="passcode"
+          class="passcode"
+          type="password"
+          autocomplete="off"
+          placeholder="Passcode"
+        >
+
+        <button class="login-btn" type="submit">
+          Enter Admin
+        </button>
+
+      </form>
+
+      <button class="back-login" onclick="showStartChoice()">
+        ← Back
+      </button>
+
+      <div id="loginError" class="login-error"></div>
+
+    </div>
+
   </div>
+
 </section>
 
+
 <!-- =====================================================
-     APP
+     ADMIN APP
 ===================================================== -->
-<div id="app" class="hidden">
+
+<div id="adminApp" class="hidden">
 
 <header>
+
   <div class="header-inner">
+
     <h1>Center Inventory</h1>
+
     <div class="header-actions">
-      <button class="exg-btn" onclick="changeExchangeRate()">💱 Exg</button>
-      <button class="notif-btn" onclick="openNotifications()">🔔 Log</button>
-      <button class="lock-btn" onclick="lockApp()">Lock</button>
+
+      <span class="admin-badge">ADMIN</span>
+
+      <button class="exg-btn" onclick="changeExchangeRate()">
+        💱 Exg
+      </button>
+
+      <button class="notif-btn" onclick="openNotifications()">
+        🔔 Log
+      </button>
+
+      <button class="lock-btn" onclick="lockApp()">
+        Lock
+      </button>
+
     </div>
+
   </div>
+
 </header>
+
 
 <main>
 
 <!-- =====================================================
-     INVENTORY PAGE (MAIN)
+     ADMIN INVENTORY
 ===================================================== -->
-<section id="dashboard" class="dashboard active">
 
-  <!-- 3 MONEY CARDS -->
+<section id="dashboard">
+
   <div class="money-grid">
 
-    <!-- Card 1: Total Money Earned -->
     <div class="money-card">
-      <button class="card-clear-btn" onclick="clearMoneyCard('earned')">Clear</button>
+
+      <button
+        class="card-clear-btn"
+        onclick="clearMoneyCard('earned')">
+        Clear
+      </button>
+
       <div class="money-content">
-        <div class="money-label">Total Money Earned</div>
+
+        <div class="money-label">
+          Total Money Earned
+        </div>
+
         <div class="money-value">
           <span id="totalMoney">0</span>
           <span class="money-currency">د.ع</span>
         </div>
-        <div class="money-count"><span id="soldCount">0</span> items sold</div>
+
+        <div class="money-count">
+          <span id="soldCount">0</span> items sold
+        </div>
+
       </div>
+
     </div>
 
-    <!-- Card 2: Total Money of Added Products -->
+
     <div class="money-card">
-      <button class="card-clear-btn" onclick="clearMoneyCard('added')">Clear</button>
+
+      <button
+        class="card-clear-btn"
+        onclick="clearMoneyCard('added')">
+        Clear
+      </button>
+
       <div class="money-content">
-        <div class="money-label">Added Stock Value</div>
+
+        <div class="money-label">
+          Added Stock Value
+        </div>
+
         <div class="money-value">
+
           <span id="addedMoney">0</span>
-          <span class="money-currency" id="addedCurrencySymbol">$</span>
+
+          <span
+            class="money-currency"
+            id="addedCurrencySymbol">
+            د.ع
+          </span>
+
         </div>
-        <div class="money-count">Active inventory value</div>
+
+        <div class="money-count">
+          Active inventory value
+        </div>
+
       </div>
+
     </div>
 
-    <!-- Card 3: Money Went From Total Added (Red) -->
+
     <div class="money-card">
-      <button class="card-clear-btn" onclick="clearMoneyCard('dropped')">Clear</button>
+
+      <button
+        class="card-clear-btn"
+        onclick="clearMoneyCard('dropped')">
+        Clear
+      </button>
+
       <div class="money-content">
-        <div class="money-label">Stock Value Drop</div>
-        <div class="money-value text-red">
-          <span id="droppedMoney">0</span>
-          <span class="money-currency" id="droppedCurrencySymbol">$</span>
+
+        <div class="money-label">
+          Stock Value Drop
         </div>
-        <div class="money-count">Sold/removed cost</div>
+
+        <div class="money-value text-red">
+
+          <span id="droppedMoney">0</span>
+
+          <span
+            class="money-currency"
+            id="droppedCurrencySymbol">
+            د.ع
+          </span>
+
+        </div>
+
+        <div class="money-count">
+          Sold/removed cost
+        </div>
+
       </div>
+
     </div>
 
   </div>
 
-  <!-- ACTIONS -->
+
   <div class="action-grid">
-    <button class="action-btn action-add" onclick="scanForAdd()">
+
+    <button
+      class="action-btn action-add"
+      onclick="scanForAdd()">
+
       Add Product
-      <small>Choose a product photo</small>
+
+      <small>
+        Choose a product photo
+      </small>
+
     </button>
+
   </div>
 
 </section>
 
+
 <!-- =====================================================
-     PRODUCTS PAGE
+     ADMIN PRODUCTS
 ===================================================== -->
-<section id="gallery" class="gallery">
+
+<section id="adminProducts">
+
+  <h2 class="catalog-title">
+    Products
+  </h2>
+
   <div class="search-row">
-    <input id="gallerySearch" class="search" type="search" placeholder="Search products..." oninput="renderGallery()">
-    <button class="filter-btn" onclick="toggleFilter()">Filter</button>
+
+    <input
+      id="adminSearch"
+      class="search"
+      type="search"
+      placeholder="Search products..."
+      oninput="renderAdminGallery()"
+    >
+
+    <button
+      class="filter-btn"
+      onclick="toggleAdminFilter()">
+      Filter
+    </button>
+
   </div>
 
-  <!-- FILTER -->
-  <div id="filterPanel" class="filter-panel hidden">
-    <label style="display:block;font-size:12px;font-weight:800;margin-bottom:6px;">Folder</label>
-    <select id="folderFilter" onchange="renderGallery()">
-      <option value="">All folders</option>
+
+  <div
+    id="adminFilterPanel"
+    class="filter-panel hidden">
+
+    <label
+      style="display:block;font-size:12px;font-weight:800;margin-bottom:6px;">
+      Category
+    </label>
+
+    <select
+      id="adminFolderFilter"
+      onchange="renderAdminGallery()">
+
+      <option value="">
+        All categories
+      </option>
+
     </select>
+
     <div class="filter-options">
-      <button id="filterAll" class="active" onclick="setStockFilter('all')">All</button>
-      <button id="filterIn" onclick="setStockFilter('in')">In Stock</button>
-      <button id="filterOut" onclick="setStockFilter('out')">Out of Stock</button>
+
+      <button
+        id="adminFilterAll"
+        class="active"
+        onclick="setAdminStockFilter('all')">
+        All
+      </button>
+
+      <button
+        id="adminFilterIn"
+        onclick="setAdminStockFilter('in')">
+        In Stock
+      </button>
+
+      <button
+        id="adminFilterOut"
+        onclick="setAdminStockFilter('out')">
+        Out of Stock
+      </button>
+
     </div>
+
   </div>
 
-  <div id="galleryGrid" class="gallery-grid"></div>
+
+  <div
+    id="adminGalleryGrid"
+    class="gallery-grid">
+  </div>
+
 </section>
 
 </main>
 
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
+
 <nav class="bottom-nav">
-  <button id="navInventory" class="nav-btn active" onclick="showTab('inventory')">Inventory</button>
-  <button id="navProducts" class="nav-btn" onclick="showTab('products')">Products</button>
+
+  <button
+    id="navInventory"
+    class="nav-btn active"
+    onclick="showAdminTab('inventory')">
+    Inventory
+  </button>
+
+  <button
+    id="navProducts"
+    class="nav-btn"
+    onclick="showAdminTab('products')">
+    Products
+  </button>
+
 </nav>
 
 </div>
 
+
+<!-- =====================================================
+     VISITOR APP
+===================================================== -->
+
+<div id="visitorApp" class="hidden">
+
+<header class="visitor-header">
+
+  <div class="header-inner">
+
+    <div>
+      <h1>Center Store</h1>
+      <div class="visitor-mode-label">
+        Products Catalog
+      </div>
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <h2 class="catalog-title">
+    Available Products
+  </h2>
+
+  <div class="search-row">
+
+    <input
+      id="visitorSearch"
+      class="search"
+      type="search"
+      placeholder="Search product or model..."
+      oninput="renderVisitorGallery()"
+    >
+
+    <button
+      class="filter-btn"
+      onclick="toggleVisitorFilter()">
+      Filter
+    </button>
+
+  </div>
+
+
+  <div
+    id="visitorFilterPanel"
+    class="filter-panel hidden">
+
+    <label
+      style="display:block;font-size:12px;font-weight:800;margin-bottom:6px;">
+      Category
+    </label>
+
+    <select
+      id="visitorFolderFilter"
+      onchange="renderVisitorGallery()">
+
+      <option value="">
+        All categories
+      </option>
+
+    </select>
+
+    <div class="filter-options">
+
+      <button
+        id="visitorFilterAll"
+        class="active"
+        onclick="setVisitorStockFilter('all')">
+        All
+      </button>
+
+      <button
+        id="visitorFilterIn"
+        onclick="setVisitorStockFilter('in')">
+        In Stock
+      </button>
+
+      <button
+        id="visitorFilterOut"
+        onclick="setVisitorStockFilter('out')">
+        Out of Stock
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="visitorGalleryGrid"
+    class="gallery-grid">
+  </div>
+
+</main>
+
+</div>
+
+
 <!-- FILE INPUT -->
-<input id="scanInput" type="file" accept="image/*" hidden>
 
-<!-- ADD PRODUCT MODAL -->
-<div id="productModal" class="modal hidden" onclick="if(event.target===this) closeModal()">
+<input
+  id="scanInput"
+  type="file"
+  accept="image/*"
+  hidden
+>
+
+
+<!-- =====================================================
+     ADD / EDIT PRODUCT MODAL
+===================================================== -->
+
+<div
+  id="productModal"
+  class="modal hidden"
+  onclick="if(event.target===this) closeModal()">
+
   <div class="modal-box">
+
     <div class="modal-head">
-      <h2 id="modalTitle">Add Product</h2>
-      <button class="close" onclick="closeModal()">×</button>
+
+      <h2 id="modalTitle">
+        Add Product
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
     </div>
-    <img id="productPhotoPreview" class="photo-preview hidden" alt="Product">
+
+
+    <img
+      id="productPhotoPreview"
+      class="photo-preview hidden"
+      alt="Product"
+    >
+
+
     <div class="fields">
+
       <div class="field">
-        <label>Product name</label>
-        <input id="name" type="text" placeholder="Example: iPhone 15 Pro Max Cover">
+
+        <label>
+          Item name
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Example: Phone Case"
+        >
+
       </div>
+
+
       <div class="field">
-        <label>Folder</label>
-        <input id="folder" type="text" list="folderList" placeholder="Example: iPhone 15 Pro Max">
+
+        <label>
+          Model
+        </label>
+
+        <input
+          id="model"
+          type="text"
+          placeholder="Example: iPhone 15 Pro Max"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Category
+        </label>
+
+        <input
+          id="folder"
+          type="text"
+          list="folderList"
+          placeholder="Example: Phone Cases"
+        >
+
         <datalist id="folderList"></datalist>
+
       </div>
+
+
       <div class="field">
-        <label>Quantity</label>
-        <input id="quantity" type="number" min="0" step="1" value="1">
+
+        <label>
+          Quantity
+        </label>
+
+        <input
+          id="quantity"
+          type="number"
+          min="0"
+          step="1"
+          value="1"
+        >
+
       </div>
+
+
       <div class="field">
-        <label>Purchase price per item</label>
-        <input id="buyPrice" type="number" min="0" step="0.01" placeholder="0">
+
+        <label>
+          Purchase price per item
+        </label>
+
+        <div class="price-row">
+
+          <input
+            id="buyPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="0"
+          >
+
+          <select id="buyCurrency">
+
+            <option value="IQD">
+              د.ع
+            </option>
+
+            <option value="USD">
+              $
+            </option>
+
+          </select>
+
+        </div>
+
       </div>
+
+
       <div class="field">
-        <label>Purchase currency</label>
-        <select id="buyCurrency">
-          <option value="IQD">د.ع</option>
-          <option value="USD">$</option>
-        </select>
+
+        <label>
+          Selling price per item
+        </label>
+
+        <div class="price-row">
+
+          <input
+            id="sellPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="0"
+          >
+
+          <select id="sellCurrency">
+
+            <option value="IQD">
+              د.ع
+            </option>
+
+            <option value="USD">
+              $
+            </option>
+
+          </select>
+
+        </div>
+
       </div>
+
     </div>
+
+
     <div class="save-row">
-      <button class="secondary" onclick="closeModal()">Cancel</button>
-      <button class="primary" onclick="saveProduct()">Save Product</button>
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+        Cancel
+      </button>
+
+      <button
+        class="primary"
+        onclick="saveProduct()">
+        Save Product
+      </button>
+
     </div>
+
   </div>
+
 </div>
 
-<!-- PRODUCT DETAILS MODAL -->
-<div id="detailModal" class="modal hidden" onclick="if(event.target===this) closeDetailModal()">
+
+<!-- =====================================================
+     ADMIN PRODUCT DETAILS
+===================================================== -->
+
+<div
+  id="detailModal"
+  class="modal hidden"
+  onclick="if(event.target===this) closeDetailModal()">
+
   <div class="modal-box">
+
     <div class="modal-head">
-      <h2>Product</h2>
-      <button class="close" onclick="closeDetailModal()">×</button>
+
+      <h2>
+        Product
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeDetailModal()">
+        ×
+      </button>
+
     </div>
+
     <div id="detailContent"></div>
+
   </div>
+
 </div>
 
-<!-- NOTIFICATION MODAL -->
-<div id="notifModal" class="modal hidden" onclick="if(event.target===this) closeNotifications()">
+
+<!-- =====================================================
+     VISITOR PRODUCT DETAILS
+===================================================== -->
+
+<div
+  id="visitorDetailModal"
+  class="modal hidden"
+  onclick="if(event.target===this) closeVisitorDetail()">
+
   <div class="modal-box">
+
     <div class="modal-head">
-      <h2>Transaction History</h2>
-      <button class="close" onclick="closeNotifications()">×</button>
+
+      <h2>
+        Product
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeVisitorDetail()">
+        ×
+      </button>
+
     </div>
-    <div id="notifList"></div>
+
+    <div id="visitorDetailContent"></div>
+
   </div>
+
 </div>
+
+
+<!-- =====================================================
+     NOTIFICATIONS
+===================================================== -->
+
+<div
+  id="notifModal"
+  class="modal hidden"
+  onclick="if(event.target===this) closeNotifications()">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>
+        Transaction History
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeNotifications()">
+        ×
+      </button>
+
+    </div>
+
+
+    <button
+      class="notif-clear"
+      onclick="clearNotifications()">
+      🗑 Clear All Notifications
+    </button>
+
+
+    <div id="notifList"></div>
+
+  </div>
+
+</div>
+
 
 <script>
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
 const PASSCODE = "165naseh";
-const FIREBASE_URL = "https://store-products-6de04-default-rtdb.firebaseio.com/";
+
+const FIREBASE_URL =
+"https://store-products-6de04-default-rtdb.firebaseio.com/";
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let products = [];
 let transactions = [];
+
 let editingId = null;
-let selectedStockFilter = "all";
+
+let adminStockFilter = "all";
+let visitorStockFilter = "all";
 
 let totalMoney = 0;
 let soldCount = 0;
 let addedMoney = 0;
 let droppedMoney = 0;
-let stockCurrency = "$"; 
-let exchangeRate = 1;    
 
-/* LOGIN */
-document.getElementById("loginForm").addEventListener("submit", function(e){
+let stockCurrency = "د.ع";
+let exchangeRate = 1500;
+
+
+/* =====================================================
+   START SCREEN
+===================================================== */
+
+function showAdminLogin(){
+
+  document
+    .getElementById("startChoice")
+    .classList.add("hidden");
+
+  document
+    .getElementById("adminLoginBox")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("passcode")
+    .focus();
+}
+
+
+function showStartChoice(){
+
+  document
+    .getElementById("adminLoginBox")
+    .classList.add("hidden");
+
+  document
+    .getElementById("startChoice")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("loginError")
+    .textContent = "";
+
+}
+
+
+/* =====================================================
+   VISITOR MODE
+===================================================== */
+
+function enterVisitorMode(){
+
+  document
+    .getElementById("loginScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("visitorApp")
+    .classList.remove("hidden");
+
+  initFirebaseSync();
+
+}
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", function(e){
+
   e.preventDefault();
-  const value = document.getElementById("passcode").value;
+
+  const value =
+    document.getElementById("passcode").value;
+
   if(value === PASSCODE){
-    sessionStorage.setItem("inventoryUnlocked", "1");
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    document.getElementById("passcode").value = "";
-    document.getElementById("loginError").textContent = "";
+
+    sessionStorage.setItem(
+      "inventoryAdmin",
+      "1"
+    );
+
+    document
+      .getElementById("loginScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("adminApp")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("passcode")
+      .value = "";
+
+    document
+      .getElementById("loginError")
+      .textContent = "";
+
     initFirebaseSync();
-  } else {
-    document.getElementById("loginError").textContent = "Incorrect, try again.";
-    document.getElementById("passcode").value = "";
-    document.getElementById("passcode").focus();
+
+  }else{
+
+    document
+      .getElementById("loginError")
+      .textContent =
+      "Incorrect passcode.";
+
+    document
+      .getElementById("passcode")
+      .value = "";
+
+    document
+      .getElementById("passcode")
+      .focus();
+
   }
+
 });
+
+
+/* =====================================================
+   ADMIN LOCK
+===================================================== */
 
 function lockApp(){
-  sessionStorage.removeItem("inventoryUnlocked");
-  document.getElementById("app").classList.add("hidden");
-  document.getElementById("loginScreen").classList.remove("hidden");
+
+  sessionStorage.removeItem("inventoryAdmin");
+
+  document
+    .getElementById("adminApp")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginScreen")
+    .classList.remove("hidden");
+
+  showStartChoice();
+
   closeModal();
   closeDetailModal();
+  closeNotifications();
+
 }
 
-/* FIREBASE SYNC */
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+let syncStarted = false;
+
 async function initFirebaseSync(){
+
+  if(syncStarted) return;
+
+  syncStarted = true;
+
   await loadFromFirebase();
-  setInterval(loadFromFirebase, 5000);
+
+  setInterval(
+    loadFromFirebase,
+    5000
+  );
+
 }
+
 
 async function loadFromFirebase(){
-  try {
-    const res = await fetch(`${FIREBASE_URL}.json`);
-    const data = await res.json();
-    if(data){
-      products = data.products ? Object.values(data.products) : [];
-      transactions = data.transactions || [];
-      const moneyData = data.money || {};
-      totalMoney = Number(moneyData.totalMoney) || 0;
-      soldCount = Number(moneyData.soldCount) || 0;
-      droppedMoney = Number(moneyData.droppedMoney) || 0;
-      if(moneyData.stockCurrency) stockCurrency = moneyData.stockCurrency;
-      if(moneyData.exchangeRate) exchangeRate = Number(moneyData.exchangeRate) || 1;
-    }
-    recalculateStockValues();
-    renderGallery();
-    updateFolderList();
-    updateMoneyDisplay();
-  } catch(err){
-    console.error("Sync error:", err);
-  }
-}
-
-async function saveToFirebase(){
-  const productsObj = {};
-  products.forEach(p => { productsObj[p.id] = p; });
-
-  const payload = {
-    products: productsObj,
-    transactions: transactions,
-    money: {
-      totalMoney,
-      soldCount,
-      droppedMoney,
-      stockCurrency,
-      exchangeRate
-    }
-  };
-
-  try {
-    await fetch(`${FIREBASE_URL}.json`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  } catch(err){
-    console.error("Cloud save error:", err);
-  }
-}
-
-function logTransaction(text){
-  transactions.unshift({ text, time: new Date().toLocaleString() });
-  saveToFirebase();
-}
-
-function recalculateStockValues(){
-  addedMoney = 0;
-  products.forEach(p=>{
-    const qty = Number(p.quantity) || 0;
-    const price = Number(p.buyPrice) || 0;
-    let val = qty * price;
-    
-    if(p.buyCurrency !== stockCurrency && exchangeRate > 1){
-      if(p.buyCurrency === "IQD" && stockCurrency === "$"){
-        val = val / exchangeRate;
-      } else if(p.buyCurrency === "USD" && stockCurrency === "د.ع"){
-        val = val * exchangeRate;
-      }
-    }
-    addedMoney += val;
-  });
-  updateMoneyDisplay();
-}
-
-function makeId(){
-  if(crypto && crypto.randomUUID){
-    try{ return crypto.randomUUID(); }catch(e){}
-  }
-  return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
-}
-
-function readImage(file){
-  return new Promise(resolve=>{
-    const reader = new FileReader();
-    reader.onload = ()=> resolve(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-function scanForAdd(){
-  document.getElementById("scanInput").click();
-}
-
-document.getElementById("scanInput").addEventListener("change", async function(){
-  const file = this.files && this.files[0];
-  if(!file) return;
-  const image = await readImage(file);
-  openAddProduct(image);
-  this.value = "";
-});
-
-function openAddProduct(photo){
-  editingId = null;
-  document.getElementById("modalTitle").textContent = "Add Product";
-  document.getElementById("name").value = "";
-  document.getElementById("folder").value = "";
-  document.getElementById("quantity").value = 1;
-  document.getElementById("buyPrice").value = "";
-  document.getElementById("buyCurrency").value = "IQD";
-  const preview = document.getElementById("productPhotoPreview");
-  preview.src = photo;
-  preview.classList.remove("hidden");
-  preview.dataset.photo = photo;
-  updateFolderList();
-  document.getElementById("productModal").classList.remove("hidden");
-}
-
-function editProduct(id){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  editingId = id;
-  document.getElementById("modalTitle").textContent = "Edit Product";
-  document.getElementById("name").value = p.name || "";
-  document.getElementById("folder").value = p.folder || "";
-  document.getElementById("quantity").value = Number(p.quantity) || 0;
-  document.getElementById("buyPrice").value = Number(p.buyPrice) || 0;
-  document.getElementById("buyCurrency").value = p.buyCurrency || "IQD";
-  const preview = document.getElementById("productPhotoPreview");
-  if(p.photo){
-    preview.src = p.photo;
-    preview.dataset.photo = p.photo;
-    preview.classList.remove("hidden");
-  }
-  updateFolderList();
-  document.getElementById("productModal").classList.remove("hidden");
-}
-
-function closeModal(){
-  document.getElementById("productModal").classList.add("hidden");
-  editingId = null;
-}
-
-async function saveProduct(){
-  const name = document.getElementById("name").value.trim();
-  if(!name){ alert("Please enter a product name."); return; }
-  const folder = document.getElementById("folder").value.trim() || "Other";
-  const quantity = Math.max(0, parseInt(document.getElementById("quantity").value, 10) || 0);
-  const buyPrice = Math.max(0, parseFloat(document.getElementById("buyPrice").value) || 0);
-  const buyCurrency = document.getElementById("buyCurrency").value;
-  const preview = document.getElementById("productPhotoPreview");
-  const old = editingId ? products.find(p=>p.id===editingId) : null;
-
-  const product = {
-    id: editingId || makeId(),
-    name, folder, quantity, buyPrice, buyCurrency,
-    photo: preview.dataset.photo || old?.photo || null,
-    createdAt: old?.createdAt || Date.now(),
-    updatedAt: Date.now()
-  };
 
   try{
-    const index = products.findIndex(p=>p.id===product.id);
-    if(index >= 0){
-      products[index] = product;
-    } else {
-      products.unshift(product);
-      logTransaction(`Added product: ${name} (Qty: ${quantity})`);
+
+    const res =
+      await fetch(
+        `${FIREBASE_URL}.json`
+      );
+
+    const data =
+      await res.json();
+
+    if(data){
+
+      products =
+        data.products
+        ? Object.values(data.products)
+        : [];
+
+      transactions =
+        Array.isArray(data.transactions)
+        ? data.transactions
+        : [];
+
+      const moneyData =
+        data.money || {};
+
+      totalMoney =
+        Number(moneyData.totalMoney) || 0;
+
+      soldCount =
+        Number(moneyData.soldCount) || 0;
+
+      droppedMoney =
+        Number(moneyData.droppedMoney) || 0;
+
+      stockCurrency =
+        moneyData.stockCurrency || "د.ع";
+
+      exchangeRate =
+        Number(moneyData.exchangeRate) || 1500;
+
     }
 
-    closeModal();
     recalculateStockValues();
-    renderGallery();
+
+    updateMoneyDisplay();
+
     updateFolderList();
-    await saveToFirebase();
-  }catch(error){
-    console.error(error);
-    alert("Could not save the product.");
+
+    renderAdminGallery();
+
+    renderVisitorGallery();
+
+  }catch(err){
+
+    console.error(
+      "Firebase sync error:",
+      err
+    );
+
   }
+
 }
 
-/* FOLDERS / GALLERY */
-function renderGallery(){
-  const grid = document.getElementById("galleryGrid");
-  const search = document.getElementById("gallerySearch").value.trim().toLowerCase();
-  const folder = document.getElementById("folderFilter").value;
 
-  let list = products.filter(p=>{
-    const matchesSearch = (p.name + " " + p.folder).toLowerCase().includes(search);
-    const matchesFolder = !folder || p.folder === folder;
-    let matchesStock = true;
-    if(selectedStockFilter === "in") matchesStock = Number(p.quantity) > 0;
-    if(selectedStockFilter === "out") matchesStock = Number(p.quantity) <= 0;
-    return matchesSearch && matchesFolder && matchesStock;
+/* =====================================================
+   SAVE
+===================================================== */
+
+async function saveToFirebase(){
+
+  const productsObj = {};
+
+  products.forEach(p=>{
+    productsObj[p.id] = p;
   });
 
-  if(!list.length){
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">No products found.</div>`;
+
+  const payload = {
+
+    products: productsObj,
+
+    transactions: transactions,
+
+    money: {
+
+      totalMoney,
+
+      soldCount,
+
+      droppedMoney,
+
+      stockCurrency,
+
+      exchangeRate
+
+    }
+
+  };
+
+
+  try{
+
+    await fetch(
+      `${FIREBASE_URL}.json`,
+      {
+        method:"PUT",
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+        body:
+          JSON.stringify(payload)
+      }
+    );
+
+  }catch(err){
+
+    console.error(
+      "Cloud save error:",
+      err
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+function logTransaction(text){
+
+  transactions.unshift({
+
+    text,
+
+    time:
+      new Date()
+      .toLocaleString()
+
+  });
+
+  saveToFirebase();
+
+}
+
+
+/* =====================================================
+   CLEAR NOTIFICATIONS
+===================================================== */
+
+async function clearNotifications(){
+
+  if(!transactions.length){
+
+    alert(
+      "There are no notifications to clear."
+    );
+
     return;
   }
 
-  const folders = {};
-  list.forEach(p=>{
-    const key = p.folder || "Other";
-    if(!folders[key]) folders[key] = [];
-    folders[key].push(p);
-  });
 
-  grid.innerHTML = Object.keys(folders).sort().map(folderName=>{
-    return `
-      <div class="folder">
-        <div class="folder-title">${escapeHTML(folderName)}</div>
-        <div class="folder-products">
-          ${folders[folderName].map(p=>{
-            const quantity = Number(p.quantity) || 0;
-            return `
-              <div class="gallery-card" onclick="openProduct('${p.id}')">
-                ${p.photo ? `<img src="${p.photo}" alt="">` : `<div style="width:100%;aspect-ratio:1/1;background:#f1f5f9;"></div>`}
-                <div class="gallery-details">
-                  <div class="gallery-name">${escapeHTML(p.name)}</div>
-                  <div class="gallery-price">Buy: ${formatPrice(p.buyPrice, p.buyCurrency)}</div>
-                  <div class="gallery-qty">Qty: ${quantity}</div>
-                  <div class="gallery-stock ${quantity > 0 ? 'in' : 'out'}">${quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK'}</div>
-                </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
-      </div>
-    `;
-  }).join("");
+  if(!confirm(
+    "Are you sure you want to clear ALL transaction history?"
+  )) return;
+
+
+  transactions = [];
+
+  await saveToFirebase();
+
+  openNotifications();
+
 }
 
-function updateFolderList(){
-  const datalist = document.getElementById("folderList");
-  const select = document.getElementById("folderFilter");
-  const unique = {};
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function recalculateStockValues(){
+
+  addedMoney = 0;
+
   products.forEach(p=>{
-    const folder = (p.folder || "Other").trim();
-    const normalized = folder.toLowerCase();
-    if(!unique[normalized]) unique[normalized] = folder;
+
+    const qty =
+      Number(p.quantity) || 0;
+
+    const price =
+      Number(p.buyPrice) || 0;
+
+    let value =
+      qty * price;
+
+
+    if(
+      p.buyCurrency !== stockCurrency
+      && exchangeRate > 0
+    ){
+
+      if(
+        p.buyCurrency === "IQD"
+        && stockCurrency === "$"
+      ){
+
+        value /= exchangeRate;
+
+      }
+
+      else if(
+        p.buyCurrency === "USD"
+        && stockCurrency === "د.ع"
+      ){
+
+        value *= exchangeRate;
+
+      }
+
+    }
+
+    addedMoney += value;
+
   });
-  const folders = Object.values(unique).sort((a,b)=>a.localeCompare(b));
-  datalist.innerHTML = folders.map(f=>`<option value="${escapeHTML(f)}"></option>`).join("");
-  const current = select.value;
-  select.innerHTML = `<option value="">All folders</option>`;
-  folders.forEach(f=>{
-    const option = document.createElement("option");
-    option.value = f;
-    option.textContent = f;
-    select.appendChild(option);
-  });
-  if(folders.includes(current)) select.value = current;
+
 }
 
-function toggleFilter(){
-  document.getElementById("filterPanel").classList.toggle("hidden");
-}
-
-function setStockFilter(value){
-  selectedStockFilter = value;
-  document.getElementById("filterAll").classList.remove("active");
-  document.getElementById("filterIn").classList.remove("active");
-  document.getElementById("filterOut").classList.remove("active");
-  if(value === "all") document.getElementById("filterAll").classList.add("active");
-  if(value === "in") document.getElementById("filterIn").classList.add("active");
-  if(value === "out") document.getElementById("filterOut").classList.add("active");
-  renderGallery();
-}
-
-function openProduct(id){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  renderProductDetails(p);
-  document.getElementById("detailModal").classList.remove("hidden");
-}
-
-function renderProductDetails(p){
-  const quantity = Number(p.quantity) || 0;
-  document.getElementById("detailContent").innerHTML = `
-    <button class="delete-top" onclick="deleteProduct('${p.id}', true)">Delete Entire Product</button>
-    ${p.photo ? `<img class="detail-photo" src="${p.photo}" alt="">` : ''}
-    <div class="detail-card">
-      <div class="detail-name">${escapeHTML(p.name)}</div>
-      <div class="detail-folder">Folder: ${escapeHTML(p.folder || "Other")}</div>
-      <div class="detail-row"><span class="detail-label">Stock</span><b>${quantity > 0 ? "IN STOCK" : "OUT OF STOCK"}</b></div>
-      <div class="detail-row"><span class="detail-label">Quantity</span><b>${quantity}</b></div>
-      <div class="detail-row"><span class="detail-label">Purchase price</span><b>${formatPrice(p.buyPrice, p.buyCurrency)}</b></div>
-    </div>
-    <div class="stock-controls">
-      <button onclick="changeStock('${p.id}', -1)">− 1</button>
-      <button onclick="changeStock('${p.id}', 1)">+ 1</button>
-      <button onclick="restockProduct('${p.id}')">Restock</button>
-    </div>
-    ${quantity > 0 ? `<button class="primary" style="width:100%;margin-top:12px;" onclick="sellProduct('${p.id}')">Sell Item</button>` : `<div class="empty" style="margin-top:12px">This product is out of stock.</div>`}
-    <div class="save-row">
-      <button class="secondary" onclick="closeDetailModal(); editProduct('${p.id}');">Edit Product</button>
-      <button class="secondary" onclick="closeDetailModal()">Close</button>
-    </div>
-  `;
-}
-
-function closeDetailModal(){
-  document.getElementById("detailModal").classList.add("hidden");
-}
-
-async function deleteProduct(id, closeAfter=false){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  if(!confirm("Are you sure you want to delete this product entirely?")) return;
-
-  let unitVal = Number(p.buyPrice) || 0;
-  if(p.buyCurrency !== stockCurrency && exchangeRate > 1){
-    if(p.buyCurrency === "IQD" && stockCurrency === "$") unitVal /= exchangeRate;
-    else if(p.buyCurrency === "USD" && stockCurrency === "د.ع") unitVal *= exchangeRate;
-  }
-  addedMoney = Math.max(0, addedMoney - (unitVal * (Number(p.quantity)||0)));
-
-  products = products.filter(x=>x.id!==id);
-  logTransaction(`Deleted product: ${p.name}`);
-
-  renderGallery();
-  updateFolderList();
-  recalculateStockValues();
-  await saveToFirebase();
-  if(closeAfter) closeDetailModal();
-}
-
-async function changeStock(id, amount){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  const oldQty = Number(p.quantity) || 0;
-  const newQty = Math.max(0, oldQty + amount);
-  const diff = newQty - oldQty;
-
-  p.quantity = newQty;
-  p.updatedAt = Date.now();
-
-  let unitVal = Number(p.buyPrice) || 0;
-  if(p.buyCurrency !== stockCurrency && exchangeRate > 1){
-    if(p.buyCurrency === "IQD" && stockCurrency === "$") unitVal /= exchangeRate;
-    else if(p.buyCurrency === "USD" && stockCurrency === "د.ع") unitVal *= exchangeRate;
-  }
-
-  if(diff < 0){
-    droppedMoney += Math.abs(diff) * unitVal;
-    logTransaction(`Removed ${Math.abs(diff)}x from ${p.name}`);
-  } else if(diff > 0){
-    logTransaction(`Added ${diff}x to ${p.name}`);
-  }
-
-  recalculateStockValues();
-  renderGallery();
-  renderProductDetails(p);
-  await saveToFirebase();
-}
-
-async function restockProduct(id){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  const amount = prompt("How many items do you want to restock?", "1");
-  if(amount === null) return;
-  const n = parseInt(amount, 10);
-  if(!Number.isFinite(n) || n <= 0){ alert("Enter a valid quantity."); return; }
-
-  p.quantity = (Number(p.quantity) || 0) + n;
-  p.updatedAt = Date.now();
-
-  logTransaction(`Restocked ${n}x for ${p.name}`);
-  recalculateStockValues();
-  renderGallery();
-  renderProductDetails(p);
-  await saveToFirebase();
-}
-
-async function sellProduct(id){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  const quantity = Number(p.quantity) || 0;
-  if(quantity <= 0){ alert("This product is out of stock."); return; }
-
-  const price = prompt("How much money did you sell this item for?\nEnter the amount in د.ع", "");
-  if(price === null) return;
-  const amount = Number(String(price).replace(/,/g,"").trim());
-  if(!Number.isFinite(amount) || amount <= 0){ alert("Please enter a valid amount in د.ع."); return; }
-
-  totalMoney += amount;
-  soldCount += 1;
-
-  let unitVal = Number(p.buyPrice) || 0;
-  if(p.buyCurrency !== stockCurrency && exchangeRate > 1){
-    if(p.buyCurrency === "IQD" && stockCurrency === "$") unitVal /= exchangeRate;
-    else if(p.buyCurrency === "USD" && stockCurrency === "د.ع") unitVal *= exchangeRate;
-  }
-  droppedMoney += unitVal;
-
-  p.quantity = Math.max(0, quantity - 1);
-  p.updatedAt = Date.now();
-
-  logTransaction(`Sold 1x ${p.name} for ${amount.toLocaleString()} د.ع`);
-  recalculateStockValues();
-  renderGallery();
-
-  if(!document.getElementById("detailModal").classList.contains("hidden")){
-    renderProductDetails(p);
-  }
-  await saveToFirebase();
-  alert("Sale recorded successfully.");
-}
 
 function updateMoneyDisplay(){
-  document.getElementById("totalMoney").textContent = Number(totalMoney).toLocaleString("en-US");
-  document.getElementById("soldCount").textContent = soldCount;
-  document.getElementById("addedMoney").textContent = Number(addedMoney).toLocaleString("en-US", {maximumFractionDigits:2});
-  document.getElementById("droppedMoney").textContent = Number(droppedMoney).toLocaleString("en-US", {maximumFractionDigits:2});
-  
-  document.getElementById("addedCurrencySymbol").textContent = stockCurrency;
-  document.getElementById("droppedCurrencySymbol").textContent = stockCurrency;
+
+  document
+    .getElementById("totalMoney")
+    .textContent =
+    Number(totalMoney)
+    .toLocaleString("en-US");
+
+
+  document
+    .getElementById("soldCount")
+    .textContent =
+    soldCount;
+
+
+  document
+    .getElementById("addedMoney")
+    .textContent =
+    Number(addedMoney)
+    .toLocaleString(
+      "en-US",
+      {
+        maximumFractionDigits:2
+      }
+    );
+
+
+  document
+    .getElementById("droppedMoney")
+    .textContent =
+    Number(droppedMoney)
+    .toLocaleString(
+      "en-US",
+      {
+        maximumFractionDigits:2
+      }
+    );
+
+
+  document
+    .getElementById("addedCurrencySymbol")
+    .textContent =
+    stockCurrency;
+
+
+  document
+    .getElementById("droppedCurrencySymbol")
+    .textContent =
+    stockCurrency;
+
 }
 
-function clearMoneyCard(type){
-  if(!confirm("Are you sure you want to clear this counter?")) return;
-  if(type === 'earned'){ totalMoney = 0; soldCount = 0; }
-  else if(type === 'added'){ addedMoney = 0; }
-  else if(type === 'dropped'){ droppedMoney = 0; }
+
+async function clearMoneyCard(type){
+
+  if(!confirm(
+    "Are you sure you want to clear this counter?"
+  )) return;
+
+
+  if(type === "earned"){
+
+    totalMoney = 0;
+    soldCount = 0;
+
+  }
+
+  else if(type === "added"){
+
+    addedMoney = 0;
+
+  }
+
+  else if(type === "dropped"){
+
+    droppedMoney = 0;
+
+  }
+
+
   updateMoneyDisplay();
-  saveToFirebase();
+
+  await saveToFirebase();
+
 }
 
-async function changeExchangeRate(){
-  const rateInput = prompt("How much money is 1$ in IQD? (Enter rate, e.g. 1500):", exchangeRate > 1 ? exchangeRate : 1500);
-  if(rateInput === null) return;
-  const rate = Number(rateInput);
 
-  if(!Number.isFinite(rate) || rate <= 0){
-    alert("Invalid rate.");
-    return;
+/* =====================================================
+   ID / IMAGE
+===================================================== */
+
+function makeId(){
+
+  if(
+    typeof crypto !== "undefined"
+    && crypto.randomUUID
+  ){
+
+    try{
+      return crypto.randomUUID();
+    }catch(e){}
+
   }
 
-  const currChoice = prompt("Choose display currency for stock cards ('$' or 'د.ع'):", stockCurrency);
-  if(!currChoice) return;
-  const newCurrency = currChoice.trim();
-  if(newCurrency !== "$" && newCurrency !== "د.ع"){
-    alert("Please enter either '$' or 'د.ع'");
-    return;
+  return Date.now().toString(36)
+    + "-"
+    + Math.random()
+      .toString(36)
+      .slice(2);
+
+}
+
+
+function readImage(file){
+
+  return new Promise(resolve=>{
+
+    const reader =
+      new FileReader();
+
+    reader.onload =
+      ()=>resolve(reader.result);
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+
+function scanForAdd(){
+
+  document
+    .getElementById("scanInput")
+    .click();
+
+}
+
+
+document
+.getElementById("scanInput")
+.addEventListener(
+  "change",
+  async function(){
+
+    const file =
+      this.files &&
+      this.files[0];
+
+    if(!file) return;
+
+    const image =
+      await readImage(file);
+
+    openAddProduct(image);
+
+    this.value = "";
+
+  }
+);
+
+
+/* =====================================================
+   ADD PRODUCT
+===================================================== */
+
+function openAddProduct(photo){
+
+  editingId = null;
+
+  document
+    .getElementById("modalTitle")
+    .textContent =
+    "Add Product";
+
+
+  document
+    .getElementById("name")
+    .value = "";
+
+
+  document
+    .getElementById("model")
+    .value = "";
+
+
+  document
+    .getElementById("folder")
+    .value = "";
+
+
+  document
+    .getElementById("quantity")
+    .value = 1;
+
+
+  document
+    .getElementById("buyPrice")
+    .value = "";
+
+
+  document
+    .getElementById("sellPrice")
+    .value = "";
+
+
+  document
+    .getElementById("buyCurrency")
+    .value = "IQD";
+
+
+  document
+    .getElementById("sellCurrency")
+    .value = "IQD";
+
+
+  const preview =
+    document.getElementById(
+      "productPhotoPreview"
+    );
+
+
+  preview.src = photo;
+
+  preview.dataset.photo = photo;
+
+  preview.classList.remove(
+    "hidden"
+  );
+
+
+  updateFolderList();
+
+
+  document
+    .getElementById("productModal")
+    .classList.remove("hidden");
+
+}
+
+
+function editProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+  editingId = id;
+
+
+  document
+    .getElementById("modalTitle")
+    .textContent =
+    "Edit Product";
+
+
+  document
+    .getElementById("name")
+    .value =
+    p.name || "";
+
+
+  document
+    .getElementById("model")
+    .value =
+    p.model || "";
+
+
+  document
+    .getElementById("folder")
+    .value =
+    p.folder || "";
+
+
+  document
+    .getElementById("quantity")
+    .value =
+    Number(p.quantity) || 0;
+
+
+  document
+    .getElementById("buyPrice")
+    .value =
+    Number(p.buyPrice) || 0;
+
+
+  document
+    .getElementById("sellPrice")
+    .value =
+    Number(p.sellPrice) || 0;
+
+
+  document
+    .getElementById("buyCurrency")
+    .value =
+    p.buyCurrency || "IQD";
+
+
+  document
+    .getElementById("sellCurrency")
+    .value =
+    p.sellCurrency || "IQD";
+
+
+  const preview =
+    document.getElementById(
+      "productPhotoPreview"
+    );
+
+
+  if(p.photo){
+
+    preview.src = p.photo;
+
+    preview.dataset.photo =
+      p.photo;
+
+    preview.classList.remove(
+      "hidden"
+    );
+
   }
 
-  exchangeRate = rate;
-  stockCurrency = newCurrency;
+
+  updateFolderList();
+
+
+  document
+    .getElementById("productModal")
+    .classList.remove("hidden");
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("productModal")
+    .classList.add("hidden");
+
+  editingId = null;
+
+}
+
+
+/* =====================================================
+   SAVE PRODUCT
+===================================================== */
+
+async function saveProduct(){
+
+  const name =
+    document
+    .getElementById("name")
+    .value
+    .trim();
+
+
+  const model =
+    document
+    .getElementById("model")
+    .value
+    .trim();
+
+
+  if(!name){
+
+    alert(
+      "Please enter an item name."
+    );
+
+    return;
+
+  }
+
+
+  if(!model){
+
+    alert(
+      "Please enter the product model."
+    );
+
+    return;
+
+  }
+
+
+  const folder =
+    document
+    .getElementById("folder")
+    .value
+    .trim()
+    || "Other";
+
+
+  const quantity =
+    Math.max(
+      0,
+      parseInt(
+        document
+        .getElementById("quantity")
+        .value,
+        10
+      ) || 0
+    );
+
+
+  const buyPrice =
+    Math.max(
+      0,
+      parseFloat(
+        document
+        .getElementById("buyPrice")
+        .value
+      ) || 0
+    );
+
+
+  const sellPrice =
+    Math.max(
+      0,
+      parseFloat(
+        document
+        .getElementById("sellPrice")
+        .value
+      ) || 0
+    );
+
+
+  const buyCurrency =
+    document
+    .getElementById("buyCurrency")
+    .value;
+
+
+  const sellCurrency =
+    document
+    .getElementById("sellCurrency")
+    .value;
+
+
+  const preview =
+    document.getElementById(
+      "productPhotoPreview"
+    );
+
+
+  const old =
+    editingId
+    ? products.find(
+        p=>p.id===editingId
+      )
+    : null;
+
+
+  const product = {
+
+    id:
+      editingId
+      || makeId(),
+
+    name,
+
+    model,
+
+    folder,
+
+    quantity,
+
+    buyPrice,
+
+    buyCurrency,
+
+    sellPrice,
+
+    sellCurrency,
+
+    photo:
+      preview.dataset.photo
+      || old?.photo
+      || null,
+
+    createdAt:
+      old?.createdAt
+      || Date.now(),
+
+    updatedAt:
+      Date.now()
+
+  };
+
+
+  try{
+
+    const index =
+      products.findIndex(
+        p=>p.id===product.id
+      );
+
+
+    if(index >= 0){
+
+      products[index] =
+        product;
+
+      logTransaction(
+        `Edited product: ${name}`
+      );
+
+    }else{
+
+      products.unshift(
+        product
+      );
+
+      logTransaction(
+        `Added product: ${name} (Qty: ${quantity})`
+      );
+
+    }
+
+
+    closeModal();
+
+    recalculateStockValues();
+
+    updateFolderList();
+
+    renderAdminGallery();
+
+    renderVisitorGallery();
+
+    await saveToFirebase();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not save the product."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   FOLDERS
+===================================================== */
+
+function updateFolderList(){
+
+  const datalist =
+    document.getElementById(
+      "folderList"
+    );
+
+
+  const selects = [
+
+    document.getElementById(
+      "adminFolderFilter"
+    ),
+
+    document.getElementById(
+      "visitorFolderFilter"
+    )
+
+  ];
+
+
+  const unique = {};
+
+
+  products.forEach(p=>{
+
+    const folder =
+      (p.folder || "Other")
+      .trim();
+
+    const normalized =
+      folder.toLowerCase();
+
+    if(!unique[normalized]){
+
+      unique[normalized] =
+        folder;
+
+    }
+
+  });
+
+
+  const folders =
+    Object.values(unique)
+    .sort(
+      (a,b)=>
+        a.localeCompare(b)
+    );
+
+
+  datalist.innerHTML =
+    folders
+    .map(
+      f=>
+      `<option value="${escapeHTML(f)}"></option>`
+    )
+    .join("");
+
+
+  selects.forEach(select=>{
+
+    if(!select) return;
+
+    const current =
+      select.value;
+
+
+    select.innerHTML =
+      `<option value="">
+       All categories
+       </option>`;
+
+
+    folders.forEach(f=>{
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value = f;
+
+      option.textContent = f;
+
+      select.appendChild(
+        option
+      );
+
+    });
+
+
+    if(folders.includes(current)){
+
+      select.value =
+        current;
+
+    }
+
+  });
+
+}
+
+
+/* =====================================================
+   ADMIN GALLERY
+===================================================== */
+
+function renderAdminGallery(){
+
+  const grid =
+    document.getElementById(
+      "adminGalleryGrid"
+    );
+
+  if(!grid) return;
+
+
+  const search =
+    (
+      document
+      .getElementById("adminSearch")
+      ?.value
+      || ""
+    )
+    .trim()
+    .toLowerCase();
+
+
+  const folder =
+    document
+    .getElementById(
+      "adminFolderFilter"
+    )
+    ?.value
+    || "";
+
+
+  let list =
+    products.filter(p=>{
+
+      const text =
+        (
+          p.name
+          + " "
+          + (p.model || "")
+          + " "
+          + (p.folder || "")
+        )
+        .toLowerCase();
+
+
+      const matchesSearch =
+        text.includes(search);
+
+
+      const matchesFolder =
+        !folder
+        || p.folder === folder;
+
+
+      let matchesStock = true;
+
+
+      if(
+        adminStockFilter === "in"
+      ){
+
+        matchesStock =
+          Number(p.quantity) > 0;
+
+      }
+
+
+      if(
+        adminStockFilter === "out"
+      ){
+
+        matchesStock =
+          Number(p.quantity) <= 0;
+
+      }
+
+
+      return (
+        matchesSearch
+        && matchesFolder
+        && matchesStock
+      );
+
+    });
+
+
+  renderGalleryHTML(
+    grid,
+    list,
+    true
+  );
+
+}
+
+
+/* =====================================================
+   VISITOR GALLERY
+===================================================== */
+
+function renderVisitorGallery(){
+
+  const grid =
+    document.getElementById(
+      "visitorGalleryGrid"
+    );
+
+  if(!grid) return;
+
+
+  const search =
+    (
+      document
+      .getElementById(
+        "visitorSearch"
+      )
+      ?.value
+      || ""
+    )
+    .trim()
+    .toLowerCase();
+
+
+  const folder =
+    document
+    .getElementById(
+      "visitorFolderFilter"
+    )
+    ?.value
+    || "";
+
+
+  let list =
+    products.filter(p=>{
+
+      const text =
+        (
+          p.name
+          + " "
+          + (p.model || "")
+          + " "
+          + (p.folder || "")
+        )
+        .toLowerCase();
+
+
+      const matchesSearch =
+        text.includes(search);
+
+
+      const matchesFolder =
+        !folder
+        || p.folder === folder;
+
+
+      let matchesStock = true;
+
+
+      if(
+        visitorStockFilter === "in"
+      ){
+
+        matchesStock =
+          Number(p.quantity) > 0;
+
+      }
+
+
+      if(
+        visitorStockFilter === "out"
+      ){
+
+        matchesStock =
+          Number(p.quantity) <= 0;
+
+      }
+
+
+      return (
+        matchesSearch
+        && matchesFolder
+        && matchesStock
+      );
+
+    });
+
+
+  renderGalleryHTML(
+    grid,
+    list,
+    false
+  );
+
+}
+
+
+/* =====================================================
+   COMMON GALLERY HTML
+===================================================== */
+
+function renderGalleryHTML(
+  grid,
+  list,
+  adminMode
+){
+
+  if(!list.length){
+
+    grid.innerHTML =
+      `<div class="empty"
+        style="grid-column:1/-1">
+        No products found.
+       </div>`;
+
+    return;
+
+  }
+
+
+  const folders = {};
+
+
+  list.forEach(p=>{
+
+    const key =
+      p.folder || "Other";
+
+
+    if(!folders[key]){
+
+      folders[key] = [];
+
+    }
+
+
+    folders[key].push(p);
+
+  });
+
+
+  grid.innerHTML =
+    Object.keys(folders)
+    .sort()
+    .map(folderName=>{
+
+      return `
+
+      <div class="folder">
+
+        <div class="folder-title">
+          ${escapeHTML(folderName)}
+        </div>
+
+        <div class="folder-products">
+
+          ${
+            folders[folderName]
+            .map(p=>{
+
+              const quantity =
+                Number(p.quantity)
+                || 0;
+
+
+              const price =
+                formatPrice(
+                  p.sellPrice,
+                  p.sellCurrency
+                );
+
+
+              return `
+
+              <div
+                class="gallery-card"
+                onclick="${
+                  adminMode
+                  ? `openProduct('${p.id}')`
+                  : `openVisitorProduct('${p.id}')`
+                }"
+              >
+
+                ${
+                  p.photo
+
+                  ? `<img
+                       src="${p.photo}"
+                       alt=""
+                     >`
+
+                  : `<div
+                       style="
+                       width:100%;
+                       aspect-ratio:1/1;
+                       background:#f1f5f9;">
+                     </div>`
+                }
+
+
+                <div class="gallery-details">
+
+                  <div class="gallery-name">
+                    ${escapeHTML(p.name)}
+                  </div>
+
+
+                  <div class="gallery-model">
+                    Model:
+                    ${escapeHTML(
+                      p.model || "—"
+                    )}
+                  </div>
+
+
+                  <div class="gallery-price">
+                    ${price}
+                  </div>
+
+
+                  ${
+                    adminMode
+
+                    ? `
+                    <div class="gallery-qty">
+                      Qty: ${quantity}
+                    </div>
+
+                    <div
+                      class="gallery-stock ${
+                        quantity > 0
+                        ? "in"
+                        : "out"
+                      }">
+
+                      ${
+                        quantity > 0
+                        ? "IN STOCK"
+                        : "OUT OF STOCK"
+                      }
+
+                    </div>
+                    `
+
+                    : ""
+
+                  }
+
+                </div>
+
+              </div>
+
+              `;
+
+            })
+            .join("")
+          }
+
+        </div>
+
+      </div>
+
+      `;
+
+    })
+    .join("");
+
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+function toggleAdminFilter(){
+
+  document
+    .getElementById(
+      "adminFilterPanel"
+    )
+    .classList.toggle(
+      "hidden"
+    );
+
+}
+
+
+function toggleVisitorFilter(){
+
+  document
+    .getElementById(
+      "visitorFilterPanel"
+    )
+    .classList.toggle(
+      "hidden"
+    );
+
+}
+
+
+function setAdminStockFilter(value){
+
+  adminStockFilter = value;
+
+
+  document
+    .getElementById(
+      "adminFilterAll"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "adminFilterIn"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "adminFilterOut"
+    )
+    .classList.remove("active");
+
+
+  if(value === "all"){
+
+    document
+      .getElementById(
+        "adminFilterAll"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(value === "in"){
+
+    document
+      .getElementById(
+        "adminFilterIn"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(value === "out"){
+
+    document
+      .getElementById(
+        "adminFilterOut"
+      )
+      .classList.add("active");
+
+  }
+
+
+  renderAdminGallery();
+
+}
+
+
+function setVisitorStockFilter(value){
+
+  visitorStockFilter =
+    value;
+
+
+  document
+    .getElementById(
+      "visitorFilterAll"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "visitorFilterIn"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "visitorFilterOut"
+    )
+    .classList.remove("active");
+
+
+  if(value === "all"){
+
+    document
+      .getElementById(
+        "visitorFilterAll"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(value === "in"){
+
+    document
+      .getElementById(
+        "visitorFilterIn"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(value === "out"){
+
+    document
+      .getElementById(
+        "visitorFilterOut"
+      )
+      .classList.add("active");
+
+  }
+
+
+  renderVisitorGallery();
+
+}
+
+
+/* =====================================================
+   PRODUCT DETAILS - ADMIN
+===================================================== */
+
+function openProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+  renderProductDetails(p);
+
+  document
+    .getElementById(
+      "detailModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+function renderProductDetails(p){
+
+  const quantity =
+    Number(p.quantity)
+    || 0;
+
+
+  document
+    .getElementById(
+      "detailContent"
+    )
+    .innerHTML = `
+
+      <button
+        class="delete-top"
+        onclick="
+          deleteProduct(
+            '${p.id}',
+            true
+          )
+        ">
+        Delete Entire Product
+      </button>
+
+
+      ${
+        p.photo
+        ? `<img
+             class="detail-photo"
+             src="${p.photo}"
+             alt=""
+           >`
+        : ""
+      }
+
+
+      <div class="detail-card">
+
+        <div class="detail-name">
+          ${escapeHTML(p.name)}
+        </div>
+
+
+        <div class="detail-folder">
+          Model:
+          ${escapeHTML(
+            p.model || "—"
+          )}
+        </div>
+
+
+        <div class="detail-folder">
+          Category:
+          ${escapeHTML(
+            p.folder || "Other"
+          )}
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Stock
+          </span>
+
+          <b>
+            ${
+              quantity > 0
+              ? "IN STOCK"
+              : "OUT OF STOCK"
+            }
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Quantity
+          </span>
+
+          <b>
+            ${quantity}
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Purchase price
+          </span>
+
+          <b>
+            ${formatPrice(
+              p.buyPrice,
+              p.buyCurrency
+            )}
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Selling price
+          </span>
+
+          <b>
+            ${formatPrice(
+              p.sellPrice,
+              p.sellCurrency
+            )}
+          </b>
+
+        </div>
+
+      </div>
+
+
+      <div class="stock-controls">
+
+        <button
+          onclick="
+            changeStock(
+              '${p.id}',
+              -1
+            )
+          ">
+          − 1
+        </button>
+
+        <button
+          onclick="
+            changeStock(
+              '${p.id}',
+              1
+            )
+          ">
+          + 1
+        </button>
+
+        <button
+          onclick="
+            restockProduct(
+              '${p.id}'
+            )
+          ">
+          Restock
+        </button>
+
+      </div>
+
+
+      ${
+        quantity > 0
+
+        ? `
+          <button
+            class="primary"
+            style="
+            width:100%;
+            margin-top:12px;"
+            onclick="
+              sellProduct(
+                '${p.id}'
+              )
+            ">
+            Sell Item
+          </button>
+        `
+
+        : `
+          <div
+            class="empty"
+            style="margin-top:12px">
+            This product is out of stock.
+          </div>
+        `
+      }
+
+
+      <div class="save-row">
+
+        <button
+          class="secondary"
+          onclick="
+            closeDetailModal();
+            editProduct('${p.id}');
+          ">
+          Edit Product
+        </button>
+
+
+        <button
+          class="secondary"
+          onclick="closeDetailModal()">
+          Close
+        </button>
+
+      </div>
+
+    `;
+
+}
+
+
+function closeDetailModal(){
+
+  document
+    .getElementById(
+      "detailModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   VISITOR DETAILS
+===================================================== */
+
+function openVisitorProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+  document
+    .getElementById(
+      "visitorDetailContent"
+    )
+    .innerHTML = `
+
+      ${
+        p.photo
+
+        ? `<img
+             class="detail-photo"
+             src="${p.photo}"
+             alt=""
+           >`
+
+        : ""
+      }
+
+
+      <div class="detail-card">
+
+        <div class="detail-name">
+          ${escapeHTML(p.name)}
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Model
+          </span>
+
+          <b>
+            ${escapeHTML(
+              p.model || "—"
+            )}
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Category
+          </span>
+
+          <b>
+            ${escapeHTML(
+              p.folder || "Other"
+            )}
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Price
+          </span>
+
+          <b>
+            ${formatPrice(
+              p.sellPrice,
+              p.sellCurrency
+            )}
+          </b>
+
+        </div>
+
+
+        <div class="detail-row">
+
+          <span class="detail-label">
+            Availability
+          </span>
+
+          <b>
+            ${
+              Number(p.quantity) > 0
+              ? "IN STOCK"
+              : "OUT OF STOCK"
+            }
+          </b>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById(
+      "visitorDetailModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+function closeVisitorDetail(){
+
+  document
+    .getElementById(
+      "visitorDetailModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+async function deleteProduct(
+  id,
+  closeAfter=false
+){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+
+  if(!confirm(
+    "Are you sure you want to delete this product entirely?"
+  )) return;
+
+
+  products =
+    products.filter(
+      x=>x.id!==id
+    );
+
+
+  logTransaction(
+    `Deleted product: ${p.name}`
+  );
+
+
+  renderAdminGallery();
+
+  renderVisitorGallery();
+
+  updateFolderList();
 
   recalculateStockValues();
+
+  updateMoneyDisplay();
+
   await saveToFirebase();
-  alert("Exchange rate updated successfully!");
+
+
+  if(closeAfter){
+
+    closeDetailModal();
+
+  }
+
 }
+
+
+/* =====================================================
+   STOCK
+===================================================== */
+
+async function changeStock(
+  id,
+  amount
+){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+
+  const oldQty =
+    Number(p.quantity)
+    || 0;
+
+
+  const newQty =
+    Math.max(
+      0,
+      oldQty + amount
+    );
+
+
+  const diff =
+    newQty - oldQty;
+
+
+  p.quantity =
+    newQty;
+
+
+  p.updatedAt =
+    Date.now();
+
+
+  const unitVal =
+    convertToStockCurrency(
+      p.buyPrice,
+      p.buyCurrency
+    );
+
+
+  if(diff < 0){
+
+    droppedMoney +=
+      Math.abs(diff)
+      * unitVal;
+
+
+    logTransaction(
+      `Removed ${Math.abs(diff)}x from ${p.name}`
+    );
+
+  }
+
+
+  else if(diff > 0){
+
+    logTransaction(
+      `Added ${diff}x to ${p.name}`
+    );
+
+  }
+
+
+  recalculateStockValues();
+
+  updateMoneyDisplay();
+
+  renderAdminGallery();
+
+  renderVisitorGallery();
+
+  renderProductDetails(p);
+
+  await saveToFirebase();
+
+}
+
+
+async function restockProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+
+  const amount =
+    prompt(
+      "How many items do you want to restock?",
+      "1"
+    );
+
+
+  if(amount === null) return;
+
+
+  const n =
+    parseInt(
+      amount,
+      10
+    );
+
+
+  if(
+    !Number.isFinite(n)
+    || n <= 0
+  ){
+
+    alert(
+      "Enter a valid quantity."
+    );
+
+    return;
+
+  }
+
+
+  p.quantity =
+    (Number(p.quantity)||0)
+    + n;
+
+
+  p.updatedAt =
+    Date.now();
+
+
+  logTransaction(
+    `Restocked ${n}x for ${p.name}`
+  );
+
+
+  recalculateStockValues();
+
+  renderAdminGallery();
+
+  renderVisitorGallery();
+
+  renderProductDetails(p);
+
+  await saveToFirebase();
+
+}
+
+
+/* =====================================================
+   SELL
+===================================================== */
+
+async function sellProduct(id){
+
+  const p =
+    products.find(
+      x=>x.id===id
+    );
+
+  if(!p) return;
+
+
+  const quantity =
+    Number(p.quantity)
+    || 0;
+
+
+  if(quantity <= 0){
+
+    alert(
+      "This product is out of stock."
+    );
+
+    return;
+
+  }
+
+
+  const defaultPrice =
+    Number(p.sellPrice)
+    || 0;
+
+
+  const price =
+    prompt(
+      "Selling price for this item:",
+      defaultPrice
+        ? String(defaultPrice)
+        : ""
+    );
+
+
+  if(price === null) return;
+
+
+  const amount =
+    Number(
+      String(price)
+      .replace(/,/g,"")
+      .trim()
+    );
+
+
+  if(
+    !Number.isFinite(amount)
+    || amount <= 0
+  ){
+
+    alert(
+      "Please enter a valid selling price."
+    );
+
+    return;
+
+  }
+
+
+  totalMoney +=
+    p.sellCurrency === "USD"
+    ? amount * exchangeRate
+    : amount;
+
+
+  soldCount += 1;
+
+
+  const unitVal =
+    convertToStockCurrency(
+      p.buyPrice,
+      p.buyCurrency
+    );
+
+
+  droppedMoney +=
+    unitVal;
+
+
+  p.quantity =
+    Math.max(
+      0,
+      quantity - 1
+    );
+
+
+  p.updatedAt =
+    Date.now();
+
+
+  logTransaction(
+    `Sold 1x ${p.name} for ${
+      formatPrice(
+        amount,
+        p.sellCurrency
+      )
+    }`
+  );
+
+
+  recalculateStockValues();
+
+  updateMoneyDisplay();
+
+  renderAdminGallery();
+
+  renderVisitorGallery();
+
+
+  if(
+    !document
+      .getElementById(
+        "detailModal"
+      )
+      .classList
+      .contains("hidden")
+  ){
+
+    renderProductDetails(p);
+
+  }
+
+
+  await saveToFirebase();
+
+
+  alert(
+    "Sale recorded successfully."
+  );
+
+}
+
+
+/* =====================================================
+   CURRENCY
+===================================================== */
+
+function convertToStockCurrency(
+  price,
+  currency
+){
+
+  let value =
+    Number(price)
+    || 0;
+
+
+  if(
+    currency === "IQD"
+    && stockCurrency === "$"
+  ){
+
+    value /=
+      exchangeRate;
+
+  }
+
+
+  else if(
+    currency === "USD"
+    && stockCurrency === "د.ع"
+  ){
+
+    value *=
+      exchangeRate;
+
+  }
+
+
+  return value;
+
+}
+
+
+async function changeExchangeRate(){
+
+  const rateInput =
+    prompt(
+      "How much is $1 in IQD?",
+      exchangeRate
+        || 1500
+    );
+
+
+  if(rateInput === null)
+    return;
+
+
+  const rate =
+    Number(rateInput);
+
+
+  if(
+    !Number.isFinite(rate)
+    || rate <= 0
+  ){
+
+    alert(
+      "Invalid rate."
+    );
+
+    return;
+
+  }
+
+
+  const currChoice =
+    prompt(
+      "Display stock cards in '$' or 'د.ع'?",
+      stockCurrency
+    );
+
+
+  if(!currChoice)
+    return;
+
+
+  const newCurrency =
+    currChoice.trim();
+
+
+  if(
+    newCurrency !== "$"
+    && newCurrency !== "د.ع"
+  ){
+
+    alert(
+      "Please enter either '$' or 'د.ع'."
+    );
+
+    return;
+
+  }
+
+
+  exchangeRate =
+    rate;
+
+  stockCurrency =
+    newCurrency;
+
+
+  recalculateStockValues();
+
+  updateMoneyDisplay();
+
+  await saveToFirebase();
+
+
+  alert(
+    "Exchange rate updated successfully!"
+  );
+
+}
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
 
 function openNotifications(){
-  const list = document.getElementById("notifList");
+
+  const list =
+    document.getElementById(
+      "notifList"
+    );
+
+
   if(!transactions.length){
-    list.innerHTML = `<div class="empty">No transactions recorded yet.</div>`;
-  } else {
-    list.innerHTML = transactions.map(t=> `
-      <div class="notif-item">
-        <div>${escapeHTML(t.text)}</div>
-        <div class="notif-date">${escapeHTML(t.time)}</div>
-      </div>
-    `).join("");
+
+    list.innerHTML =
+      `<div class="empty">
+        No transactions recorded yet.
+       </div>`;
+
+  }else{
+
+    list.innerHTML =
+      transactions
+      .map(t=>`
+
+        <div class="notif-item">
+
+          <div>
+            ${escapeHTML(t.text)}
+          </div>
+
+          <div class="notif-date">
+            ${escapeHTML(t.time)}
+          </div>
+
+        </div>
+
+      `)
+      .join("");
+
   }
-  document.getElementById("notifModal").classList.remove("hidden");
+
+
+  document
+    .getElementById(
+      "notifModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
 }
+
 
 function closeNotifications(){
-  document.getElementById("notifModal").classList.add("hidden");
+
+  document
+    .getElementById(
+      "notifModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
 }
 
-function formatPrice(value, currency){
-  const number = Number(value) || 0;
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+function formatPrice(
+  value,
+  currency
+){
+
+  const number =
+    Number(value)
+    || 0;
+
+
   if(currency === "USD"){
-    return "$" + number.toLocaleString("en-US", {maximumFractionDigits:2});
+
+    return "$"
+      + number
+        .toLocaleString(
+          "en-US",
+          {
+            maximumFractionDigits:2
+          }
+        );
+
   }
-  return number.toLocaleString("en-US", {maximumFractionDigits:0}) + " د.ع";
+
+
+  return number
+    .toLocaleString(
+      "en-US",
+      {
+        maximumFractionDigits:0
+      }
+    )
+    + " د.ع";
+
 }
+
+
+/* =====================================================
+   HTML SAFETY
+===================================================== */
 
 function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, function(c){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
-  });
+
+  return String(
+    value ?? ""
+  ).replace(
+    /[&<>"']/g,
+    function(c){
+
+      return {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+
+      }[c];
+
+    }
+  );
+
 }
 
-function showTab(tab){
-  const dashboard = document.getElementById("dashboard");
-  const gallery = document.getElementById("gallery");
-  const navInventory = document.getElementById("navInventory");
-  const navProducts = document.getElementById("navProducts");
+
+/* =====================================================
+   ADMIN TABS
+===================================================== */
+
+function showAdminTab(tab){
+
+  const dashboard =
+    document.getElementById(
+      "dashboard"
+    );
+
+  const productsPage =
+    document.getElementById(
+      "adminProducts"
+    );
+
+
+  const navInventory =
+    document.getElementById(
+      "navInventory"
+    );
+
+  const navProducts =
+    document.getElementById(
+      "navProducts"
+    );
+
 
   if(tab === "inventory"){
-    dashboard.classList.add("active");
-    gallery.classList.remove("active");
-    navInventory.classList.add("active");
-    navProducts.classList.remove("active");
-  } else {
-    dashboard.classList.remove("active");
-    gallery.classList.add("active");
-    navInventory.classList.remove("active");
-    navProducts.classList.add("active");
+
+    dashboard.classList.remove(
+      "hidden"
+    );
+
+    productsPage.classList.add(
+      "hidden"
+    );
+
+    navInventory.classList.add(
+      "active"
+    );
+
+    navProducts.classList.remove(
+      "active"
+    );
+
+  }else{
+
+    dashboard.classList.add(
+      "hidden"
+    );
+
+    productsPage.classList.remove(
+      "hidden"
+    );
+
+    navInventory.classList.remove(
+      "active"
+    );
+
+    navProducts.classList.add(
+      "active"
+    );
+
     updateFolderList();
-    renderGallery();
+
+    renderAdminGallery();
+
   }
+
 }
 
-window.addEventListener("load", function(){
-  if(sessionStorage.getItem("inventoryUnlocked") === "1"){
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    initFirebaseSync();
-  } else {
-    document.getElementById("passcode").focus();
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    if(
+      sessionStorage.getItem(
+        "inventoryAdmin"
+      ) === "1"
+    ){
+
+      document
+        .getElementById(
+          "loginScreen"
+        )
+        .classList.add(
+          "hidden"
+        );
+
+      document
+        .getElementById(
+          "adminApp"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+      initFirebaseSync();
+
+    }
+
   }
-});
+);
+
 </script>
 
 </body>

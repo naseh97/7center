@@ -285,7 +285,7 @@ main{ max-width:1100px; margin:auto; padding:18px 16px 100px; }
     </div>
     <div class="save-row">
       <button class="secondary" onclick="closeModal()">Cancel</button>
-      <button class="primary" onclick="saveProduct()">Save Product</button>
+      <button class="primary" id="saveProductBtn" onclick="saveProduct()">Add Product</button>
     </div>
   </div>
 </div>
@@ -375,13 +375,17 @@ async function saveToFirebase(){
   };
 
   try {
-    await fetch(`${FIREBASE_URL}.json`, {
+    const res = await fetch(`${FIREBASE_URL}.json`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+    if(!res.ok){
+      throw new Error("Server responded with status " + res.status);
+    }
   } catch(err){
     console.error("Cloud save error:", err);
+    alert("Could not save to cloud database: " + err.message);
   }
 }
 
@@ -552,6 +556,7 @@ function openAddProductModal(){
   if(!isAdmin) return;
   editingId = null;
   document.getElementById("modalTitle").textContent = "Add Product";
+  document.getElementById("saveProductBtn").textContent = "Add Product";
   document.getElementById("name").value = "";
   document.getElementById("folder").value = "";
   document.getElementById("quantity").value = 1;
@@ -585,6 +590,7 @@ function editProduct(id){
   if(!p) return;
   editingId = id;
   document.getElementById("modalTitle").textContent = "Edit Product";
+  document.getElementById("saveProductBtn").textContent = "Save Changes";
   document.getElementById("name").value = p.name || "";
   document.getElementById("folder").value = p.folder || "";
   document.getElementById("quantity").value = Number(p.quantity) || 0;

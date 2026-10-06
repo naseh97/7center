@@ -33,7 +33,7 @@ header{
   position:sticky; top:0; z-index:20;
   background:#111827; color:white; padding:17px;
 }
-.header-inner{
+header-inner{
   max-width:1100px; margin:auto;
   display:flex; align-items:center; justify-content:space-between;
 }
@@ -173,7 +173,7 @@ main{ max-width:1100px; margin:auto; padding:18px 16px 100px; }
 <div id="app">
 
 <header>
-  <div class="header-inner">
+  <div class="header-inner" style="max-width:1100px; margin:auto; display:flex; align-items:center; justify-content:space-between; width:100%;">
     <h1 id="brandTitle">Center Store</h1>
     <div class="header-actions">
       <button id="adminLoginBtn" class="admin-login-btn" onclick="openLoginModal()">Admin Login</button>
@@ -553,7 +553,10 @@ function closeDetailModal(){
 
 /* ADMIN ACTIONS (ADD, EDIT, DELETE, SELL, STOCK) */
 function openAddProductModal(){
-  if(!isAdmin) return;
+  if(!isAdmin){
+    openLoginModal();
+    return;
+  }
   editingId = null;
   document.getElementById("modalTitle").textContent = "Add Product";
   document.getElementById("saveProductBtn").textContent = "Add Product";

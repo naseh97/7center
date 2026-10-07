@@ -33,6 +33,7 @@ button{cursor:pointer}
 .hidden{display:none!important}
 
 /* HEADER */
+
 header{
   position:sticky;
   top:0;
@@ -72,6 +73,7 @@ header h1{
 }
 
 /* MAIN */
+
 main{
   max-width:1100px;
   margin:auto;
@@ -79,6 +81,7 @@ main{
 }
 
 /* VISITOR */
+
 .visitor-title{
   margin-bottom:15px;
 }
@@ -95,10 +98,11 @@ main{
 }
 
 /* SEARCH */
+
 .search-row{
   display:flex;
   gap:8px;
-  margin-bottom:10px;
+  margin-bottom:14px;
 }
 
 .search{
@@ -128,17 +132,21 @@ main{
   margin-bottom:15px;
 }
 
-.filter-label{
-  font-size:11px;
-  color:var(--muted);
-  font-weight:800;
+.filter-title{
+  font-size:12px;
+  font-weight:900;
   margin-bottom:8px;
 }
 
 .filter-options{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:1fr 1fr 1fr;
   gap:8px;
+  margin-bottom:12px;
+}
+
+.filter-options.category-options{
+  grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
 }
 
 .filter-options button{
@@ -154,17 +162,8 @@ main{
   color:white;
 }
 
-.category-filter{
-  width:100%;
-  height:44px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:white;
-  padding:0 10px;
-  margin-bottom:12px;
-}
-
 /* PRODUCT GRID */
+
 .product-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -216,7 +215,7 @@ main{
 }
 
 .product-category{
-  color:#4b5563;
+  color:#374151;
   font-size:10px;
   margin-top:4px;
   font-weight:700;
@@ -248,6 +247,7 @@ main{
 }
 
 /* ADMIN DASHBOARD */
+
 .admin-panel{
   margin-bottom:20px;
 }
@@ -300,7 +300,15 @@ main{
   margin-top:4px;
   font-size:24px;
   font-weight:900;
+  display:flex;
+  align-items:baseline;
+  gap:5px;
   white-space:nowrap;
+}
+
+.money-currency{
+  font-size:17px;
+  font-weight:900;
 }
 
 .money-count{
@@ -339,6 +347,7 @@ main{
 }
 
 /* NAV */
+
 .bottom-nav{
   position:fixed;
   left:0;
@@ -368,6 +377,7 @@ main{
 }
 
 /* MODAL */
+
 .modal{
   position:fixed;
   inset:0;
@@ -409,6 +419,7 @@ main{
 }
 
 /* LOGIN */
+
 .login-box{
   width:min(400px,100%);
   margin:auto;
@@ -452,6 +463,7 @@ main{
 }
 
 /* FORM */
+
 .photo-preview{
   width:100%;
   height:280px;
@@ -484,12 +496,6 @@ main{
   outline:none;
 }
 
-.optional{
-  color:var(--muted);
-  font-size:10px;
-  font-weight:500;
-}
-
 .save-row{
   display:flex;
   gap:9px;
@@ -498,15 +504,8 @@ main{
 
 .save-row button{flex:1}
 
-.save-status{
-  text-align:center;
-  font-size:12px;
-  font-weight:700;
-  margin-top:10px;
-  min-height:18px;
-}
-
 /* DETAILS */
+
 .detail-photo{
   width:100%;
   max-height:430px;
@@ -535,10 +534,10 @@ main{
 }
 
 .detail-category{
-  color:#4b5563;
-  margin-top:4px;
+  color:#374151;
   font-size:12px;
-  font-weight:700;
+  font-weight:800;
+  margin-top:5px;
 }
 
 .detail-row{
@@ -599,6 +598,7 @@ main{
 <body>
 
 <header>
+
   <div class="header-inner">
 
     <h1>Center Products</h1>
@@ -629,14 +629,13 @@ main{
     </div>
 
   </div>
+
 </header>
 
 
 <main>
 
-<!-- =====================================================
-     PRODUCTS
-===================================================== -->
+<!-- VISITOR PRODUCTS -->
 
 <section id="visitorSection">
 
@@ -674,21 +673,7 @@ main{
     id="filterPanel"
     class="filter-panel hidden">
 
-    <div class="filter-label">
-      Category
-    </div>
-
-    <select
-      id="categoryFilter"
-      class="category-filter"
-      onchange="setCategoryFilter(this.value)">
-      <option value="all">
-        All Categories
-      </option>
-    </select>
-
-
-    <div class="filter-label">
+    <div class="filter-title">
       Stock
     </div>
 
@@ -715,6 +700,16 @@ main{
 
     </div>
 
+
+    <div class="filter-title">
+      Category
+    </div>
+
+    <div
+      id="categoryFilters"
+      class="filter-options category-options">
+    </div>
+
   </div>
 
 
@@ -726,9 +721,7 @@ main{
 </section>
 
 
-<!-- =====================================================
-     ADMIN DASHBOARD
-===================================================== -->
+<!-- ADMIN DASHBOARD -->
 
 <section
   id="adminSection"
@@ -751,11 +744,25 @@ main{
         </div>
 
         <div class="money-value">
-          <span id="totalMoney">0</span> د.ع
+
+          <span id="totalMoney">
+            0
+          </span>
+
+          <span class="money-currency">
+            د.ع
+          </span>
+
         </div>
 
         <div class="money-count">
-          <span id="soldCount">0</span> items sold
+
+          <span id="soldCount">
+            0
+          </span>
+
+          items sold
+
         </div>
 
       </div>
@@ -779,8 +786,15 @@ main{
 
         <div class="money-value">
 
-          <span id="addedMoney">0</span>
-          <span id="addedCurrencySymbol">د.ع</span>
+          <span id="addedMoney">
+            0
+          </span>
+
+          <span
+            id="addedCurrencySymbol"
+            class="money-currency">
+            د.ع
+          </span>
 
         </div>
 
@@ -809,8 +823,15 @@ main{
 
         <div class="money-value text-red">
 
-          <span id="droppedMoney">0</span>
-          <span id="droppedCurrencySymbol">د.ع</span>
+          <span id="droppedMoney">
+            0
+          </span>
+
+          <span
+            id="droppedCurrencySymbol"
+            class="money-currency">
+            د.ع
+          </span>
 
         </div>
 
@@ -834,8 +855,8 @@ main{
       Add Product
 
       <small>
-        Add photo, name, category, model, quantity,
-        purchase price and selling price
+        Add photo, name, category, optional model,
+        quantity, purchase price and selling price
       </small>
 
     </button>
@@ -847,9 +868,7 @@ main{
 </main>
 
 
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
@@ -870,6 +889,8 @@ main{
 </nav>
 
 
+<!-- FILE INPUT -->
+
 <input
   id="scanInput"
   type="file"
@@ -878,9 +899,7 @@ main{
 >
 
 
-<!-- =====================================================
-     ADMIN LOGIN
-===================================================== -->
+<!-- ADMIN LOGIN -->
 
 <div
   id="adminLoginModal"
@@ -891,7 +910,9 @@ main{
 
     <div class="modal-head">
 
-      <h2>Admin Login</h2>
+      <h2>
+        Admin Login
+      </h2>
 
       <button
         class="close"
@@ -900,7 +921,6 @@ main{
       </button>
 
     </div>
-
 
     <div class="login-box">
 
@@ -930,9 +950,7 @@ main{
 </div>
 
 
-<!-- =====================================================
-     PRODUCT MODAL
-===================================================== -->
+<!-- ADD / EDIT PRODUCT -->
 
 <div
   id="productModal"
@@ -980,7 +998,7 @@ main{
       </div>
 
 
-      <!-- CATEGORY BACK -->
+      <!-- CATEGORY -->
 
       <div class="field">
 
@@ -1000,21 +1018,18 @@ main{
       </div>
 
 
-      <!-- MODEL OPTIONAL -->
+      <!-- MODEL IS OPTIONAL -->
 
       <div class="field">
 
         <label>
-          Model
-          <span class="optional">
-            (optional)
-          </span>
+          Model <span style="color:#9ca3af">(optional)</span>
         </label>
 
         <input
           id="model"
           type="text"
-          placeholder="Leave empty if there is no model"
+          placeholder="Example: 15 Pro Max"
         >
 
       </div>
@@ -1115,12 +1130,6 @@ main{
     </div>
 
 
-    <div
-      id="saveStatus"
-      class="save-status">
-    </div>
-
-
     <div class="save-row">
 
       <button
@@ -1143,9 +1152,7 @@ main{
 </div>
 
 
-<!-- =====================================================
-     DETAILS
-===================================================== -->
+<!-- PRODUCT DETAILS -->
 
 <div
   id="detailModal"
@@ -1156,7 +1163,9 @@ main{
 
     <div class="modal-head">
 
-      <h2>Product</h2>
+      <h2>
+        Product
+      </h2>
 
       <button
         class="close"
@@ -1173,9 +1182,7 @@ main{
 </div>
 
 
-<!-- =====================================================
-     NOTIFICATIONS
-===================================================== -->
+<!-- NOTIFICATIONS -->
 
 <div
   id="notifModal"
@@ -1306,20 +1313,21 @@ async function firebaseRequest(
   if(!response.ok){
 
     let message =
-      "Firebase HTTP error " +
+      "Firebase error " +
       response.status;
 
-    if(data){
 
-      if(typeof data === "string"){
-        message += ": " + data;
-      }
+    if(
+      data &&
+      data.error
+    ){
 
-      else if(data.error){
-        message += ": " + data.error;
-      }
+      message +=
+        ": " +
+        data.error;
 
     }
+
 
     throw new Error(message);
 
@@ -1351,18 +1359,29 @@ async function loadFromFirebase(){
     );
 
 
-    if(data && data.products){
+    /* PRODUCTS */
 
-      if(Array.isArray(data.products)){
+    if(
+      data &&
+      data.products
+    ){
+
+      if(
+        Array.isArray(
+          data.products
+        )
+      ){
 
         products =
-          data.products.filter(Boolean);
+          data.products
+            .filter(Boolean);
 
       }else{
 
         products =
-          Object.values(data.products)
-          .filter(Boolean);
+          Object.values(
+            data.products
+          ).filter(Boolean);
 
       }
 
@@ -1373,18 +1392,29 @@ async function loadFromFirebase(){
     }
 
 
-    if(data && data.transactions){
+    /* TRANSACTIONS */
 
-      if(Array.isArray(data.transactions)){
+    if(
+      data &&
+      data.transactions
+    ){
+
+      if(
+        Array.isArray(
+          data.transactions
+        )
+      ){
 
         transactions =
-          data.transactions.filter(Boolean);
+          data.transactions
+            .filter(Boolean);
 
       }else{
 
         transactions =
-          Object.values(data.transactions)
-          .filter(Boolean);
+          Object.values(
+            data.transactions
+          ).filter(Boolean);
 
       }
 
@@ -1395,31 +1425,47 @@ async function loadFromFirebase(){
     }
 
 
+    /* MONEY */
+
     const money =
-      data && data.money
+      data &&
+      data.money
       ? data.money
       : {};
 
 
     totalMoney =
-      Number(money.totalMoney) || 0;
+      Number(
+        money.totalMoney
+      ) || 0;
+
 
     soldCount =
-      Number(money.soldCount) || 0;
+      Number(
+        money.soldCount
+      ) || 0;
+
 
     droppedMoney =
-      Number(money.droppedMoney) || 0;
+      Number(
+        money.droppedMoney
+      ) || 0;
+
 
     stockCurrency =
-      money.stockCurrency || "د.ع";
+      money.stockCurrency ||
+      "د.ع";
+
 
     exchangeRate =
-      Number(money.exchangeRate) || 1500;
+      Number(
+        money.exchangeRate
+      ) || 1500;
 
 
     recalculateStockValues();
 
-    updateCategoryFilters();
+    renderCategoryFilters();
 
     renderGallery();
 
@@ -1439,6 +1485,9 @@ async function loadFromFirebase(){
       error
     );
 
+
+    renderCategoryFilters();
+
     renderGallery();
 
   }
@@ -1447,14 +1496,19 @@ async function loadFromFirebase(){
 
 
 /* =====================================================
-   DIRECT PRODUCT SAVE
+   SAVE PRODUCT DIRECTLY
 ===================================================== */
 
 async function saveProductToFirebase(product){
 
-  await firebaseRequest(
-    "/products/" +
-    encodeURIComponent(product.id),
+  const id =
+    encodeURIComponent(
+      product.id
+    );
+
+
+  return await firebaseRequest(
+    "/products/" + id,
     {
       method:"PUT",
       body:JSON.stringify(product)
@@ -1465,16 +1519,33 @@ async function saveProductToFirebase(product){
 
 
 /* =====================================================
-   DELETE PRODUCT FROM FIREBASE
+   SAVE TRANSACTIONS
 ===================================================== */
 
-async function deleteProductFromFirebase(id){
+async function saveTransactionsToFirebase(){
 
-  await firebaseRequest(
-    "/products/" +
-    encodeURIComponent(id),
+  const transactionObj = {};
+
+  transactions.forEach(
+    (transaction,index)=>{
+
+      transactionObj[
+        transaction.id ||
+        String(index)
+      ] =
+        transaction;
+
+    }
+  );
+
+
+  return await firebaseRequest(
+    "/transactions",
     {
-      method:"DELETE"
+      method:"PUT",
+      body:JSON.stringify(
+        transactionObj
+      )
     }
   );
 
@@ -1487,7 +1558,7 @@ async function deleteProductFromFirebase(id){
 
 async function saveMoneyToFirebase(){
 
-  await firebaseRequest(
+  return await firebaseRequest(
     "/money",
     {
       method:"PATCH",
@@ -1516,36 +1587,163 @@ async function saveMoneyToFirebase(){
 
 
 /* =====================================================
-   SAVE TRANSACTION
+   IMAGE COMPRESSION
 ===================================================== */
 
-async function saveTransactionToFirebase(transaction){
+function compressImage(
+  file
+){
 
-  const id =
-    makeId();
+  return new Promise(
+    (resolve,reject)=>{
 
-  await firebaseRequest(
-    "/transactions/" +
-    encodeURIComponent(id),
-    {
-      method:"PUT",
-      body:JSON.stringify(transaction)
-    }
-  );
+      if(
+        !file ||
+        !file.type.startsWith(
+          "image/"
+        )
+      ){
 
-}
+        reject(
+          new Error(
+            "Please select an image."
+          )
+        );
+
+        return;
+
+      }
 
 
-/* =====================================================
-   DELETE ALL TRANSACTIONS
-===================================================== */
+      const reader =
+        new FileReader();
 
-async function deleteTransactionsFromFirebase(){
 
-  await firebaseRequest(
-    "/transactions",
-    {
-      method:"DELETE"
+      reader.onload =
+        function(event){
+
+          const img =
+            new Image();
+
+
+          img.onload =
+            function(){
+
+              const maxSize =
+                1000;
+
+
+              let width =
+                img.width;
+
+
+              let height =
+                img.height;
+
+
+              if(
+                width > maxSize ||
+                height > maxSize
+              ){
+
+                if(
+                  width > height
+                ){
+
+                  height =
+                    Math.round(
+                      height *
+                      maxSize /
+                      width
+                    );
+
+                  width =
+                    maxSize;
+
+                }else{
+
+                  width =
+                    Math.round(
+                      width *
+                      maxSize /
+                      height
+                    );
+
+                  height =
+                    maxSize;
+
+                }
+
+              }
+
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+
+              canvas.width =
+                width;
+
+
+              canvas.height =
+                height;
+
+
+              const ctx =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                width,
+                height
+              );
+
+
+              const result =
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.72
+                );
+
+
+              resolve(result);
+
+            };
+
+
+          img.onerror =
+            () =>
+              reject(
+                new Error(
+                  "Could not process image."
+                )
+              );
+
+
+          img.src =
+            event.target.result;
+
+        };
+
+
+      reader.onerror =
+        () =>
+          reject(
+            new Error(
+              "Could not read image."
+            )
+          );
+
+
+      reader.readAsDataURL(file);
+
     }
   );
 
@@ -1559,16 +1757,24 @@ async function deleteTransactionsFromFirebase(){
 function openAdminLogin(){
 
   document
-    .getElementById("adminLoginModal")
-    .classList.remove("hidden");
+    .getElementById(
+      "adminLoginModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
 
-  setTimeout(()=>{
 
-    document
-      .getElementById("adminPasscode")
-      .focus();
-
-  },100);
+  setTimeout(
+    ()=>{
+      document
+        .getElementById(
+          "adminPasscode"
+        )
+        .focus();
+    },
+    100
+  );
 
 }
 
@@ -1576,15 +1782,25 @@ function openAdminLogin(){
 function closeAdminLogin(){
 
   document
-    .getElementById("adminLoginModal")
-    .classList.add("hidden");
+    .getElementById(
+      "adminLoginModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
 
   document
-    .getElementById("adminPasscode")
+    .getElementById(
+      "adminPasscode"
+    )
     .value = "";
 
+
   document
-    .getElementById("adminLoginError")
+    .getElementById(
+      "adminLoginError"
+    )
     .textContent = "";
 
 }
@@ -1594,14 +1810,20 @@ function adminLogin(){
 
   const password =
     document
-      .getElementById("adminPasscode")
+      .getElementById(
+        "adminPasscode"
+      )
       .value;
 
 
-  if(password !== PASSCODE){
+  if(
+    password !== PASSCODE
+  ){
 
     document
-      .getElementById("adminLoginError")
+      .getElementById(
+        "adminLoginError"
+      )
       .textContent =
         "Incorrect password.";
 
@@ -1611,6 +1833,7 @@ function adminLogin(){
 
 
   isAdmin = true;
+
 
   sessionStorage.setItem(
     "inventoryAdmin",
@@ -1640,7 +1863,9 @@ function logoutAdmin(){
   );
 
   closeModal();
+
   closeDetailModal();
+
   closeNotifications();
 
   updateInterface();
@@ -1661,20 +1886,24 @@ function updateInterface(){
       "adminSection"
     );
 
+
   const adminLoginBtn =
     document.getElementById(
       "adminLoginBtn"
     );
+
 
   const notifBtn =
     document.getElementById(
       "notifBtn"
     );
 
+
   const lockBtn =
     document.getElementById(
       "lockBtn"
     );
+
 
   const navInventory =
     document.getElementById(
@@ -1685,36 +1914,64 @@ function updateInterface(){
   if(isAdmin){
 
     adminSection
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
+
 
     adminLoginBtn
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
+
 
     notifBtn
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
+
 
     lockBtn
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
+
 
     navInventory
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
 
   }else{
 
     adminSection
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
+
 
     adminLoginBtn
-      .classList.remove("hidden");
+      .classList.remove(
+        "hidden"
+      );
+
 
     notifBtn
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
+
 
     lockBtn
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
+
 
     navInventory
-      .classList.add("hidden");
+      .classList.add(
+        "hidden"
+      );
 
   }
 
@@ -1725,150 +1982,8 @@ function updateInterface(){
 
 
 /* =====================================================
-   IMAGE
+   IMAGE INPUT
 ===================================================== */
-
-function compressImage(file){
-
-  return new Promise((resolve,reject)=>{
-
-    if(!file || !file.type.startsWith("image/")){
-
-      reject(
-        new Error("Selected file is not an image.")
-      );
-
-      return;
-
-    }
-
-
-    const reader =
-      new FileReader();
-
-
-    reader.onload = function(){
-
-      const img =
-        new Image();
-
-
-      img.onload = function(){
-
-        const maxSize = 1000;
-
-        let width =
-          img.width;
-
-        let height =
-          img.height;
-
-
-        if(width > maxSize || height > maxSize){
-
-          if(width > height){
-
-            height =
-              Math.round(
-                height *
-                maxSize /
-                width
-              );
-
-            width =
-              maxSize;
-
-          }else{
-
-            width =
-              Math.round(
-                width *
-                maxSize /
-                height
-              );
-
-            height =
-              maxSize;
-
-          }
-
-        }
-
-
-        const canvas =
-          document.createElement(
-            "canvas"
-          );
-
-
-        canvas.width =
-          width;
-
-        canvas.height =
-          height;
-
-
-        const ctx =
-          canvas.getContext(
-            "2d"
-          );
-
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          width,
-          height
-        );
-
-
-        const compressed =
-          canvas.toDataURL(
-            "image/jpeg",
-            0.72
-          );
-
-
-        resolve(compressed);
-
-      };
-
-
-      img.onerror = function(){
-
-        reject(
-          new Error(
-            "Could not process image."
-          )
-        );
-
-      };
-
-
-      img.src =
-        reader.result;
-
-    };
-
-
-    reader.onerror = function(){
-
-      reject(
-        new Error(
-          "Could not read image."
-        )
-      );
-
-    };
-
-
-    reader.readAsDataURL(file);
-
-  });
-
-}
-
 
 function scanForAdd(){
 
@@ -1882,15 +1997,20 @@ function scanForAdd(){
 
   }
 
+
   document
-    .getElementById("scanInput")
+    .getElementById(
+      "scanInput"
+    )
     .click();
 
 }
 
 
 document
-  .getElementById("scanInput")
+  .getElementById(
+    "scanInput"
+  )
   .addEventListener(
     "change",
     async function(){
@@ -1899,25 +2019,30 @@ document
         this.files &&
         this.files[0];
 
+
       if(!file) return;
 
 
       try{
 
         const image =
-          await compressImage(file);
+          await compressImage(
+            file
+          );
 
-        openAddProduct(image);
+
+        openAddProduct(
+          image
+        );
 
       }catch(error){
 
-        console.error(error);
-
         alert(
-          "Could not process this image."
+          error.message
         );
 
       }
+
 
       this.value = "";
 
@@ -1929,69 +2054,94 @@ document
    ADD PRODUCT
 ===================================================== */
 
-function openAddProduct(photo){
+function openAddProduct(
+  photo
+){
 
   if(!isAdmin) return;
+
 
   editingId = null;
 
 
   document
-    .getElementById("modalTitle")
+    .getElementById(
+      "modalTitle"
+    )
     .textContent =
       "Add Product";
 
 
   document
-    .getElementById("name")
+    .getElementById(
+      "name"
+    )
     .value = "";
 
 
   document
-    .getElementById("category")
+    .getElementById(
+      "category"
+    )
     .value = "";
 
 
   document
-    .getElementById("model")
+    .getElementById(
+      "model"
+    )
     .value = "";
 
 
   document
-    .getElementById("quantity")
+    .getElementById(
+      "quantity"
+    )
     .value = 1;
 
 
   document
-    .getElementById("buyPrice")
+    .getElementById(
+      "buyPrice"
+    )
     .value = "";
 
 
   document
-    .getElementById("buyCurrency")
+    .getElementById(
+      "buyCurrency"
+    )
     .value = "IQD";
 
 
   document
-    .getElementById("sellPrice")
+    .getElementById(
+      "sellPrice"
+    )
     .value = "";
 
 
   document
-    .getElementById("sellCurrency")
+    .getElementById(
+      "sellCurrency"
+    )
     .value = "IQD";
 
 
   const preview =
-    document.getElementById(
-      "productPhotoPreview"
-    );
+    document
+      .getElementById(
+        "productPhotoPreview"
+      );
 
 
-  preview.src = photo;
+  preview.src =
+    photo;
+
 
   preview.dataset.photo =
     photo;
+
 
   preview.classList.remove(
     "hidden"
@@ -1999,15 +2149,9 @@ function openAddProduct(photo){
 
 
   document
-    .getElementById("saveStatus")
-    .textContent = "";
-
-
-  updateCategoryFilters();
-
-
-  document
-    .getElementById("productModal")
+    .getElementById(
+      "productModal"
+    )
     .classList.remove(
       "hidden"
     );
@@ -2019,7 +2163,9 @@ function openAddProduct(photo){
    EDIT PRODUCT
 ===================================================== */
 
-function editProduct(id){
+function editProduct(
+  id
+){
 
   if(!isAdmin) return;
 
@@ -2037,63 +2183,90 @@ function editProduct(id){
 
 
   document
-    .getElementById("modalTitle")
+    .getElementById(
+      "modalTitle"
+    )
     .textContent =
       "Edit Product";
 
 
   document
-    .getElementById("name")
+    .getElementById(
+      "name"
+    )
     .value =
       p.name || "";
 
 
   document
-    .getElementById("category")
+    .getElementById(
+      "category"
+    )
     .value =
       p.category || "";
 
 
   document
-    .getElementById("model")
+    .getElementById(
+      "model"
+    )
     .value =
       p.model || "";
 
 
   document
-    .getElementById("quantity")
+    .getElementById(
+      "quantity"
+    )
     .value =
-      Number(p.quantity) || 0;
+      Number(
+        p.quantity
+      ) || 0;
 
 
   document
-    .getElementById("buyPrice")
+    .getElementById(
+      "buyPrice"
+    )
     .value =
-      Number(p.buyPrice) || 0;
+      Number(
+        p.buyPrice
+      ) || 0;
 
 
   document
-    .getElementById("buyCurrency")
+    .getElementById(
+      "buyCurrency"
+    )
     .value =
-      p.buyCurrency || "IQD";
+      p.buyCurrency ||
+      "IQD";
 
 
   document
-    .getElementById("sellPrice")
+    .getElementById(
+      "sellPrice"
+    )
     .value =
-      Number(p.sellPrice) || 0;
+      Number(
+        p.sellPrice
+      ) || 0;
 
 
   document
-    .getElementById("sellCurrency")
+    .getElementById(
+      "sellCurrency"
+    )
     .value =
-      p.sellCurrency || "IQD";
+      p.sellCurrency ||
+      "IQD";
 
 
   const preview =
-    document.getElementById(
-      "productPhotoPreview"
-    );
+    document
+      .getElementById(
+        "productPhotoPreview"
+      );
 
 
   if(p.photo){
@@ -2101,8 +2274,10 @@ function editProduct(id){
     preview.src =
       p.photo;
 
+
     preview.dataset.photo =
       p.photo;
+
 
     preview.classList.remove(
       "hidden"
@@ -2122,12 +2297,9 @@ function editProduct(id){
 
 
   document
-    .getElementById("saveStatus")
-    .textContent = "";
-
-
-  document
-    .getElementById("productModal")
+    .getElementById(
+      "productModal"
+    )
     .classList.remove(
       "hidden"
     );
@@ -2138,8 +2310,13 @@ function editProduct(id){
 function closeModal(){
 
   document
-    .getElementById("productModal")
-    .classList.add("hidden");
+    .getElementById(
+      "productModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
 
   editingId = null;
 
@@ -2168,187 +2345,209 @@ async function saveProduct(){
       "saveProductBtn"
     );
 
-  const status =
-    document.getElementById(
-      "saveStatus"
-    );
 
+  saveButton.disabled =
+    true;
 
-  const name =
-    document
-      .getElementById("name")
-      .value
-      .trim();
-
-
-  const category =
-    document
-      .getElementById("category")
-      .value
-      .trim();
-
-
-  /*
-   MODEL IS OPTIONAL.
-  */
-
-  const model =
-    document
-      .getElementById("model")
-      .value
-      .trim();
-
-
-  const quantity =
-    Math.max(
-      0,
-      parseInt(
-        document
-          .getElementById("quantity")
-          .value,
-        10
-      ) || 0
-    );
-
-
-  const buyPrice =
-    Math.max(
-      0,
-      parseFloat(
-        document
-          .getElementById("buyPrice")
-          .value
-      ) || 0
-    );
-
-
-  const buyCurrency =
-    document
-      .getElementById("buyCurrency")
-      .value;
-
-
-  const sellPrice =
-    Math.max(
-      0,
-      parseFloat(
-        document
-          .getElementById("sellPrice")
-          .value
-      ) || 0
-    );
-
-
-  const sellCurrency =
-    document
-      .getElementById("sellCurrency")
-      .value;
-
-
-  if(!name){
-
-    alert(
-      "Please enter the item name."
-    );
-
-    return;
-
-  }
-
-
-  /*
-   Selling price is still required.
-  */
-
-  if(sellPrice <= 0){
-
-    alert(
-      "Please enter the selling price."
-    );
-
-    return;
-
-  }
-
-
-  const preview =
-    document.getElementById(
-      "productPhotoPreview"
-    );
-
-
-  const old =
-    editingId
-      ? products.find(
-          p => p.id === editingId
-        )
-      : null;
-
-
-  const product = {
-
-    id:
-      editingId ||
-      makeId(),
-
-    name:
-      name,
-
-    category:
-      category,
-
-    model:
-      model,
-
-    quantity:
-      quantity,
-
-    buyPrice:
-      buyPrice,
-
-    buyCurrency:
-      buyCurrency,
-
-    sellPrice:
-      sellPrice,
-
-    sellCurrency:
-      sellCurrency,
-
-    photo:
-      preview.dataset.photo ||
-      old?.photo ||
-      null,
-
-    createdAt:
-      old?.createdAt ||
-      Date.now(),
-
-    updatedAt:
-      Date.now()
-
-  };
-
-
-  /*
-   Prevent double clicking Save.
-  */
-
-  saveButton.disabled = true;
 
   saveButton.textContent =
     "Saving...";
 
-  status.textContent =
-    "Saving to database...";
-
 
   try{
 
+    const name =
+      document
+        .getElementById(
+          "name"
+        )
+        .value
+        .trim();
+
+
+    const category =
+      document
+        .getElementById(
+          "category"
+        )
+        .value
+        .trim();
+
+
     /*
-     STEP 1:
-     Save ONLY this product.
-     We don't replace the entire database.
+     MODEL IS OPTIONAL
+    */
+
+    const model =
+      document
+        .getElementById(
+          "model"
+        )
+        .value
+        .trim();
+
+
+    const quantity =
+      Math.max(
+        0,
+        parseInt(
+          document
+            .getElementById(
+              "quantity"
+            )
+            .value,
+          10
+        ) || 0
+      );
+
+
+    const buyPrice =
+      Math.max(
+        0,
+        parseFloat(
+          document
+            .getElementById(
+              "buyPrice"
+            )
+            .value
+        ) || 0
+      );
+
+
+    const buyCurrency =
+      document
+        .getElementById(
+          "buyCurrency"
+        )
+        .value;
+
+
+    const sellPrice =
+      Math.max(
+        0,
+        parseFloat(
+          document
+            .getElementById(
+              "sellPrice"
+            )
+            .value
+        ) || 0
+      );
+
+
+    const sellCurrency =
+      document
+        .getElementById(
+          "sellCurrency"
+        )
+        .value;
+
+
+    if(!name){
+
+      throw new Error(
+        "Please enter the item name."
+      );
+
+    }
+
+
+    if(!category){
+
+      throw new Error(
+        "Please enter a category."
+      );
+
+    }
+
+
+    if(sellPrice <= 0){
+
+      throw new Error(
+        "Please enter the selling price."
+      );
+
+    }
+
+
+    const preview =
+      document
+        .getElementById(
+          "productPhotoPreview"
+        );
+
+
+    const old =
+      editingId
+      ?
+      products.find(
+        p =>
+          p.id === editingId
+      )
+      :
+      null;
+
+
+    const product = {
+
+      id:
+        editingId ||
+        makeId(),
+
+      name:
+        name,
+
+      category:
+        category,
+
+      /*
+       Empty model is saved as an
+       empty string. It is NOT required.
+      */
+
+      model:
+        model,
+
+      quantity:
+        quantity,
+
+      buyPrice:
+        buyPrice,
+
+      buyCurrency:
+        buyCurrency,
+
+      sellPrice:
+        sellPrice,
+
+      sellCurrency:
+        sellCurrency,
+
+      photo:
+        preview.dataset.photo ||
+        old?.photo ||
+        null,
+
+      createdAt:
+        old?.createdAt ||
+        Date.now(),
+
+      updatedAt:
+        Date.now()
+
+    };
+
+
+    console.log(
+      "Saving product:",
+      product
+    );
+
+
+    /*
+     IMPORTANT FIX:
+     Save ONLY this product directly
+     to /products/{id}.
     */
 
     await saveProductToFirebase(
@@ -2357,14 +2556,14 @@ async function saveProduct(){
 
 
     /*
-     STEP 2:
-     Update local product list
-     only after Firebase confirms.
+     Update local list only after
+     Firebase successfully accepts it.
     */
 
     const index =
       products.findIndex(
-        p => p.id === product.id
+        p =>
+          p.id === product.id
       );
 
 
@@ -2383,64 +2582,49 @@ async function saveProduct(){
 
 
     /*
-     STEP 3:
-     Add transaction.
+     Transaction is saved separately.
     */
 
-    const transaction = {
+    transactions.unshift({
+
+      id:
+        makeId(),
 
       text:
         editingId
-        ? `Edited product: ${name}`
-        : `Added product: ${name}${model ? ` (${model})` : ""} - Qty: ${quantity}`,
+        ?
+        `Edited product: ${name}`
+        :
+        `Added product: ${name}${model ? " (" + model + ")" : ""} - Qty: ${quantity}`,
 
       time:
-        new Date().toLocaleString()
+        new Date()
+          .toLocaleString()
 
-    };
+    });
 
 
     try{
 
-      transactions.unshift(
-        transaction
-      );
-
-      await saveTransactionToFirebase(
-        transaction
-      );
+      await saveTransactionsToFirebase();
 
     }catch(transactionError){
 
       console.error(
-        "Transaction save error:",
+        "Transaction save failed:",
         transactionError
       );
-
-      /*
-       Product is already safely saved.
-       Don't undo the product because
-       only the log failed.
-      */
 
     }
 
 
-    recalculateStockValues();
+    renderCategoryFilters();
 
-    updateCategoryFilters();
+    recalculateStockValues();
 
     renderGallery();
 
     updateMoneyDisplay();
-
-
-    status.textContent =
-      "Saved successfully.";
-
-    status.style.color =
-      "#047857";
-
 
     closeModal();
 
@@ -2458,23 +2642,17 @@ async function saveProduct(){
     );
 
 
-    status.textContent =
-      "Save failed.";
-
-    status.style.color =
-      "#b91c1c";
-
-
     alert(
-      "Could not save the product.\n\n" +
-      error.message +
-      "\n\nCheck your Firebase Database Rules if this continues."
+      "Product was NOT saved.\n\n" +
+      error.message
     );
+
 
   }finally{
 
     saveButton.disabled =
       false;
+
 
     saveButton.textContent =
       "Save Product";
@@ -2491,7 +2669,8 @@ async function saveProduct(){
 function makeId(){
 
   if(
-    typeof crypto !== "undefined" &&
+    typeof crypto !==
+      "undefined" &&
     crypto.randomUUID
   ){
 
@@ -2505,117 +2684,13 @@ function makeId(){
 
 
   return (
-    Date.now().toString(36) +
+    Date.now()
+      .toString(36) +
     "-" +
     Math.random()
       .toString(36)
       .slice(2)
   );
-
-}
-
-
-/* =====================================================
-   CATEGORY FILTERS
-===================================================== */
-
-function updateCategoryFilters(){
-
-  const select =
-    document.getElementById(
-      "categoryFilter"
-    );
-
-  const datalist =
-    document.getElementById(
-      "categoryList"
-    );
-
-
-  if(!select || !datalist) return;
-
-
-  const categories =
-    [...new Set(
-      products
-        .map(p =>
-          (p.category || "").trim()
-        )
-        .filter(Boolean)
-    )]
-    .sort(
-      (a,b) =>
-        a.localeCompare(
-          b
-        )
-    );
-
-
-  const current =
-    selectedCategoryFilter;
-
-
-  select.innerHTML =
-    `<option value="all">
-      All Categories
-    </option>`;
-
-
-  categories.forEach(category=>{
-
-    const option =
-      document.createElement(
-        "option"
-      );
-
-    option.value =
-      category;
-
-    option.textContent =
-      category;
-
-    select.appendChild(
-      option
-    );
-
-  });
-
-
-  if(
-    current === "all" ||
-    categories.includes(current)
-  ){
-
-    select.value =
-      current;
-
-  }else{
-
-    selectedCategoryFilter =
-      "all";
-
-    select.value =
-      "all";
-
-  }
-
-
-  datalist.innerHTML =
-    categories
-      .map(category =>
-        `<option value="${escapeHTML(category)}"></option>`
-      )
-      .join("");
-
-}
-
-
-function setCategoryFilter(value){
-
-  selectedCategoryFilter =
-    value || "all";
-
-  renderGallery();
 
 }
 
@@ -2627,79 +2702,123 @@ function setCategoryFilter(value){
 function renderGallery(){
 
   const grid =
-    document.getElementById(
-      "galleryGrid"
-    );
+    document
+      .getElementById(
+        "galleryGrid"
+      );
 
 
   if(!grid) return;
 
 
   const search =
-    (
-      document.getElementById(
+    document
+      .getElementById(
         "gallerySearch"
-      )?.value || ""
-    )
-    .trim()
-    .toLowerCase();
+      )
+      .value
+      .trim()
+      .toLowerCase();
 
 
   const list =
-    products.filter(p=>{
+    products.filter(
+      p=>{
 
-      const text =
-        (
-          (p.name || "") +
-          " " +
-          (p.model || "") +
-          " " +
-          (p.category || "")
-        )
-        .toLowerCase();
-
-
-      const matchesSearch =
-        text.includes(search);
+        const text =
+          (
+            (p.name || "") +
+            " " +
+            (p.model || "") +
+            " " +
+            (p.category || "")
+          )
+          .toLowerCase();
 
 
-      let matchesStock =
-        true;
+        const matchesSearch =
+          text.includes(
+            search
+          );
 
 
-      if(
-        selectedStockFilter === "in"
-      ){
+        let matchesStock =
+          true;
 
-        matchesStock =
-          Number(p.quantity) > 0;
+
+        if(
+          selectedStockFilter ===
+          "in"
+        ){
+
+          matchesStock =
+            Number(
+              p.quantity
+            ) > 0;
+
+        }
+
+
+        if(
+          selectedStockFilter ===
+          "out"
+        ){
+
+          matchesStock =
+            Number(
+              p.quantity
+            ) <= 0;
+
+        }
+
+
+        let matchesCategory =
+          true;
+
+
+        if(
+          selectedCategoryFilter !==
+          "all"
+        ){
+
+          matchesCategory =
+            (p.category || "")
+              .toLowerCase() ===
+            selectedCategoryFilter
+              .toLowerCase();
+
+        }
+
+
+        /*
+         Visitors can see only products
+         currently available.
+        Admin can see everything.
+        */
+
+        if(!isAdmin){
+
+          if(
+            Number(
+              p.quantity
+            ) <= 0
+          ){
+
+            return false;
+
+          }
+
+        }
+
+
+        return (
+          matchesSearch &&
+          matchesStock &&
+          matchesCategory
+        );
 
       }
-
-
-      if(
-        selectedStockFilter === "out"
-      ){
-
-        matchesStock =
-          Number(p.quantity) <= 0;
-
-      }
-
-
-      const matchesCategory =
-        selectedCategoryFilter === "all" ||
-        (p.category || "") ===
-        selectedCategoryFilter;
-
-
-      return (
-        matchesSearch &&
-        matchesStock &&
-        matchesCategory
-      );
-
-    });
+    );
 
 
   if(!list.length){
@@ -2715,115 +2834,234 @@ function renderGallery(){
 
 
   grid.innerHTML =
-    list.map(p=>{
+    list.map(
+      p=>{
 
-      const quantity =
-        Number(p.quantity) || 0;
-
-
-      return `
-
-        <div
-          class="product-card"
-          onclick="openProduct('${escapeHTML(p.id)}')"
-        >
-
-          ${
-            p.photo
-
-            ?
-
-            `<img
-              src="${p.photo}"
-              alt=""
-            >`
-
-            :
-
-            `<div
-              class="product-no-photo">
-            </div>`
-          }
+        const quantity =
+          Number(
+            p.quantity
+          ) || 0;
 
 
-          <div class="product-info">
+        return `
 
-            <div class="product-name">
-              ${escapeHTML(p.name)}
-            </div>
-
+          <div
+            class="product-card"
+            onclick="openProduct('${escapeHTML(p.id)}')"
+          >
 
             ${
-              p.model
-
+              p.photo
               ?
-
-              `<div class="product-model">
-                Model: ${escapeHTML(p.model)}
-              </div>`
-
+              `<img
+                src="${p.photo}"
+                alt=""
+              >`
               :
-
-              ""
+              `<div
+                class="product-no-photo">
+              </div>`
             }
 
 
-            ${
-              p.category
+            <div class="product-info">
 
-              ?
-
-              `<div class="product-category">
-                ${escapeHTML(p.category)}
-              </div>`
-
-              :
-
-              ""
-            }
+              <div class="product-name">
+                ${escapeHTML(
+                  p.name
+                )}
+              </div>
 
 
-            <div class="product-price">
-              ${formatPrice(
-                p.sellPrice,
-                p.sellCurrency
-              )}
-            </div>
-
-
-            <div
-              class="product-stock ${
-                quantity > 0
-                  ? "in"
-                  : "out"
-              }"
-            >
               ${
-                quantity > 0
-                  ? "IN STOCK"
-                  : "OUT OF STOCK"
+                p.model
+                ?
+                `<div class="product-model">
+                  Model:
+                  ${escapeHTML(
+                    p.model
+                  )}
+                </div>`
+                :
+                ""
               }
+
+
+              <div class="product-category">
+                ${escapeHTML(
+                  p.category || ""
+                )}
+              </div>
+
+
+              <div class="product-price">
+
+                ${formatPrice(
+                  p.sellPrice,
+                  p.sellCurrency
+                )}
+
+              </div>
+
+
+              ${
+                isAdmin
+                ?
+                `<div
+                  class="product-stock ${
+                    quantity > 0
+                    ? "in"
+                    : "out"
+                  }"
+                >
+                  ${
+                    quantity > 0
+                    ? "IN STOCK"
+                    : "OUT OF STOCK"
+                  }
+                  · Qty ${quantity}
+                </div>`
+                :
+                ""
+              }
+
             </div>
 
           </div>
 
-        </div>
+        `;
 
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 }
 
 
 /* =====================================================
-   FILTER
+   CATEGORY FILTER
+===================================================== */
+
+function renderCategoryFilters(){
+
+  const container =
+    document.getElementById(
+      "categoryFilters"
+    );
+
+
+  const datalist =
+    document.getElementById(
+      "categoryList"
+    );
+
+
+  if(!container) return;
+
+
+  const categories =
+    [
+      ...new Set(
+        products
+          .map(
+            p =>
+              (p.category || "")
+                .trim()
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort(
+      (a,b)=>
+        a.localeCompare(
+          b
+        )
+    );
+
+
+  container.innerHTML =
+    `
+      <button
+        id="categoryAll"
+        class="${
+          selectedCategoryFilter ===
+          "all"
+          ? "active"
+          : ""
+        }"
+        onclick="setCategoryFilter('all')">
+        All
+      </button>
+    `;
+
+
+  categories.forEach(
+    category=>{
+
+      const safe =
+        escapeHTML(
+          category
+        );
+
+
+      container.innerHTML +=
+        `
+          <button
+            class="${
+              selectedCategoryFilter
+                .toLowerCase() ===
+              category.toLowerCase()
+                ? "active"
+                : ""
+            }"
+            onclick="setCategoryFilter(${JSON.stringify(category)})">
+            ${safe}
+          </button>
+        `;
+
+    }
+  );
+
+
+  if(datalist){
+
+    datalist.innerHTML =
+      categories
+        .map(
+          category =>
+            `<option value="${escapeHTML(category)}"></option>`
+        )
+        .join("");
+
+  }
+
+}
+
+
+function setCategoryFilter(
+  value
+){
+
+  selectedCategoryFilter =
+    value;
+
+
+  renderCategoryFilters();
+
+  renderGallery();
+
+}
+
+
+/* =====================================================
+   STOCK FILTER
 ===================================================== */
 
 function toggleFilter(){
 
   document
-    .getElementById("filterPanel")
+    .getElementById(
+      "filterPanel"
+    )
     .classList.toggle(
       "hidden"
     );
@@ -2831,35 +3069,49 @@ function toggleFilter(){
 }
 
 
-function setStockFilter(value){
+function setStockFilter(
+  value
+){
 
   selectedStockFilter =
     value;
 
 
   document
-    .getElementById("filterAll")
+    .getElementById(
+      "filterAll"
+    )
     .classList.remove(
       "active"
     );
+
 
   document
-    .getElementById("filterIn")
+    .getElementById(
+      "filterIn"
+    )
     .classList.remove(
       "active"
     );
+
 
   document
-    .getElementById("filterOut")
+    .getElementById(
+      "filterOut"
+    )
     .classList.remove(
       "active"
     );
 
 
-  if(value === "all"){
+  if(
+    value === "all"
+  ){
 
     document
-      .getElementById("filterAll")
+      .getElementById(
+        "filterAll"
+      )
       .classList.add(
         "active"
       );
@@ -2867,10 +3119,14 @@ function setStockFilter(value){
   }
 
 
-  if(value === "in"){
+  if(
+    value === "in"
+  ){
 
     document
-      .getElementById("filterIn")
+      .getElementById(
+        "filterIn"
+      )
       .classList.add(
         "active"
       );
@@ -2878,10 +3134,14 @@ function setStockFilter(value){
   }
 
 
-  if(value === "out"){
+  if(
+    value === "out"
+  ){
 
     document
-      .getElementById("filterOut")
+      .getElementById(
+        "filterOut"
+      )
       .classList.add(
         "active"
       );
@@ -2898,7 +3158,9 @@ function setStockFilter(value){
    PRODUCT DETAILS
 ===================================================== */
 
-function openProduct(id){
+function openProduct(
+  id
+){
 
   const p =
     products.find(
@@ -2909,11 +3171,15 @@ function openProduct(id){
   if(!p) return;
 
 
-  renderProductDetails(p);
+  renderProductDetails(
+    p
+  );
 
 
   document
-    .getElementById("detailModal")
+    .getElementById(
+      "detailModal"
+    )
     .classList.remove(
       "hidden"
     );
@@ -2921,10 +3187,14 @@ function openProduct(id){
 }
 
 
-function renderProductDetails(p){
+function renderProductDetails(
+  p
+){
 
   const quantity =
-    Number(p.quantity) || 0;
+    Number(
+      p.quantity
+    ) || 0;
 
 
   /*
@@ -2934,22 +3204,20 @@ function renderProductDetails(p){
   if(!isAdmin){
 
     document
-      .getElementById("detailContent")
+      .getElementById(
+        "detailContent"
+      )
       .innerHTML = `
 
         ${
           p.photo
-
           ?
-
           `<img
             class="detail-photo"
             src="${p.photo}"
             alt=""
           >`
-
           :
-
           ""
         }
 
@@ -2957,40 +3225,32 @@ function renderProductDetails(p){
         <div class="detail-card">
 
           <div class="detail-name">
-            ${escapeHTML(p.name)}
+            ${escapeHTML(
+              p.name
+            )}
           </div>
 
 
           ${
-            p.category
-
-            ?
-
-            `<div class="detail-category">
-              Category:
-              ${escapeHTML(p.category)}
-            </div>`
-
-            :
-
-            ""
-          }
-
-
-          ${
             p.model
-
             ?
-
             `<div class="detail-model">
               Model:
-              ${escapeHTML(p.model)}
+              ${escapeHTML(
+                p.model
+              )}
             </div>`
-
             :
-
             ""
           }
+
+
+          <div class="detail-category">
+            Category:
+            ${escapeHTML(
+              p.category || "-"
+            )}
+          </div>
 
 
           <div class="detail-row">
@@ -3045,7 +3305,9 @@ function renderProductDetails(p){
   */
 
   document
-    .getElementById("detailContent")
+    .getElementById(
+      "detailContent"
+    )
     .innerHTML = `
 
       <button
@@ -3059,17 +3321,13 @@ function renderProductDetails(p){
 
       ${
         p.photo
-
         ?
-
         `<img
           class="detail-photo"
           src="${p.photo}"
           alt=""
         >`
-
         :
-
         ""
       }
 
@@ -3077,40 +3335,32 @@ function renderProductDetails(p){
       <div class="detail-card">
 
         <div class="detail-name">
-          ${escapeHTML(p.name)}
+          ${escapeHTML(
+            p.name
+          )}
         </div>
 
 
         ${
-          p.category
-
-          ?
-
-          `<div class="detail-category">
-            Category:
-            ${escapeHTML(p.category)}
-          </div>`
-
-          :
-
-          ""
-        }
-
-
-        ${
           p.model
-
           ?
-
           `<div class="detail-model">
             Model:
-            ${escapeHTML(p.model)}
+            ${escapeHTML(
+              p.model
+            )}
           </div>`
-
           :
-
           ""
         }
+
+
+        <div class="detail-category">
+          Category:
+          ${escapeHTML(
+            p.category || "-"
+          )}
+        </div>
 
 
         <div class="detail-row">
@@ -3202,9 +3452,7 @@ function renderProductDetails(p){
 
       ${
         quantity > 0
-
         ?
-
         `<button
           class="primary"
           style="width:100%;margin-top:12px"
@@ -3212,9 +3460,7 @@ function renderProductDetails(p){
         >
           Sell Item
         </button>`
-
         :
-
         `<div
           class="empty"
           style="margin-top:12px"
@@ -3254,7 +3500,9 @@ function renderProductDetails(p){
 function closeDetailModal(){
 
   document
-    .getElementById("detailModal")
+    .getElementById(
+      "detailModal"
+    )
     .classList.add(
       "hidden"
     );
@@ -3296,12 +3544,12 @@ async function deleteProduct(
 
   try{
 
-    /*
-     Delete directly from Firebase.
-    */
-
-    await deleteProductFromFirebase(
-      id
+    await firebaseRequest(
+      "/products/" +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
     );
 
 
@@ -3311,43 +3559,37 @@ async function deleteProduct(
       );
 
 
-    const transaction = {
+    transactions.unshift({
+
+      id:
+        makeId(),
 
       text:
         `Deleted product: ${p.name}`,
 
       time:
-        new Date().toLocaleString()
+        new Date()
+          .toLocaleString()
 
-    };
-
-
-    transactions.unshift(
-      transaction
-    );
+    });
 
 
     try{
 
-      await saveTransactionToFirebase(
-        transaction
-      );
+      await saveTransactionsToFirebase();
 
     }catch(e){
 
-      console.error(
-        "Transaction error:",
-        e
-      );
+      console.error(e);
 
     }
 
 
-    renderGallery();
+    renderCategoryFilters();
 
     recalculateStockValues();
 
-    updateCategoryFilters();
+    renderGallery();
 
 
     if(closeAfter){
@@ -3357,14 +3599,7 @@ async function deleteProduct(
     }
 
 
-    alert(
-      "Product deleted successfully."
-    );
-
-
   }catch(error){
-
-    console.error(error);
 
     alert(
       "Could not delete product.\n\n" +
@@ -3398,7 +3633,9 @@ async function changeStock(
 
 
   const oldQty =
-    Number(p.quantity) || 0;
+    Number(
+      p.quantity
+    ) || 0;
 
 
   const newQty =
@@ -3415,39 +3652,16 @@ async function changeStock(
   if(diff === 0) return;
 
 
-  const originalQuantity =
+  const originalQty =
     p.quantity;
-
-  const originalUpdated =
-    p.updatedAt;
 
 
   p.quantity =
     newQty;
 
+
   p.updatedAt =
     Date.now();
-
-
-  let unitVal =
-    Number(p.buyPrice) || 0;
-
-
-  unitVal =
-    convertCurrency(
-      unitVal,
-      p.buyCurrency,
-      stockCurrency
-    );
-
-
-  if(diff < 0){
-
-    droppedMoney +=
-      Math.abs(diff) *
-      unitVal;
-
-  }
 
 
   try{
@@ -3459,18 +3673,54 @@ async function changeStock(
 
     if(diff < 0){
 
-      await addTransaction(
-        `Removed ${Math.abs(diff)}x from ${p.name}`
-      );
+      const unitVal =
+        getStockUnitValue(
+          p
+        );
 
-    }else{
 
-      await addTransaction(
-        `Added ${diff}x to ${p.name}`
-      );
+      droppedMoney +=
+        Math.abs(diff) *
+        unitVal;
+
+
+      transactions.unshift({
+
+        id:
+          makeId(),
+
+        text:
+          `Removed ${Math.abs(diff)}x from ${p.name}`,
+
+        time:
+          new Date()
+            .toLocaleString()
+
+      });
 
     }
 
+
+    if(diff > 0){
+
+      transactions.unshift({
+
+        id:
+          makeId(),
+
+        text:
+          `Added ${diff}x to ${p.name}`,
+
+        time:
+          new Date()
+            .toLocaleString()
+
+      });
+
+    }
+
+
+    await saveTransactionsToFirebase();
 
     await saveMoneyToFirebase();
 
@@ -3479,19 +3729,15 @@ async function changeStock(
 
     renderGallery();
 
-    renderProductDetails(p);
+    renderProductDetails(
+      p
+    );
 
 
   }catch(error){
 
     p.quantity =
-      originalQuantity;
-
-    p.updatedAt =
-      originalUpdated;
-
-
-    await loadFromFirebase();
+      originalQty;
 
 
     alert(
@@ -3508,7 +3754,9 @@ async function changeStock(
    RESTOCK
 ===================================================== */
 
-async function restockProduct(id){
+async function restockProduct(
+  id
+){
 
   if(!isAdmin) return;
 
@@ -3554,11 +3802,14 @@ async function restockProduct(id){
 
 
   const oldQty =
-    Number(p.quantity) || 0;
+    Number(
+      p.quantity
+    ) || 0;
 
 
   p.quantity =
     oldQty + n;
+
 
   p.updatedAt =
     Date.now();
@@ -3571,24 +3822,37 @@ async function restockProduct(id){
     );
 
 
-    await addTransaction(
-      `Restocked ${n}x for ${p.name}`
-    );
+    transactions.unshift({
+
+      id:
+        makeId(),
+
+      text:
+        `Restocked ${n}x for ${p.name}`,
+
+      time:
+        new Date()
+          .toLocaleString()
+
+    });
+
+
+    await saveTransactionsToFirebase();
 
 
     recalculateStockValues();
 
     renderGallery();
 
-    renderProductDetails(p);
+    renderProductDetails(
+      p
+    );
 
 
   }catch(error){
 
     p.quantity =
       oldQty;
-
-    await loadFromFirebase();
 
 
     alert(
@@ -3605,7 +3869,9 @@ async function restockProduct(id){
    SELL
 ===================================================== */
 
-async function sellProduct(id){
+async function sellProduct(
+  id
+){
 
   if(!isAdmin) return;
 
@@ -3620,7 +3886,9 @@ async function sellProduct(id){
 
 
   const quantity =
-    Number(p.quantity) || 0;
+    Number(
+      p.quantity
+    ) || 0;
 
 
   if(quantity <= 0){
@@ -3635,7 +3903,9 @@ async function sellProduct(id){
 
 
   const amount =
-    Number(p.sellPrice) || 0;
+    Number(
+      p.sellPrice
+    ) || 0;
 
 
   if(amount <= 0){
@@ -3649,26 +3919,36 @@ async function sellProduct(id){
   }
 
 
-  const originalQuantity =
+  let amountIQD =
+    amount;
+
+
+  if(
+    p.sellCurrency ===
+    "USD"
+  ){
+
+    amountIQD =
+      amount *
+      exchangeRate;
+
+  }
+
+
+  const oldQuantity =
     p.quantity;
 
 
-  const originalTotal =
+  const oldTotal =
     totalMoney;
 
-  const originalSold =
+
+  const oldSoldCount =
     soldCount;
 
-  const originalDropped =
+
+  const oldDropped =
     droppedMoney;
-
-
-  let amountIQD =
-    convertCurrency(
-      amount,
-      p.sellCurrency,
-      "IQD"
-    );
 
 
   totalMoney +=
@@ -3678,15 +3958,9 @@ async function sellProduct(id){
   soldCount += 1;
 
 
-  let unitVal =
-    Number(p.buyPrice) || 0;
-
-
-  unitVal =
-    convertCurrency(
-      unitVal,
-      p.buyCurrency,
-      stockCurrency
+  const unitVal =
+    getStockUnitValue(
+      p
     );
 
 
@@ -3695,10 +3969,32 @@ async function sellProduct(id){
 
 
   p.quantity =
-    quantity - 1;
+    Math.max(
+      0,
+      quantity - 1
+    );
+
 
   p.updatedAt =
     Date.now();
+
+
+  transactions.unshift({
+
+    id:
+      makeId(),
+
+    text:
+      `Sold 1x ${p.name} for ${formatPrice(
+        p.sellPrice,
+        p.sellCurrency
+      )}`,
+
+    time:
+      new Date()
+        .toLocaleString()
+
+  });
 
 
   try{
@@ -3708,10 +4004,7 @@ async function sellProduct(id){
     );
 
 
-    await addTransaction(
-      `Sold 1x ${p.name} for ${formatPrice(p.sellPrice,p.sellCurrency)}`
-    );
-
+    await saveTransactionsToFirebase();
 
     await saveMoneyToFirebase();
 
@@ -3720,7 +4013,9 @@ async function sellProduct(id){
 
     renderGallery();
 
-    renderProductDetails(p);
+    renderProductDetails(
+      p
+    );
 
 
     alert(
@@ -3731,23 +4026,26 @@ async function sellProduct(id){
   }catch(error){
 
     p.quantity =
-      originalQuantity;
+      oldQuantity;
+
 
     totalMoney =
-      originalTotal;
+      oldTotal;
+
 
     soldCount =
-      originalSold;
+      oldSoldCount;
+
 
     droppedMoney =
-      originalDropped;
+      oldDropped;
 
 
-    await loadFromFirebase();
+    transactions.shift();
 
 
     alert(
-      "Could not record sale.\n\n" +
+      "Sale could not be saved.\n\n" +
       error.message
     );
 
@@ -3757,74 +4055,45 @@ async function sellProduct(id){
 
 
 /* =====================================================
-   TRANSACTION HELPER
+   STOCK UNIT VALUE
 ===================================================== */
 
-async function addTransaction(text){
-
-  const transaction = {
-
-    text:
-      text,
-
-    time:
-      new Date().toLocaleString()
-
-  };
-
-
-  transactions.unshift(
-    transaction
-  );
-
-
-  try{
-
-    await saveTransactionToFirebase(
-      transaction
-    );
-
-  }catch(error){
-
-    /*
-     Remove local transaction if
-     Firebase transaction failed.
-    */
-
-    transactions =
-      transactions.filter(
-        t => t !== transaction
-      );
-
-    throw error;
-
-  }
-
-}
-
-
-/* =====================================================
-   CURRENCY
-===================================================== */
-
-function convertCurrency(
-  amount,
-  from,
-  to
+function getStockUnitValue(
+  p
 ){
 
-  const value =
-    Number(amount) || 0;
+  let value =
+    Number(
+      p.buyPrice
+    ) || 0;
 
 
-  if(from === to){
+  /*
+   stockCurrency is stored as
+   the actual currency code now.
+  */
+
+  const target =
+    stockCurrency === "$"
+    ? "USD"
+    : "IQD";
+
+
+  if(
+    p.buyCurrency ===
+    target
+  ){
+
     return value;
+
   }
 
 
   if(
-    from === "IQD" &&
-    to === "USD"
+    p.buyCurrency ===
+    "IQD" &&
+    target ===
+    "USD"
   ){
 
     return value /
@@ -3834,8 +4103,10 @@ function convertCurrency(
 
 
   if(
-    from === "USD" &&
-    to === "IQD"
+    p.buyCurrency ===
+    "USD" &&
+    target ===
+    "IQD"
   ){
 
     return value *
@@ -3855,36 +4126,72 @@ function convertCurrency(
 
 function recalculateStockValues(){
 
-  /*
-   Added stock value is calculated
-   using the selected stock currency.
-  */
-
   addedMoney = 0;
 
 
-  products.forEach(p=>{
+  products.forEach(
+    p=>{
 
-    const qty =
-      Number(p.quantity) || 0;
-
-
-    const price =
-      Number(p.buyPrice) || 0;
-
-
-    const value =
-      convertCurrency(
-        qty * price,
-        p.buyCurrency,
-        stockCurrency
-      );
+      const qty =
+        Number(
+          p.quantity
+        ) || 0;
 
 
-    addedMoney +=
-      value;
+      const price =
+        Number(
+          p.buyPrice
+        ) || 0;
 
-  });
+
+      let value =
+        qty * price;
+
+
+      const target =
+        stockCurrency === "$"
+        ? "USD"
+        : "IQD";
+
+
+      if(
+        p.buyCurrency !==
+        target
+      ){
+
+        if(
+          p.buyCurrency ===
+          "IQD" &&
+          target ===
+          "USD"
+        ){
+
+          value /=
+            exchangeRate;
+
+        }
+
+
+        else if(
+          p.buyCurrency ===
+          "USD" &&
+          target ===
+          "IQD"
+        ){
+
+          value *=
+            exchangeRate;
+
+        }
+
+      }
+
+
+      addedMoney +=
+        value;
+
+    }
+  );
 
 
   updateMoneyDisplay();
@@ -3895,62 +4202,83 @@ function recalculateStockValues(){
 function updateMoneyDisplay(){
 
   document
-    .getElementById("totalMoney")
+    .getElementById(
+      "totalMoney"
+    )
     .textContent =
-      Number(totalMoney)
-        .toLocaleString(
-          "en-US",
-          {
-            maximumFractionDigits:0
-          }
-        );
+      Number(
+        totalMoney
+      )
+      .toLocaleString(
+        "en-US"
+      );
 
 
   document
-    .getElementById("soldCount")
+    .getElementById(
+      "soldCount"
+    )
     .textContent =
       soldCount;
 
 
   document
-    .getElementById("addedMoney")
+    .getElementById(
+      "addedMoney"
+    )
     .textContent =
-      Number(addedMoney)
-        .toLocaleString(
-          "en-US",
-          {
-            maximumFractionDigits:2
-          }
-        );
+      Number(
+        addedMoney
+      )
+      .toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits:2
+        }
+      );
 
 
   document
-    .getElementById("droppedMoney")
+    .getElementById(
+      "droppedMoney"
+    )
     .textContent =
-      Number(droppedMoney)
-        .toLocaleString(
-          "en-US",
-          {
-            maximumFractionDigits:2
-          }
-        );
+      Number(
+        droppedMoney
+      )
+      .toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits:2
+        }
+      );
 
 
   document
-    .getElementById("addedCurrencySymbol")
+    .getElementById(
+      "addedCurrencySymbol"
+    )
     .textContent =
       stockCurrency;
 
 
   document
-    .getElementById("droppedCurrencySymbol")
+    .getElementById(
+      "droppedCurrencySymbol"
+    )
     .textContent =
       stockCurrency;
 
 }
 
 
-async function clearMoneyCard(type){
+/* =====================================================
+   CLEAR MONEY
+===================================================== */
+
+async function clearMoneyCard(
+  type
+){
 
   if(!isAdmin) return;
 
@@ -3966,7 +4294,9 @@ async function clearMoneyCard(type){
   }
 
 
-  if(type === "earned"){
+  if(
+    type === "earned"
+  ){
 
     totalMoney = 0;
 
@@ -3975,27 +4305,31 @@ async function clearMoneyCard(type){
   }
 
 
-  if(type === "added"){
+  if(
+    type === "dropped"
+  ){
 
-    /*
-     Added stock value is calculated
-     from the products, so it cannot
-     permanently be cleared without
-     changing inventory.
-    */
-
-    alert(
-      "Added Stock Value is calculated from your current inventory."
-    );
-
-    return;
+    droppedMoney = 0;
 
   }
 
 
-  if(type === "dropped"){
+  /*
+   Added stock value is calculated from
+   actual products, so it cannot really
+   be permanently cleared without changing
+   inventory values.
+  */
 
-    droppedMoney = 0;
+  if(
+    type === "added"
+  ){
+
+    alert(
+      "Added Stock Value is calculated from your current inventory and cannot be cleared without changing the products."
+    );
+
+    return;
 
   }
 
@@ -4029,9 +4363,10 @@ function openNotifications(){
 
 
   const list =
-    document.getElementById(
-      "notifList"
-    );
+    document
+      .getElementById(
+        "notifList"
+      );
 
 
   if(!transactions.length){
@@ -4044,27 +4379,37 @@ function openNotifications(){
   }else{
 
     list.innerHTML =
-      transactions.map(t=>`
+      transactions
+        .map(
+          t=>`
 
-        <div class="notif-item">
+          <div class="notif-item">
 
-          <div>
-            ${escapeHTML(t.text)}
+            <div>
+              ${escapeHTML(
+                t.text
+              )}
+            </div>
+
+            <div class="notif-date">
+              ${escapeHTML(
+                t.time
+              )}
+            </div>
+
           </div>
 
-          <div class="notif-date">
-            ${escapeHTML(t.time)}
-          </div>
-
-        </div>
-
-      `).join("");
+        `
+        )
+        .join("");
 
   }
 
 
   document
-    .getElementById("notifModal")
+    .getElementById(
+      "notifModal"
+    )
     .classList.remove(
       "hidden"
     );
@@ -4101,11 +4446,19 @@ async function clearNotifications(){
 
   try{
 
-    await deleteTransactionsFromFirebase();
+    await firebaseRequest(
+      "/transactions",
+      {
+        method:"DELETE"
+      }
+    );
+
 
     transactions = [];
 
+
     openNotifications();
+
 
   }catch(error){
 
@@ -4122,7 +4475,9 @@ async function clearNotifications(){
 function closeNotifications(){
 
   document
-    .getElementById("notifModal")
+    .getElementById(
+      "notifModal"
+    )
     .classList.add(
       "hidden"
     );
@@ -4134,7 +4489,9 @@ function closeNotifications(){
    TABS
 ===================================================== */
 
-function showTab(tab){
+function showTab(
+  tab
+){
 
   const adminSection =
     document.getElementById(
@@ -4147,7 +4504,9 @@ function showTab(tab){
     !isAdmin
   ){
 
-    showTab("products");
+    showTab(
+      "products"
+    );
 
     return;
 
@@ -4166,7 +4525,9 @@ function showTab(tab){
     );
 
 
-  if(tab === "inventory"){
+  if(
+    tab === "inventory"
+  ){
 
     adminSection
       .classList.remove(
@@ -4226,10 +4587,15 @@ function formatPrice(
 ){
 
   const number =
-    Number(value) || 0;
+    Number(
+      value
+    ) || 0;
 
 
-  if(currency === "USD"){
+  if(
+    currency ===
+    "USD"
+  ){
 
     return (
       "$" +
@@ -4261,7 +4627,9 @@ function formatPrice(
    ESCAPE HTML
 ===================================================== */
 
-function escapeHTML(value){
+function escapeHTML(
+  value
+){
 
   return String(
     value ?? ""
